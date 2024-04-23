@@ -1,0 +1,106 @@
+generator client {
+    provider  = "prisma-client-py"
+    enable_experimental_decimal=True
+    interface = "asyncio"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = "mysql://root:korea30736@127.0.0.1:3305/dataset_api"
+}
+
+model users {
+  id            Int     @id @default(autoincrement())
+  user_id       String? @unique
+  role          String
+  name          String
+  password      String  @db.VarChar(200) 
+  access_token  String? @unique
+  refresh_token String? @unique
+  confirmed     Boolean @default(false)
+}
+
+model HW_CFR_SMR_LDGS_INFO {
+  id                 Int     @id @default(autoincrement())
+  LDGS_NM            String  @db.VarChar(200)
+  LDGS_ADDR          String  @db.VarChar(200)
+  LDGS_LA            String  @db.VarChar(200)
+  LDGS_LO            String  @db.VarChar(200)
+  AVRG_PRC           Decimal @db.Decimal(28,5)
+  CFR_LDGS_LIST_CN   String @db.VarChar(2000)
+  CFR_LDGS_CO        Decimal @db.Decimal(28,5)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN String @db.VarChar(1000)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC  Decimal @db.Decimal(28,5)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_CO  Decimal @db.Decimal(28,5)
+  DATA_BASE_DE  String @db.VarChar(8)
+  DATA_END_DE   String @db.VarChar(8)
+
+}
+
+model HW_LDGS_CFR_RSTRNT_INFO {
+  id            Int     @id @default(autoincrement())
+  LDGS_NM       String  @db.VarChar(200)
+  LDGS_ADDR     String  @db.VarChar(200)
+  RSTRNT_NM     String  @db.VarChar(200)
+  RSTRNT_ADDR   String  @db.VarChar(200)
+  RSTRNT_LA     String  @db.VarChar(200)
+  RSTRNT_LO     String  @db.VarChar(200)
+  CL_CN         String  @db.VarChar(200)
+  SCCNT_SM_VALUE   Decimal @db.Decimal(30,0)
+  DATA_BASE_DE  String @db.VarChar(8)
+  DATA_END_DE   String @db.VarChar(8)
+}
+
+model HW_LDGS_CFR_FCLTY_INFO {
+  id            Int     @id @default(autoincrement())
+  LDGS_NM       String  @db.VarChar(200)
+  LDGS_ADDR     String  @db.VarChar(200)
+  FCLTY_NM     String  @db.VarChar(200)
+  FCLTY_ADDR   String  @db.VarChar(200)
+  FCLTY_LA     String  @db.VarChar(200)
+  FCLTY_LO     String  @db.VarChar(200)
+  CL_CN         String  @db.VarChar(200)
+  SCCNT_SM_VALUE   Decimal @db.Decimal(30,0)
+  DATA_BASE_DE  String @db.VarChar(8)
+  DATA_END_DE   String @db.VarChar(8)
+}
+
+model HW_LDGS_CSTMR_INFLOW_COUNTRY_INFO {
+  id            Int     @id @default(autoincrement())
+  LDGS_NM       String  @db.VarChar(200)
+  CTPRVN_NM     String  @db.VarChar(200)
+  GUGUN_NM      String  @db.VarChar(200)
+  LDGS_ADDR     String  @db.VarChar(200)
+  INFLOW_COUNTRY_NM String  @db.VarChar(200)
+  GSRM_NM       String  @db.VarChar(200)
+  LDGMNT_YM     String  @db.VarChar(6)
+}
+
+model HW_LDGS_CSTMR_USE_INFO {
+  id            Int     @id @default(autoincrement())
+  LDGS_NM       String  @db.VarChar(200)
+  CTPRVN_NM     String  @db.VarChar(200)
+  GUGUN_NM      String  @db.VarChar(200)
+  LDGS_ADDR     String  @db.VarChar(200)
+  GSRM_NM       String  @db.VarChar(200)
+  LDGMNT_YM     String  @db.VarChar(6)
+  LDGMNT_DAYCNT_CN  String  @db.VarChar(500)
+  LDGMNT_CSTMR_TY   String  @db.VarChar(500)
+  BRFT_AT           String  @db.VarChar(1)
+}
+
+model HW_LDGMNT_RATE_STAY_MNT_SPND_PRICE_INFO {
+  id                          Int     @id @default(autoincrement())
+  BASE_YM                     String  @db.VarChar(6)
+  CTY_NM                  String  @db.VarChar(200)
+  GUGUN_NM                    String  @db.VarChar(200)
+  GUGUN_VISITR_CO             Decimal @db.Decimal(28,5)
+  GUGUN_LDGMNT_VISITR_CO      Decimal @db.Decimal(28,5)
+  GUGUN_LDGMNT_UTILIIZA_RATE  Decimal @db.Decimal(28,5)
+  GUGUN_STAY_MNT_VALUE     Decimal @db.Decimal(30,0)
+  GUGUN_TURSM_SPND_PRICE   Decimal @db.Decimal(28,5)
+  GUGUN_LDGMNT_SPND_PRICE  Decimal @db.Decimal(28,5)
+  LDGS_MIN_PRC    Decimal @db.Decimal(28,5)
+  LDGS_CENTR_PRC  Decimal @db.Decimal(28,5)
+  LDGS_AVRG_PRC   Decimal @db.Decimal(28,5)
+}
