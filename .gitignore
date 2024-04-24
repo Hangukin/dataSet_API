@@ -28,3 +28,6 @@ docs.zip
 archive.zip
 test.txt
 Dockerfile
+bin
+lib
+lib64
