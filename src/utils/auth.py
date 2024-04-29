@@ -24,7 +24,6 @@ def generate_token(user_id : str, name: str):
 '''
 # PW 해싱 암호화 형태 반환 
 def encrypt_password(password: str) -> str:
-    print(type(password))
     return bcrypt.hashpw(
         password.encode("utf-8"), 
         bcrypt.gensalt()
