@@ -1,5 +1,5 @@
 # 데이터 제공 API 구축 
-- fastAPI, Nginx, Docker, MySQL
+- fastAPI, Nginx, Docker, MySQL, Celery, RabbitMQ
 - 데이터 등록 API ( 관리자 전용 ), 데이터 조회 API ( 사용자 )
 
 ## admin PostData() 
