@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
     provider = "mysql"
-    url      = "mysql://root:korea30736@127.0.0.1:3305/dataset_api"
+    url      = "mysql://heroworks:gldjfh!@34@192.168.0.75:3306/dataset_api"
 }
 
 model users {
