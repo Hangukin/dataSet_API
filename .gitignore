@@ -32,3 +32,5 @@ bin
 lib
 lib64
 celerybeat-schedule.*
+package-lock.json
+package.json
