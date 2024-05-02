@@ -31,3 +31,4 @@ Dockerfile
 bin
 lib
 lib64
+celerybeat-schedule.*
