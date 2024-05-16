@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
     provider = "mysql"
-    url      = "mysql://root:korea30736@127.0.0.1:3305/dataset_api"
+    url      = "mysql://heroworks:gldjfh!@34@192.168.0.75:3306/dataset_api"
 }
 // 사용자 테이블
 model api_users {
@@ -185,6 +185,7 @@ model HW_LVLH_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
   MAX_PRC                     Decimal @db.Decimal(28,5)
   AVRG_PRC                    Decimal @db.Decimal(28,5)
 }
+
 
 // 12. 숙박시설 반려동물 관련 정보 (6개월)
 model HW_LDGS_PET_INFO {

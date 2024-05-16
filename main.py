@@ -23,7 +23,7 @@ app = FastAPI(
             "phone": "+82-10-8930-0370",
             "email": "korea5643@heroworks.co.kr",
         },
-    docs_url=None,  redoc_url = None, openapi_url = None
+#    docs_url=None,  redoc_url = None, openapi_url = None
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -41,7 +41,7 @@ async def shutdown():
 @app.get("/")
 def read_root():
     return {"version": "1.0.0"}
-
+'''
 @app.get("/docs",include_in_schema=False)
 async def get_documentation(admin: str = Depends(get_admin)):
     return get_swagger_ui_html(openapi_url="/openapi.json",title="docs")
@@ -49,4 +49,4 @@ async def get_documentation(admin: str = Depends(get_admin)):
 @app.get("/openapi.json", include_in_schema=False)
 async def openapi(admin: str = Depends(get_admin)):
     return get_openapi(title=app.title,  version=app.version, routes=app.routes)
-
+'''
