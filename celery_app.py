@@ -25,7 +25,7 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'tasks.test',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=5),
         'args':()
     }
 }
