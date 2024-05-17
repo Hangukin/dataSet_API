@@ -25,7 +25,7 @@ router = APIRouter()
     tags=["TEST"],
     status_code=200)
 
-async def file_upload(json_data:dict):
+async def file_upload(json_data):
     
     print(json_data)
     #tdict = decoded_data.to_dict(orient='records')

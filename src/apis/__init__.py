@@ -12,5 +12,4 @@ apis.include_router(admin_router, prefix="/admin")
 apis.include_router(get_router, prefix="/getData")
 apis.include_router(test_router, prefix="/test")
 
-
 __all__ = ["apis"]
