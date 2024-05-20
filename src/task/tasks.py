@@ -1,5 +1,5 @@
 #from celery.utils.log import get_task_logger
-from celery_app import celery_app
+from src.celeryapp.celery_app import celery_app
 from celery.schedules import crontab
 import pymysql
 import pandas as pd
@@ -8,8 +8,8 @@ import numpy as np
 from src.prisma import prisma
 from hotel import load_room_data, load_hotel_data
 
-@celery_app.task
-def preprocessing_price():
+@celery_app.task(bind=True)
+def preprocessing_price(self):
     hotel_data = load_hotel_data()
     room_data = load_room_data()
     print('Celery Scheduler Test')
