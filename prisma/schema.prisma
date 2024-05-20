@@ -23,8 +23,12 @@ model api_users {
 // 1. 숙박시설 지근거리 유사 숙박 데이터
 model HW_CFR_SMR_LDGS_INFO {
   id                 Int     @id @default(autoincrement())
+  LDGS_ID            Int
   LDGS_NM            String  @db.VarChar(200)
   LDGS_ADDR          String  @db.VarChar(200)
+  CTY_NM             String  @db.VarChar(200)
+  GUGUN_NM           String  @db.VarChar(200)
+  EMD_NM             String  @db.VarChar(200)
   LDGS_LA            String  @db.VarChar(200)
   LDGS_LO            String  @db.VarChar(200)
   AVRG_PRC           Decimal @db.Decimal(28,5)
@@ -40,8 +44,12 @@ model HW_CFR_SMR_LDGS_INFO {
 // 2. 숙박시설 주변 식당 데이터
 model HW_LDGS_CFR_RSTRNT_INFO {
   id            Int     @id @default(autoincrement())
+  LDGS_ID       Int
   LDGS_NM       String  @db.VarChar(200)
   LDGS_ADDR     String  @db.VarChar(200)
+  CTY_NM        String  @db.VarChar(200)
+  GUGUN_NM      String  @db.VarChar(200)
+  EMD_NM        String  @db.VarChar(200)
   RSTRNT_NM     String  @db.VarChar(200)
   RSTRNT_ADDR   String  @db.VarChar(200)
   RSTRNT_LA     String  @db.VarChar(200)
@@ -54,12 +62,16 @@ model HW_LDGS_CFR_RSTRNT_INFO {
 // 3. 숙박시설 주변 시설(관광지) 데이터
 model HW_LDGS_CFR_FCLTY_INFO {
   id            Int     @id @default(autoincrement())
+  LDGS_ID       Int
   LDGS_NM       String  @db.VarChar(200)
   LDGS_ADDR     String  @db.VarChar(200)
-  FCLTY_NM     String  @db.VarChar(200)
-  FCLTY_ADDR   String  @db.VarChar(200)
-  FCLTY_LA     String  @db.VarChar(200)
-  FCLTY_LO     String  @db.VarChar(200)
+  CTY_NM        String  @db.VarChar(200)
+  GUGUN_NM      String  @db.VarChar(200)
+  EMD_NM        String  @db.VarChar(200)
+  FCLTY_NM      String  @db.VarChar(200)
+  FCLTY_ADDR    String  @db.VarChar(200)
+  FCLTY_LA      String  @db.VarChar(200)
+  FCLTY_LO      String  @db.VarChar(200)
   CL_CN         String  @db.VarChar(200)
   SCCNT_SM_VALUE   Decimal @db.Decimal(30,0)
   DATA_BASE_DE  String @db.VarChar(8)
@@ -68,9 +80,11 @@ model HW_LDGS_CFR_FCLTY_INFO {
 // 4. 숙박시설 유입국가 정보 데이터
 model HW_LDGS_CSTMR_INFLOW_COUNTRY_INFO {
   id            Int     @id @default(autoincrement())
+  LDGS_ID       Int
   LDGS_NM       String  @db.VarChar(200)
   CTPRVN_NM     String  @db.VarChar(200)
   GUGUN_NM      String  @db.VarChar(200)
+  EMD_NM        String  @db.VarChar(200)
   LDGS_ADDR     String  @db.VarChar(200)
   INFLOW_COUNTRY_NM String  @db.VarChar(200)
   GSRM_NM       String  @db.VarChar(200)
@@ -79,9 +93,11 @@ model HW_LDGS_CSTMR_INFLOW_COUNTRY_INFO {
 // 5. 숙박시설 사용자 정보 데이터
 model HW_LDGS_CSTMR_USE_INFO {
   id            Int     @id @default(autoincrement())
+  LDGS_ID       Int
   LDGS_NM       String  @db.VarChar(200)
   CTPRVN_NM     String  @db.VarChar(200)
   GUGUN_NM      String  @db.VarChar(200)
+  EMD_NM        String  @db.VarChar(200)
   LDGS_ADDR     String  @db.VarChar(200)
   GSRM_NM       String  @db.VarChar(200)
   LDGMNT_YM     String  @db.VarChar(6)
@@ -108,9 +124,11 @@ model HW_LDGMNT_RATE_STAY_MNT_SPND_PRICE_INFO {
 // 7. 숙박시설 부대시설 정보 데이터
 model HW_LDGS_FCLTY_INFO {
   id                          Int     @id @default(autoincrement())
+  LDGS_ID                     Int
   LDGS_NM                     String  @db.VarChar(200)
   CTPRVN_NM                   String  @db.VarChar(200)
   GUGUN_NM                    String  @db.VarChar(200)
+  EMD_NM                      String  @db.VarChar(200)
   CFR_LDGS_LIST_CN            String  @db.VarChar(1000)
   ONE_QUARTER_AVRG_PRC        Decimal @db.Decimal(28,5)
   TWO_QUARTER_AVRG_PRC        Decimal @db.Decimal(28,5)
@@ -126,13 +144,17 @@ model HW_LDGS_FCLTY_INFO {
   BNQTHL_AT                   String  @db.VarChar(1)
   BSINES_CNTER_AT             String  @db.VarChar(1)
   BEACH_AT                    String  @db.VarChar(1)
+  DATA_BASE_DE                String  @db.VarChar(8)
+  DATA_END_DE                 String  @db.VarChar(8)
 }
 // 8. 생활형숙박시설 평점정보 데이터
 model HW_LVLH_LDGS_AVRG_SCORE_VARTION_INFO {
   id                          Int     @id @default(autoincrement())
+  LDGS_ID                     Int
   LDGS_NM                     String  @db.VarChar(200)
   CTPRVN_NM                   String  @db.VarChar(200)
   GUGUN_NM                    String  @db.VarChar(200)
+  EMD_NM                      String  @db.VarChar(200)
   OTA_NM                      String  @db.VarChar(200)
   BASE_YEAR                   String  @db.VarChar(4)
   BASE_MT                     String  @db.VarChar(2)
@@ -144,9 +166,11 @@ model HW_LVLH_LDGS_AVRG_SCORE_VARTION_INFO {
 // 9. 숙박시설 점유율 데이터
 model HW_LDGS_OCCU_RT_INFO{
   id                          Int     @id @default(autoincrement())
+  LDGS_ID                     Int
   LDGS_NM                     String  @db.VarChar(200)
   CTPRVN_NM                   String  @db.VarChar(200)
   GUGUN_NM                    String  @db.VarChar(200)
+  EMD_NM                      String  @db.VarChar(200)
   LDGS_ADDR                   String  @db.VarChar(500)
   BASE_YEAR                   String  @db.VarChar(4)
   BASE_MT                     String  @db.VarChar(2)
@@ -159,10 +183,12 @@ model HW_LDGS_OCCU_RT_INFO{
 // 10. 숙박시설 일일판매 (최고,최저,평균 정보)
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
   id                          Int     @id @default(autoincrement())
+  LDGS_ID                     Int
   LDGS_NM                     String  @db.VarChar(200)
   OTA_NM                      String  @db.VarChar(200)
   CTPRVN_NM                   String  @db.VarChar(200)
   GUGUN_NM                    String  @db.VarChar(200)
+  EMD_NM                      String  @db.VarChar(200)
   LDGS_ADDR                   String  @db.VarChar(500)
   EXTRC_DE                    String  @db.VarChar(8)
   LDGMNT_DE                   String  @db.VarChar(8)
@@ -174,10 +200,12 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
 // 11. 생활형 숙박시설 일일판매(최고,최저, 평균)정보
 model HW_LVLH_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
   id                          Int     @id @default(autoincrement())
+  LDGS_ID                     Int
   LDGS_NM                     String  @db.VarChar(200)
   OTA_NM                      String  @db.VarChar(200)
   CTPRVN_NM                   String  @db.VarChar(200)
   GUGUN_NM                    String  @db.VarChar(200)
+  EMD_NM                      String  @db.VarChar(200)
   LDGS_ADDR                   String  @db.VarChar(500)
   EXTRC_DE                    String  @db.VarChar(8)
   LDGMNT_DE                   String  @db.VarChar(8)
@@ -190,9 +218,11 @@ model HW_LVLH_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
 // 12. 숙박시설 반려동물 관련 정보 (6개월)
 model HW_LDGS_PET_INFO {
   id                    Int     @id @default(autoincrement())
+  LDGS_ID               Int
   LDGS_NM               String  @db.VarChar(200)
   CTPRVN_NM             String  @db.VarChar(200)
   GUGUN_NM              String  @db.VarChar(200)
+  EMD_NM                String  @db.VarChar(200)
   LDGS_ADDR             String  @db.VarChar(500)
   PET_INFO_CN           String  @db.VarChar(500)
   DATA_BASE_DE          String  @db.VarChar(8)
@@ -202,19 +232,26 @@ model HW_LDGS_PET_INFO {
 // 13. 숙박시설 주차 관련 정보 (6개월)
 model HW_LDGS_PARKING_INFO {
   id                    Int     @id @default(autoincrement())
+  LDGS_ID               Int
   LDGS_NM               String  @db.VarChar(200)
   CTPRVN_NM             String  @db.VarChar(200)
   GUGUN_NM              String  @db.VarChar(200)
+  EMD_NM                String  @db.VarChar(200)
   LDGS_ADDR             String  @db.VarChar(500)
   PARKNG_INFO_CN        String  @db.VarChar(500)
   DATA_BASE_DE          String  @db.VarChar(8)
   DATA_END_DE           String  @db.VarChar(8)
-}
+} 
 
 // 14. 숙박시설 OTA(채널)별 프로모션 진행 정보 (6개월)
 model HW_LDGS_OTA_PROMTN_INFO {
   id                        Int     @id @default(autoincrement())
+  LDGS_ID                   Int
   LDGS_NM                   String  @db.VarChar(200)
+  LDGS_ADDR                 String  @db.VarChar(200)
+  CTY_NM                    String  @db.VarChar(200)
+  GUGUN_NM                  String  @db.VarChar(200)
+  EMD_NM                    String  @db.VarChar(200)
   BRFT_PROMTN_AT            String  @db.VarChar(1)
   PKG_PROMTN_AT             String  @db.VarChar(1)
   OTT_PROMTN_AT             String  @db.VarChar(1)
@@ -234,9 +271,11 @@ model HW_LDGS_OTA_PROMTN_INFO {
 // 15. 숙박시설 채널별 평점 변동 정보 (1개월)
 model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
   id                    Int     @id @default(autoincrement())
+  LDGS_ID               Int
   LDGS_NM               String  @db.VarChar(200)
   CTPRVN_NM             String  @db.VarChar(200)
   GUGUN_NM              String  @db.VarChar(200)
+  EMD_NM                String  @db.VarChar(200)
   OTA_NM                String  @db.VarChar(200)
   BASE_YEAR             String  @db.VarChar(4)
   BASE_MT               String  @db.VarChar(2)
@@ -259,7 +298,12 @@ model HW_AREA_LDGS_KWRD_LIST {
 // 17. 숙박시설 리뷰 감성분석 정보 (1개월)
 model HW_LDGS_REVIEW_STANL_RESULT {
   id                    Int     @id @default(autoincrement())
+  LDGS_ID               Int
   LDGS_NM               String  @db.VarChar(200)
+  LDGS_ADDR             String  @db.VarChar(200)
+  CTY_NM                String  @db.VarChar(200)
+  GUGUN_NM              String  @db.VarChar(200)
+  EMD_NM                String  @db.VarChar(200)
   AFRM_KWRD_CN          String  @db.VarChar(1000)
   AFRM_WGHTVAL_SCORE    String  @db.VarChar(1000)
   NEGA_KWRD_CN          String  @db.VarChar(1000)

@@ -7,5 +7,5 @@ logger = get_task_logger(__name__)
 
 @celery_app.task(bind=True)
 def test(self):
-    logger.info('Celery Scheduler Test')
+    print('Celery Scheduler Test')
     return 'Celery Test'
