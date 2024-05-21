@@ -103,7 +103,7 @@ def preprocess_hotel_data(hotel):
     lodging2 = lodging2[['hotel_id','hotel_name', 'road_addr', 'addr','gugun_nm','emd_nm', 'region', 'lat', 'lng']]
 
     # 추가 데이터 로드
-    lodging = pd.read_csv('C:/Users/user/Work/hero_master/lodging/호텔테이블최신_0811_23_3.csv')
+    lodging = pd.read_csv('/dataset_api/DataFile/202405_호텔목록_위경도최신화.csv')
     lodging = lodging.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     lodging = lodging[['hotel_id', 'hotel_grade', '객실수', '호텔규모', '업태']]
 
@@ -112,7 +112,6 @@ def preprocess_hotel_data(hotel):
     
     lodging['market'] = lodging['region'].apply(lambda x: '해외' if x == '해외' else '국내')
     
-
     # 결측치 처리
     lodging['hotel_grade'].fillna(value='미등급', inplace=True)
     lodging.fillna(value='미분류', inplace=True)
@@ -139,9 +138,10 @@ def preprocess_hotel_data(hotel):
     excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
     lodging = lodging[~lodging['hotel_id'].isin(excluded_hotels_2)]
 
+    '''
     # 최신 lat, lng 업데이트 2024_04_22 버젼 
     lodging3 = pd.read_csv('C:/Users/user/Work/hero_master/lodging/updated_cor_hotel.csv', index_col=0)
     lodging = lodging.drop(['lat','lng'], axis=1)
     lodging = pd.merge(lodging,lodging3, how='left', on='hotel_id')
-    
+    '''
     return lodging
