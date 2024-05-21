@@ -12,9 +12,7 @@ async def db_push_DataSet(DataSetNM,DataSet):
     
     model = getattr(prisma,DataSetNM)
     
-    created = await model.create_many(
-            DataSet
-        )
+    created = await model.create_many( DataSet )
         
     return {'message': f'DataBase Push success from {APP_NAME}'}
 
@@ -42,3 +40,10 @@ async def db_select_DataSet(query):
         })
         
     return data
+
+
+def db_push_price_data(dataset):
+    
+    created = prisma.HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO.create_many(dataset)
+    
+    return f'Success MySQL Price Data Push'
