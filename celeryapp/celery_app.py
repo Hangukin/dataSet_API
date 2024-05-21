@@ -11,7 +11,7 @@ from celery.schedules import crontab
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
-celery_app = Celery('worker', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND, broker_connection_retry_on_startup = True, include=['tasks'])
+celery_app = Celery('app', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND, broker_connection_retry_on_startup = True, include=['tasks'])
 celery_app.config_from_object('src.utils.celeryconfig')
 
 celery_app.conf.update(
@@ -25,7 +25,7 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'tasks.test',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=30),
         'args':()
     }
 }
