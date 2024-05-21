@@ -30,12 +30,35 @@ def load_hotel_data():
     # SQL 쿼리 실행
     sql = "SELECT id as hotel_id, name as hotel_name, road_addr, addr, lat, lng, link FROM hotel"
     hotel = pd.read_sql(sql, conn)
+    hotel['road_addr'] = hotel['road_addr'].str.lstrip()
+    hotel['addr'] = hotel['addr'].str.lstrip()
+    # 연결 종료
+    conn.close()
+    
+    hotel_cpy = preprocess_hotel_data(hotel)
+    
+    return hotel_cpy
+
+def load_room_data():
+    # 데이터베이스 연결 정보
+    host = 'datamenity-v2-production.cluster-cekwmwtvw0qx.ap-northeast-2.rds.amazonaws.com'
+    port = 3306
+    db = 'datamenity'
+    user = 'reader'
+    password = 'wF1sd&fd*d2sQ2l_2f25j31=d'
+
+    # 데이터베이스 연결
+    conn = pymysql.connect(host=host, port=port, user=user, password=password, db=db, charset='utf8')
+
+    # SQL 쿼리 실행
+    sql = "SELECT hotel.name as hotel_name, room.hotel_id, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
+    
+    room = pd.read_sql(sql, conn)
 
     # 연결 종료
     conn.close()
 
-    return hotel
-
+    return room
 
 def preprocess_hotel_data(hotel):
     # hotel 데이터프레임 복사
@@ -74,10 +97,10 @@ def preprocess_hotel_data(hotel):
     )
     
     # regino_sigugun 생성
-    lodging2['regino_sigugun'] = lodging2 ['road_addr'].str.split(' ').str[1]
-
+    lodging2['gugun_nm'] = lodging2 ['addr'].str.split(' ').str[1]
+    lodging2['emd_nm'] = lodging2 ['addr'].str.split(' ').str[2]
     # 필요한 컬럼만 선택
-    lodging2 = lodging2[['hotel_name', 'road_addr', 'addr', 'hotel_id','regino_sigugun', 'region', 'lat', 'lng']]
+    lodging2 = lodging2[['hotel_id','hotel_name', 'road_addr', 'addr','gugun_nm','emd_nm', 'region', 'lat', 'lng']]
 
     # 추가 데이터 로드
     lodging = pd.read_csv('C:/Users/user/Work/hero_master/lodging/호텔테이블최신_0811_23_3.csv')
@@ -118,23 +141,7 @@ def preprocess_hotel_data(hotel):
 
     # 최신 lat, lng 업데이트 2024_04_22 버젼 
     lodging3 = pd.read_csv('C:/Users/user/Work/hero_master/lodging/updated_cor_hotel.csv', index_col=0)
-    lodging=lodging.drop(['lat','lng'], axis=1)
-    lodging=pd.merge(lodging,lodging3, how='left', on='hotel_id')
-
+    lodging = lodging.drop(['lat','lng'], axis=1)
+    lodging = pd.merge(lodging,lodging3, how='left', on='hotel_id')
     
-
     return lodging
-
-
-def final_hotel_data_processor():
-    # 데이터 로드
-    hotel_data = load_hotel_data()
-
-    # 데이터 전처리
-    preprocessed_data = preprocess_hotel_data(hotel_data)
-    
-
-    return preprocessed_data
-
-# %%
-#
