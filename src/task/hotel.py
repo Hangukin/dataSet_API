@@ -1,6 +1,12 @@
 #!/usr/bin/env python
+import os
 # coding: utf-8
 # 필요라이브러리 로딩
+import warnings
+warnings.filterwarnings('ignore')
+pd.options.display.float_format = '{:.0f}'.format
+pd.set_option('display.max_rows', 200)
+
 import pymysql
 import pandas as pd
 import pandas
@@ -9,55 +15,27 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import re
 #plt.rcParams['font.family'] = 'Malgun Gothic'
-import warnings
-warnings.filterwarnings('ignore')
-pd.options.display.float_format = '{:.0f}'.format
-pd.set_option('display.max_rows', 200)
 
-
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
+from dotenv import load_dotenv
 
 def load_hotel_data():
-    # 데이터베이스 연결 정보
-    host = 'datamenity-v2-production.cluster-cekwmwtvw0qx.ap-northeast-2.rds.amazonaws.com'
-    port = 3306
-    db = 'datamenity'
-    user = 'reader'
-    password = 'wF1sd&fd*d2sQ2l_2f25j31=d'
-
-    # 데이터베이스 연결
-    conn = pymysql.connect(host=host, port=port, user=user, password=password, db=db, charset='utf8')
-
+    
     # SQL 쿼리 실행
     sql = "SELECT id as hotel_id, name as hotel_name, road_addr, addr, lat, lng, link FROM hotel"
-    hotel = pd.read_sql(sql, conn)
+    hotel = AWS_DATABASE_CONN(sql)
     hotel['road_addr'] = hotel['road_addr'].str.lstrip()
     hotel['addr'] = hotel['addr'].str.lstrip()
-    # 연결 종료
-    conn.close()
-    
     hotel_cpy = preprocess_hotel_data(hotel)
     
     return hotel_cpy
 
 def load_room_data():
-    # 데이터베이스 연결 정보
-    host = 'datamenity-v2-production.cluster-cekwmwtvw0qx.ap-northeast-2.rds.amazonaws.com'
-    port = 3306
-    db = 'datamenity'
-    user = 'reader'
-    password = 'wF1sd&fd*d2sQ2l_2f25j31=d'
-
-    # 데이터베이스 연결
-    conn = pymysql.connect(host=host, port=port, user=user, password=password, db=db, charset='utf8')
 
     # SQL 쿼리 실행
     sql = "SELECT hotel.name as hotel_name, room.hotel_id, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
     
-    room = pd.read_sql(sql, conn)
-
-    # 연결 종료
-    conn.close()
-
+    room = AWS_DATABASE_CONN(sql)
     return room
 
 def preprocess_hotel_data(hotel):

@@ -1,4 +1,4 @@
-
+import os
 #from celery.utils.log import get_task_logger
 from celeryapp.celery_app import celery_app
 from celery.schedules import crontab
@@ -9,9 +9,11 @@ import numpy as np
 from src.prisma import prisma
 from hotel import load_room_data, load_hotel_data
 from src.db.dataDB import db_push_price_data
-
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
 from datetime import datetime, timedelta
 import pytz
+
+from dotenv import load_dotenv
 
 @celery_app.task(bind=True)
 def preprocessing_price(self):
@@ -46,42 +48,23 @@ def preprocessing_price(self):
 
 ## AWS 가격 데이터 불러오기 
 def aws_price_select(booked_date):
-    Host = 'datamenity-v2-production.cluster-cekwmwtvw0qx.ap-northeast-2.rds.amazonaws.com'
-    Port = int(3306)
-    DB = 'datamenity'
-    ID = 'reader'
-    Password = 'wF1sd&fd*d2sQ2l_2f25j31=d'
-
-    conn = pymysql.connect(host=Host,port=Port,user=ID, password=Password, db=DB, charset='utf8')
-    cur = conn.cursor()
-
+    
     sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
            WHERE booking_date = {booked_date}"
            
-    price = pd.read_sql(sql,conn)
+    price = AWS_DATABASE_CONN(sql)
     
-    conn.close()
     return price
 
 ## 로컬 DB 가격데이터 불러오기 
 def local_price_select(booked_date):
-    Host = '211.118.245.195'
-    Port = int(3306)
-    DB = 'datamenity'
-    ID = 'heroworks'
-    Password = 'gldjfh!@34'
-
-    conn = pymysql.connect(host=Host,port=Port,user=ID, password=Password, db=DB, charset='utf8')
-    cur = conn.cursor()
-
+    
     sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
            WHERE booking_date = {booked_date}"
            
-    price = pd.read_sql(sql,conn)
-    
-    conn.close()
+    price = LOCAL_DATABASE_CONN(sql)
     
     return price
 
