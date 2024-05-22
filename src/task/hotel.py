@@ -36,6 +36,7 @@ def load_room_data():
     sql = "SELECT hotel.name as hotel_name, room.hotel_id, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
     
     room = AWS_DATABASE_CONN(sql)
+    
     return room
 
 def preprocess_hotel_data(hotel):
@@ -81,7 +82,7 @@ def preprocess_hotel_data(hotel):
     lodging2 = lodging2[['hotel_id','hotel_name', 'road_addr', 'addr','gugun_nm','emd_nm', 'region', 'lat', 'lng']]
 
     # 추가 데이터 로드
-    lodging = pd.read_csv('/dataset_api/DataFile/202405_호텔목록_위경도최신화.csv')
+    lodging = pd.read_csv('/dataset_api/app/DataFile/202405_호텔목록_위경도최신화.csv')
     lodging = lodging.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     lodging = lodging[['hotel_id', 'hotel_grade', '객실수', '호텔규모', '업태']]
 
