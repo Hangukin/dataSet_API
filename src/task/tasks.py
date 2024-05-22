@@ -1,5 +1,6 @@
+
 #from celery.utils.log import get_task_logger
-from src.celeryapp.celery_app import celery_app
+from celeryapp.celery_app import celery_app
 from celery.schedules import crontab
 import pymysql
 import pandas as pd
@@ -137,3 +138,4 @@ def price_process_file(price, room, hotel):
     df['avg_price'] = df['avg_price'].round(3).astype(float)
     
     return df
+

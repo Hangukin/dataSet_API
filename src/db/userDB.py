@@ -9,7 +9,7 @@ from src.utils.config import APP_NAME, APP_SECRET_STRING
 
 async def db_push_Users(user_id, password ,name, access_token, refresh_token):
 
-    created = await prisma.users.create(
+    created = await prisma.api_users.create(
         {
             'user_id':user_id,
             'password':password,
@@ -33,7 +33,7 @@ async def db_update_Users(claims, exist):
 
     new_refresh_token = jwt.encode(claims, APP_SECRET_STRING, algorithm="HS256") 
     
-    users = await prisma.users.update(where={
+    users = await prisma.api_users.update(where={
         "user_id" : exist.user_id
     },
       data={
@@ -49,7 +49,7 @@ async def db_update_Users(claims, exist):
     
 # 로그인 후 접근 토큰 DB 추가
 async def db_find_token(exist):
-    result = await prisma.users.find_unique(
+    result = await prisma.api_users.find_unique(
         where = {
             'user_id' : exist.user_id
         }

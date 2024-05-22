@@ -41,7 +41,7 @@ async def signup(user: SignUp):
     '''
     url = '로컬 http://127.0.0.1:8000/api/auth/signup'
     '''
-    exist = await prisma.users.find_unique(
+    exist = await prisma.api_users.find_unique(
         where={
             "user_id": user.user_id
         }
@@ -68,7 +68,7 @@ async def signup(user: SignUp):
 )
 async def find_token(user: SignIn):
     # Prisma 사용하여 DB 사용자 정보를 가져오기
-    exist = await prisma.users.find_unique(where={"user_id": user.user_id})
+    exist = await prisma.api_users.find_unique(where={"user_id": user.user_id})
     print(exist)
     if not exist:
         raise HTTPException(status_code=404, detail="User not exists")
@@ -110,7 +110,7 @@ async def test(Refresh_token: RefreshToken):
 )
 # 리프레쉬 토큰 활용하여 새 액세스 토큰 생성
 async def refresh(Refresh_token: RefreshToken):
-    exist = await prisma.users.find_unique(where={ 'refresh_token': Refresh_token.token} )
+    exist = await prisma.api_users.find_unique(where={ 'refresh_token': Refresh_token.token} )
     
     if not exist:
         raise HTTPException(
@@ -150,7 +150,7 @@ async def verify_access_token(
             detail="Invalid token"
         )
 
-    exist = await prisma.users.find_unique(
+    exist = await prisma.api_users.find_unique(
         where={
             'user_id': claims['user_id']
         }
