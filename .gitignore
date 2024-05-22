@@ -31,6 +31,8 @@ Dockerfile
 bin
 lib
 lib64
-celerybeat-schedule.*
+celerybeat-schedule
 package-lock.json
 package.json
+datetime_test.py
+password_hash.py
