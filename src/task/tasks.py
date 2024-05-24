@@ -17,9 +17,10 @@ from dotenv import load_dotenv
 
 @celery_app.task(bind=True)
 def preprocessing_price(self):
+    
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=1)
-    
+    '''
     hotel_data = load_hotel_data()
     room_data = load_room_data()
     
@@ -43,7 +44,8 @@ def preprocessing_price(self):
     result_dict = merged_price_df.to_dict(orient='records')
     
     result_message = db_push_price_data(result_dict)
-    
+    '''
+    result_message = '테스트입니다.'
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
 ## AWS 가격 데이터 불러오기 
