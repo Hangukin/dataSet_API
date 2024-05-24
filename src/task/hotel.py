@@ -3,12 +3,13 @@ import os
 # coding: utf-8
 # 필요라이브러리 로딩
 import warnings
+import pymysql
+import pandas as pd
+
 warnings.filterwarnings('ignore')
 pd.options.display.float_format = '{:.0f}'.format
 pd.set_option('display.max_rows', 200)
 
-import pymysql
-import pandas as pd
 import pandas
 import numpy as np
 #import seaborn as sns  # 시각화 라이브러리, matplotlib보다 단순함
