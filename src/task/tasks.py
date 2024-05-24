@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 from src.prisma import prisma
-from hotel import load_room_data, load_hotel_data
+from src.task.hotel import load_room_data, load_hotel_data
 from src.db.dataDB import db_push_price_data
 from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
 from datetime import datetime, timedelta
