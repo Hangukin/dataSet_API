@@ -10,6 +10,7 @@ datasource db {
   url      = "mysql://heroworks:gldjfh!@34@211.118.245.195:53306/datamenity"
 }
 
+
 // 사용자 테이블
 model api_users {
   id            Int     @id @default(autoincrement())
