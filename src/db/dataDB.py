@@ -38,7 +38,16 @@ async def db_select_DataSet(query):
         data = await model.find_many(where = {
             'LDGMNT_YM' : query.ldgmnt_ym
         })
-        
+    if query.ldgmnt_de != None:
+        data = await model.find_many(where = {
+            'LDGMNT_DE' : query.ldgmnt_de
+        })
+    if query.base_year != None or query.base_mt != None or query.base_day != None:
+        data = await model.find_many(where = {
+            'BASE_YEAR' : query.base_year,
+            'BASE_MT' : query.base_mt,
+            'BASE_DAY' : query.base_day
+        })
     return data
 
 

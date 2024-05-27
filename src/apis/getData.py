@@ -22,10 +22,14 @@ from src.utils.auth import generate_access_token, generate_refresh_token, refres
 router = APIRouter()
 
 class get_data(BaseModel):
-    data_nm : str
-    data_base_de : t.Optional[str] = None
-    base_ym : t.Optional[str] = None
-    ldgmnt_ym : t.Optional[str] = None
+    data_nm : str  
+    data_base_de : t.Optional[str] = None # 데이터 수집 기준 -> 기간없는 데이터 
+    base_ym : t.Optional[str] = None # 기준년월
+    ldgmnt_ym : t.Optional[str] = None # 숙박년월 -> 리뷰 데이터 
+    ldgmnt_de : t.Optional[str] = None #숙박일자 -> 숙박 일일 최고 평균 최저 가격
+    base_year : t.Optional[str] = None
+    base_mt : t.Optional[str] = None
+    base_day : t.Optional[str] = None
     
 @router.get(
     "/select-db",
