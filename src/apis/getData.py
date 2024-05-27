@@ -36,7 +36,7 @@ async def selectDB (
     payload : dict = Depends(verify_access_token),
     query: get_data = Depends(get_data)
 ):
-    exist = await prisma.users.find_unique(
+    exist = await prisma.api_users.find_unique(
         where={
             "user_id": payload['user_id']
         }

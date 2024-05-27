@@ -32,7 +32,7 @@ async def PostData(
 ):
     print(payload)
     # 유저 확인
-    users = await prisma.users.find_unique(
+    users = await prisma.api_users.find_unique(
         where={
             "user_id": payload['user_id']
         }

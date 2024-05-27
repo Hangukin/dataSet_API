@@ -161,7 +161,7 @@ async def verify_access_token(
 
 
 async def get_admin(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
-    exist = await prisma.users.find_unique(where={"user_id":credentials.username})
+    exist = await prisma.api_users.find_unique(where={"user_id":credentials.username})
     if not exist:
         raise HTTPException(status_code=401, detail="유효하지 않은 토큰입니다.")
     
