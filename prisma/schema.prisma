@@ -1,0 +1,711 @@
+generator client {
+  provider                    = "prisma-client-py"
+  enable_experimental_decimal = "True"
+  recursive_type_depth        = "2"
+  interface                   = "asyncio"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://heroworks:gldjfh!@34@211.118.245.195:53306/datamenity"
+}
+
+model HW_AREA_LDGS_KWRD_LIST {
+  id            Int     @id @default(autoincrement())
+  AREA_NM       String  @db.VarChar(200)
+  EXTRC_KWRD_CN String  @db.VarChar(4000)
+  KWRD_FQ_CO    Decimal @db.Decimal(28, 5)
+  DATA_BASE_DE  String  @db.VarChar(8)
+  DATA_END_DE   String  @db.VarChar(8)
+}
+
+model HW_CFR_SMR_LDGS_INFO {
+  id                                    Int     @id @default(autoincrement())
+  LDGS_ID                               Int
+  LDGS_NM                               String  @db.VarChar(200)
+  LDGS_ADDR                             String  @db.VarChar(200)
+  CTY_NM                                String  @db.VarChar(200)
+  GUGUN_NM                              String  @db.VarChar(200)
+  EMD_NM                                String  @db.VarChar(200)
+  LDGS_LA                               String  @db.VarChar(200)
+  LDGS_LO                               String  @db.VarChar(200)
+  AVRG_PRC                              Decimal @db.Decimal(28, 5)
+  CFR_LDGS_LIST_CN                      String  @db.VarChar(2000)
+  CFR_LDGS_CO                           Decimal @db.Decimal(28, 5)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN  String  @db.VarChar(3000)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC Decimal @db.Decimal(28, 5)
+  CFR_LDGS_MIDDL_SMLT_PRC_LDGS_CO       Decimal @db.Decimal(28, 5)
+  DATA_BASE_DE                          String  @db.VarChar(8)
+  DATA_END_DE                           String  @db.VarChar(8)
+}
+
+model HW_LDGMNT_RATE_STAY_MNT_SPND_PRICE_INFO {
+  id                         Int     @id @default(autoincrement())
+  BASE_YM                    String  @db.VarChar(6)
+  CTY_NM                     String  @db.VarChar(200)
+  GUGUN_NM                   String  @db.VarChar(200)
+  GUGUN_VISITR_CO            Decimal @db.Decimal(28, 5)
+  GUGUN_LDGMNT_VISITR_CO     Decimal @db.Decimal(28, 5)
+  GUGUN_LDGMNT_UTILIIZA_RATE Decimal @db.Decimal(28, 5)
+  GUGUN_STAY_MNT_VALUE       Decimal @db.Decimal(30, 0)
+  GUGUN_TURSM_SPND_PRICE     Decimal @db.Decimal(28, 5)
+  GUGUN_LDGMNT_SPND_PRICE    Decimal @db.Decimal(28, 5)
+  LDGS_MIN_PRC               Decimal @db.Decimal(28, 5)
+  LDGS_CENTR_PRC             Decimal @db.Decimal(28, 5)
+  LDGS_AVRG_PRC              Decimal @db.Decimal(28, 5)
+}
+
+model HW_LDGS_CFR_FCLTY_INFO {
+  id             Int     @id @default(autoincrement())
+  LDGS_ID        Int
+  LDGS_NM        String  @db.VarChar(200)
+  LDGS_ADDR      String  @db.VarChar(200)
+  CTY_NM         String  @db.VarChar(200)
+  GUGUN_NM       String  @db.VarChar(200)
+  EMD_NM         String  @db.VarChar(200)
+  FCLTY_NM       String  @db.VarChar(200)
+  FCLTY_ADDR     String  @db.VarChar(200)
+  FCLTY_LA       String  @db.VarChar(200)
+  FCLTY_LO       String  @db.VarChar(200)
+  CL_CN          String  @db.VarChar(200)
+  SCCNT_SM_VALUE Decimal @db.Decimal(30, 0)
+  DATA_BASE_DE   String  @db.VarChar(8)
+  DATA_END_DE    String  @db.VarChar(8)
+}
+
+model HW_LDGS_CFR_RSTRNT_INFO {
+  id             Int     @id @default(autoincrement())
+  LDGS_ID        Int
+  LDGS_NM        String  @db.VarChar(200)
+  LDGS_ADDR      String  @db.VarChar(200)
+  CTY_NM         String  @db.VarChar(200)
+  GUGUN_NM       String  @db.VarChar(200)
+  EMD_NM         String  @db.VarChar(200)
+  RSTRNT_NM      String  @db.VarChar(200)
+  RSTRNT_ADDR    String  @db.VarChar(200)
+  RSTRNT_LA      String  @db.VarChar(200)
+  RSTRNT_LO      String  @db.VarChar(200)
+  CL_CN          String  @db.VarChar(200)
+  SCCNT_SM_VALUE Decimal @db.Decimal(30, 0)
+  DATA_BASE_DE   String  @db.VarChar(8)
+  DATA_END_DE    String  @db.VarChar(8)
+}
+
+model HW_LDGS_CSTMR_USE_INFO {
+  id                Int    @id @default(autoincrement())
+  LDGS_ID           Int
+  LDGS_NM           String @db.VarChar(200)
+  CTPRVN_NM         String @db.VarChar(200)
+  GUGUN_NM          String @db.VarChar(200)
+  EMD_NM            String @db.VarChar(200)
+  LDGS_ADDR         String @db.VarChar(200)
+  GSRM_NM           String @db.VarChar(200)
+  LDGMNT_YM         String @db.VarChar(6)
+  INFLOW_COUNTRY_NM String @db.VarChar(200)
+  LDGMNT_DAYCNT_CN  String @db.VarChar(500)
+  LDGMNT_CSTMR_TY   String @db.VarChar(500)
+  BRFT_AT           String @db.VarChar(1)
+}
+
+model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
+  id        Int     @id @default(autoincrement())
+  LDGS_ID   Int
+  LDGS_NM   String  @db.VarChar(200)
+  OTA_NM    String  @db.VarChar(200)
+  CTPRVN_NM String  @db.VarChar(200)
+  GUGUN_NM  String  @db.VarChar(200)
+  EMD_NM    String  @db.VarChar(200)
+  LDGS_ADDR String  @db.VarChar(500)
+  EXTRC_DE  String  @db.VarChar(8)
+  LDGMNT_DE String  @db.VarChar(8)
+  WKDAY_NM  String  @db.VarChar(200)
+  MIN_PRC   Decimal @db.Decimal(28, 5)
+  MAX_PRC   Decimal @db.Decimal(28, 5)
+  AVRG_PRC  Decimal @db.Decimal(28, 5)
+}
+
+model HW_LDGS_FCLTY_INFO {
+  id                   Int     @id @default(autoincrement())
+  LDGS_ID              Int
+  LDGS_NM              String  @db.VarChar(200)
+  LDGS_ADDR            String  @db.VarChar(200)
+  CTPRVN_NM            String  @db.VarChar(200)
+  GUGUN_NM             String  @db.VarChar(200)
+  EMD_NM               String  @db.VarChar(200)
+  CFR_LDGS_LIST_CN     String  @db.VarChar(1000)
+  ONE_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
+  TWO_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
+  GSRM_CO              Decimal @db.Decimal(38, 0)
+  PRKPLCE_EXST_AT      String  @db.VarChar(1)
+  RSTRNT_EXST_AT       String  @db.VarChar(1)
+  BAR_AT               String  @db.VarChar(1)
+  CAFE_HOLD_AT         String  @db.VarChar(1)
+  FITNES_CNTER_AT      String  @db.VarChar(1)
+  OUTDOOR_POOL_AT      String  @db.VarChar(1)
+  SPA_AT               String  @db.VarChar(1)
+  SAUNA_AT             String  @db.VarChar(1)
+  BNQTHL_AT            String  @db.VarChar(1)
+  BSINES_CNTER_AT      String  @db.VarChar(1)
+  BEACH_AT             String  @db.VarChar(1)
+  DATA_BASE_DE         String  @db.VarChar(8)
+  DATA_END_DE          String  @db.VarChar(8)
+}
+
+model HW_LDGS_OCCU_RT_INFO {
+  id                       Int     @id @default(autoincrement())
+  LDGS_ID                  Int
+  LDGS_NM                  String  @db.VarChar(200)
+  CTPRVN_NM                String  @db.VarChar(200)
+  GUGUN_NM                 String  @db.VarChar(200)
+  EMD_NM                   String  @db.VarChar(200)
+  LDGS_ADDR                String  @db.VarChar(500)
+  BASE_YEAR                String  @db.VarChar(4)
+  BASE_MT                  String  @db.VarChar(2)
+  TOT_GSRM_GOODS_AVRG_PRC  Decimal @db.Decimal(28, 5)
+  TOT_REGIST_GSRM_GOODS_CO Decimal @db.Decimal(28, 5)
+  TOT_CLOS_GSRM_GOODS_CO   Decimal @db.Decimal(28, 5)
+  TOT_GSRM_GOODS_OCCU_RT   Decimal @db.Decimal(28, 5)
+}
+
+model HW_LDGS_OTA_PROMTN_INFO {
+  id                      Int    @id @default(autoincrement())
+  LDGS_ID                 Int
+  LDGS_NM                 String @db.VarChar(200)
+  BRFT_PROMTN_AT          String @db.VarChar(1)
+  PKG_PROMTN_AT           String @db.VarChar(1)
+  OTT_PROMTN_AT           String @db.VarChar(1)
+  SPECL_PRC_PROMTN_AT     String @db.VarChar(1)
+  EARLY_PROMTN_AT         String @db.VarChar(1)
+  LATE_PROMTN_AT          String @db.VarChar(1)
+  PLY_PROMTN_AT           String @db.VarChar(1)
+  FOOD_PROMTN_AT          String @db.VarChar(1)
+  LDGMNT_DAYCNT_PROMTN_AT String @db.VarChar(1)
+  UPG_PROMTN_AT           String @db.VarChar(1)
+  ADTION_FCLTY_PROMTN_AT  String @db.VarChar(1)
+  VIEW_PROMTN_AT          String @db.VarChar(1)
+  DATA_BASE_DE            String @db.VarChar(8)
+  DATA_END_DE             String @db.VarChar(8)
+}
+
+model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
+  id               Int     @id @default(autoincrement())
+  LDGS_ID          Int
+  LDGS_NM          String  @db.VarChar(200)
+  CTPRVN_NM        String  @db.VarChar(200)
+  GUGUN_NM         String  @db.VarChar(200)
+  EMD_NM           String  @db.VarChar(200)
+  OTA_NM           String  @db.VarChar(200)
+  BASE_YEAR        String  @db.VarChar(4)
+  BASE_MT          String  @db.VarChar(2)
+  BASE_DAY         String  @db.VarChar(2)
+  AVRG_SCORE_VALUE Decimal @db.Decimal(28, 5)
+  REVIEW_REGIST_CO Decimal @db.Decimal(28, 5)
+}
+
+model HW_LDGS_PARKING_INFO {
+  id             Int    @id @default(autoincrement())
+  LDGS_ID        Int
+  LDGS_NM        String @db.VarChar(200)
+  CTPRVN_NM      String @db.VarChar(200)
+  GUGUN_NM       String @db.VarChar(200)
+  EMD_NM         String @db.VarChar(200)
+  LDGS_ADDR      String @db.VarChar(500)
+  PARKNG_INFO_CN String @db.VarChar(500)
+  DATA_BASE_DE   String @db.VarChar(8)
+  DATA_END_DE    String @db.VarChar(8)
+}
+
+model HW_LDGS_PET_INFO {
+  id           Int    @id @default(autoincrement())
+  LDGS_ID      Int
+  LDGS_NM      String @db.VarChar(200)
+  CTPRVN_NM    String @db.VarChar(200)
+  GUGUN_NM     String @db.VarChar(200)
+  EMD_NM       String @db.VarChar(200)
+  LDGS_ADDR    String @db.VarChar(500)
+  PET_INFO_CN  String @db.VarChar(500)
+  DATA_BASE_DE String @db.VarChar(8)
+  DATA_END_DE  String @db.VarChar(8)
+}
+
+model HW_LDGS_REVIEW_STANL_RESULT {
+  id                 Int    @id @default(autoincrement())
+  LDGS_ID            Int
+  LDGS_NM            String @db.VarChar(200)
+  AFRM_KWRD_CN       String @db.VarChar(1000)
+  AFRM_WGHTVAL_SCORE String @db.VarChar(1000)
+  NEGA_KWRD_CN       String @db.VarChar(1000)
+  NEGA_WGHTVAL_SCORE String @db.VarChar(1000)
+  DATA_BASE_DE       String @db.VarChar(8)
+  DATA_END_DE        String @db.VarChar(8)
+}
+
+model api_users {
+  id            Int     @id @default(autoincrement())
+  user_id       String? @unique
+  role          String
+  name          String
+  password      String  @db.VarChar(200)
+  access_token  String? @unique
+  refresh_token String? @unique
+  confirmed     Boolean @default(false)
+}
+
+model banner {
+  id                                          Int                    @id @default(autoincrement())
+  name                                        String                 @db.VarChar(32)
+  banner_type                                 Int
+  url                                         String                 @db.VarChar(256)
+  started_at                                  DateTime?              @db.DateTime(0)
+  ended_at                                    DateTime?              @db.DateTime(0)
+  created_at                                  DateTime               @db.DateTime(0)
+  background_color                            String                 @default("#ffffff") @db.VarChar(32)
+  link                                        String?                @db.VarChar(256)
+  banner_type_banner_banner_typeTobanner_type banner_type            @relation("banner_banner_typeTobanner_type", fields: [banner_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "banner_ibfk_1")
+  usergroup_has_banner                        usergroup_has_banner[]
+
+  @@index([banner_type], map: "banner_type")
+}
+
+model banner_type {
+  id                                     Int      @id @default(autoincrement())
+  name                                   String   @db.VarChar(32)
+  banner_banner_banner_typeTobanner_type banner[] @relation("banner_banner_typeTobanner_type")
+}
+
+model compare {
+  id              BigInt            @id @default(autoincrement())
+  owner           Int
+  name            String            @db.VarChar(64)
+  priority        Int?
+  created_at      DateTime          @db.DateTime(0)
+  user            user              @relation(fields: [owner], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "compare_ibfk_1")
+  compare_has_tag compare_has_tag[]
+
+  @@index([owner], map: "ix_compare_owner")
+}
+
+model compare_has_tag {
+  compare_id  BigInt
+  room_tag_id BigInt
+  compare     compare  @relation(fields: [compare_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "compare_has_tag_ibfk_1")
+  room_tag    room_tag @relation(fields: [room_tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "compare_has_tag_ibfk_2")
+
+  @@id([compare_id, room_tag_id])
+  @@index([room_tag_id], map: "room_tag_id")
+}
+
+model crawler_rule {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @db.VarChar(64)
+  range                  Int
+  time                   Int
+  hotel_has_crawler_rule hotel_has_crawler_rule[]
+  user_has_crawler_rule  user_has_crawler_rule[]
+}
+
+model environment {
+  key        String   @id @db.VarChar(32)
+  value      String   @db.Text
+  created_at DateTime @db.DateTime(0)
+}
+
+model hotel {
+  id                                                                Int                      @id @default(autoincrement())
+  name                                                              String                   @db.VarChar(128)
+  otas                                                              BigInt                   @default(0)
+  link                                                              String                   @db.Text
+  addr                                                              String                   @db.VarChar(128)
+  road_addr                                                         String                   @db.VarChar(128)
+  created_at                                                        DateTime                 @default(now()) @db.DateTime(0)
+  lat                                                               Float                    @default(0)
+  lng                                                               Float                    @default(0)
+  last_scanned_at                                                   DateTime                 @default(dbgenerated("'0000-00-00 00:00:00'")) @db.DateTime(0)
+  roomtype_setting                                                  String?                  @db.Text
+  hotel_has_competition_hotel_has_competition_hotel_idTohotel       hotel_has_competition[]  @relation("hotel_has_competition_hotel_idTohotel")
+  hotel_has_competition_hotel_has_competition_competition_idTohotel hotel_has_competition[]  @relation("hotel_has_competition_competition_idTohotel")
+  hotel_has_crawler_rule                                            hotel_has_crawler_rule[]
+  hotel_review                                                      hotel_review[]
+  hotel_review_meta                                                 hotel_review_meta[]
+  log_crawler                                                       log_crawler[]
+  room                                                              room[]
+  room_tag                                                          room_tag[]
+  user                                                              user[]
+  user_has_competition                                              user_has_competition[]
+}
+
+model hotel_has_competition {
+  hotel_id                                          Int
+  competition_id                                    Int
+  hotel_hotel_has_competition_hotel_idTohotel       hotel @relation("hotel_has_competition_hotel_idTohotel", fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_has_competition_ibfk_1")
+  hotel_hotel_has_competition_competition_idTohotel hotel @relation("hotel_has_competition_competition_idTohotel", fields: [competition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_has_competition_ibfk_2")
+
+  @@id([hotel_id, competition_id])
+  @@index([competition_id], map: "ix_hotel_has_competition_competition_id")
+}
+
+model hotel_has_crawler_rule {
+  hotel_id        Int
+  crawler_rule_id Int
+  hotel           hotel        @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_has_crawler_rule_ibfk_1")
+  crawler_rule    crawler_rule @relation(fields: [crawler_rule_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_has_crawler_rule_ibfk_2")
+
+  @@id([hotel_id, crawler_rule_id])
+  @@index([crawler_rule_id], map: "crawler_rule_id")
+}
+
+model hotel_review {
+  hotel_id   Int
+  ota_type   hotel_review_ota_type
+  review_id  String                @db.VarChar(32)
+  author     String                @db.VarChar(32)
+  content    String                @db.MediumText
+  score      Float                 @db.Float
+  reply      String                @db.MediumText
+  created_at DateTime              @db.DateTime(0)
+  hotel      hotel                 @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_review_ibfk_1")
+
+  @@id([hotel_id, ota_type, review_id])
+  @@index([created_at], map: "ix_hotel_review_created_at")
+}
+
+model hotel_review_meta {
+  hotel_id    Int
+  ota_type    hotel_review_meta_ota_type
+  score       Float                      @db.Float
+  count       Int
+  executed_at DateTime                   @db.DateTime(0)
+  hotel       hotel                      @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "hotel_review_meta_ibfk_1")
+
+  @@id([hotel_id, ota_type])
+}
+
+model log_crawler {
+  crawler_type String   @db.VarChar(16)
+  hour         Int
+  hotel_id     Int
+  ota          Int
+  rule         String   @db.Text
+  output       String   @db.Text
+  error        String   @db.Text
+  created_at   DateTime @db.DateTime(0)
+  hotel        hotel    @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "log_crawler_ibfk_1")
+
+  @@id([crawler_type, hour, hotel_id, ota])
+  @@index([hotel_id], map: "hotel_id")
+}
+
+model log_scheduler {
+  crawler_type String    @db.VarChar(16)
+  hour         Int
+  works_count  Int
+  error_count  Int
+  created_at   DateTime  @db.DateTime(0)
+  updated_at   DateTime? @db.DateTime(0)
+
+  @@id([crawler_type, hour])
+}
+
+model room {
+  id                BigInt              @id @default(autoincrement())
+  hotel_id          Int
+  ota_type          room_ota_type
+  name              String              @db.VarChar(512)
+  created_at        DateTime            @db.DateTime(0)
+  updated_at        DateTime            @db.DateTime(0)
+  hotel             hotel               @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_ibfk_1")
+  room_price        room_price[]
+  room_price1       room_price1[]
+  room_price2       room_price2[]
+  room_price3       room_price3[]
+  room_price4       room_price4[]
+  room_price5       room_price5[]
+  room_price6       room_price6[]
+  room_price7_9     room_price7_9[]
+  room_price_curr   room_price_curr[]
+  room_tag_has_room room_tag_has_room[]
+
+  @@unique([hotel_id, ota_type, name], map: "hotel_id")
+}
+
+model room_price {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price1 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price1_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price2 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price2_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price3 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price3_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price4 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price4_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price5 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price5_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price6 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price6_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price7_9 {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  scanned_date DateTime @db.DateTime(0)
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  created_at   DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price7_9_ibfk_1")
+
+  @@id([booking_date, room_id, scanned_date])
+  @@index([room_id], map: "room_id")
+}
+
+model room_price_curr {
+  booking_date DateTime @db.DateTime(0)
+  room_id      BigInt
+  rent_price   Int
+  stay_price   Int
+  rent_remain  Int
+  stay_remain  Int
+  last_date    DateTime @db.DateTime(0)
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_price_curr_ibfk_1")
+
+  @@id([booking_date, room_id])
+  @@index([room_id], map: "room_id")
+}
+
+model room_tag {
+  id                BigInt              @id @default(autoincrement())
+  hotel_id          Int
+  name              String              @db.VarChar(64)
+  priority          Int?
+  created_at        DateTime            @db.DateTime(0)
+  compare_has_tag   compare_has_tag[]
+  hotel             hotel               @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_tag_ibfk_1")
+  room_tag_has_room room_tag_has_room[]
+
+  @@unique([hotel_id, name], map: "hotel_id")
+}
+
+model room_tag_has_room {
+  room_tag_id BigInt
+  room_id     BigInt
+  created_at  DateTime @db.DateTime(0)
+  room_tag    room_tag @relation(fields: [room_tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_tag_has_room_ibfk_1")
+  room        room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_tag_has_room_ibfk_2")
+
+  @@id([room_tag_id, room_id])
+  @@index([room_id], map: "room_id")
+}
+
+model user {
+  id                                  Int                     @id @default(autoincrement())
+  user_id                             String                  @unique(map: "user_id") @db.VarChar(128)
+  user_pw                             String                  @db.VarChar(512)
+  name                                String                  @db.VarChar(512)
+  created_at                          DateTime                @db.DateTime(0)
+  last_logged_at                      DateTime?               @db.DateTime(0)
+  user_type                           Int?
+  manager_name                        String                  @default("") @db.VarChar(16)
+  manager_tel                         String                  @default("") @db.VarChar(16)
+  tel                                 String                  @default("") @db.VarChar(16)
+  address                             String                  @default("") @db.VarChar(32)
+  address2                            String                  @default("") @db.VarChar(32)
+  hotel_id                            Int?
+  otas                                BigInt                  @default(0)
+  compare                             compare[]
+  user_type_user_user_typeTouser_type user_type?              @relation("user_user_typeTouser_type", fields: [user_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
+  hotel                               hotel?                  @relation(fields: [hotel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_2")
+  user_has_competition                user_has_competition[]
+  user_has_crawler_rule               user_has_crawler_rule[]
+  user_to_usergroup                   user_to_usergroup[]
+
+  @@index([hotel_id], map: "hotel_id")
+  @@index([user_type], map: "user_type")
+}
+
+model user_has_competition {
+  user_id        Int
+  competition_id Int
+  priority       Int   @default(1)
+  user           user  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_has_competition_ibfk_1")
+  hotel          hotel @relation(fields: [competition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_has_competition_ibfk_2")
+
+  @@id([user_id, competition_id])
+  @@index([competition_id], map: "ix_user_has_competition_competition_id")
+}
+
+model user_has_crawler_rule {
+  user_id         Int
+  crawler_rule_id Int
+  user            user         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_has_crawler_rule_ibfk_1")
+  crawler_rule    crawler_rule @relation(fields: [crawler_rule_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_has_crawler_rule_ibfk_2")
+
+  @@id([user_id, crawler_rule_id])
+  @@index([crawler_rule_id], map: "crawler_rule_id")
+}
+
+model user_to_usergroup {
+  user_id      Int
+  usergroup_id Int
+  user         user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_to_usergroup_ibfk_1")
+  usergroup    usergroup @relation(fields: [usergroup_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_to_usergroup_ibfk_2")
+
+  @@id([user_id, usergroup_id])
+  @@index([usergroup_id], map: "usergroup_id")
+}
+
+model user_type {
+  id                             Int    @id @default(autoincrement())
+  name                           String @db.VarChar(32)
+  rule                           String @db.Text
+  user_user_user_typeTouser_type user[] @relation("user_user_typeTouser_type")
+}
+
+model usergroup {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @db.VarChar(32)
+  created_at           DateTime               @db.DateTime(0)
+  user_to_usergroup    user_to_usergroup[]
+  usergroup_has_banner usergroup_has_banner[]
+}
+
+model usergroup_has_banner {
+  usergroup_id Int
+  banner_id    Int
+  usergroup    usergroup @relation(fields: [usergroup_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usergroup_has_banner_ibfk_1")
+  banner       banner    @relation(fields: [banner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usergroup_has_banner_ibfk_2")
+
+  @@id([usergroup_id, banner_id])
+  @@index([banner_id], map: "banner_id")
+}
+
+enum hotel_review_ota_type {
+  GOODCHOICE
+  BOOKING
+  EXPEDIA
+  AGODA
+  INTERPARK
+  YANOLJA
+  DAILY
+  HOTELS
+  TRIP
+  WINGS
+  KENSINGTON
+}
+
+enum hotel_review_meta_ota_type {
+  GOODCHOICE
+  BOOKING
+  EXPEDIA
+  AGODA
+  INTERPARK
+  YANOLJA
+  DAILY
+  HOTELS
+  TRIP
+  WINGS
+  KENSINGTON
+}
+
+enum room_ota_type {
+  GOODCHOICE
+  BOOKING
+  EXPEDIA
+  AGODA
+  INTERPARK
+  YANOLJA
+  DAILY
+  HOTELS
+  TRIP
+  WINGS
+  KENSINGTON
+}
