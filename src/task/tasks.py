@@ -29,16 +29,16 @@ def preprocessing_price(self):
     
     preprocessed_price_df = price_process_file(price_data, room_data, hotel_data)
     
-    hotel_data_cpy = hotel_data[['hotel_id','hotel_name','region','gugun_nm','emd_nm','road_addr']]
+    hotel_data_cpy = hotel_data[['hotel_id','hotel_name','cty','gugun','emd','road_addr']]
     
     merged_price_df = pd.merge(preprocessed_price_df, hotel_data_cpy, how='inner', on='hotel_id')
     
-    merged_price_df = merged_price_df[['hotel_id','hotel_name','ota_type','region','gugun_nm','emd_nm','road_addr','scanned_date_date','booking_date','weekday',
+    merged_price_df = merged_price_df[['hotel_id','hotel_name','ota_type','cty','gugun','emd','road_addr','scanned_date_date','booking_date','weekday',
             'min_price','max_price','avg_price']]
     
     # 컬럼명 변경
-    merged_price_df = merged_price_df.rename(columns={'hotel_id':'LDGS_ID', 'hotel_name':'LDGS_NM', 'ota_type':'OTA_NM', 'region':'CTPRVN_NM', 'gugun_nm':'GUGUN_NM',
-                                                      'emd_nm':'EMD_NM', 'road_addr':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 'booking_date':'LDGMNT_DE',
+    merged_price_df = merged_price_df.rename(columns={'hotel_id':'LDGS_ID', 'hotel_name':'LDGS_NM', 'ota_type':'OTA_NM', 'cty':'CTPRVN_NM', 'gugun':'GUGUN_NM',
+                                                      'emd':'EMD_NM', 'road_addr':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 'booking_date':'LDGMNT_DE',
                                                       'weekday':'WKDAY_NM', 'min_price':'MIN_PRC', 'max_price':'MAX_PRC', 'avg_price':'AVRG_PRC'})
     
     result_dict = merged_price_df.to_dict(orient='records')
