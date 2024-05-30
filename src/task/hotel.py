@@ -87,7 +87,7 @@ def preprocess_hotel_data(hotel):
     hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr', 'region', 'lat', 'lng']]
 
     # 추가 데이터 로드
-    hotel_rec = pd.read_excel('./dataset_api/app/DataFile/20240529_호텔테이블_갱신.xlsx')
+    hotel_rec = pd.read_csv('./dataset_api/app/DataFile/20240529_호텔테이블_갱신.csv')
     #hotel_rec = hotel_rec.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     
     hotel_rec = hotel_rec[['hotel_id','cty','gugun','emd','결정 등급', '객실수', '호텔규모', '업태구분명']]
