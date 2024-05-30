@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import requests
 # coding: utf-8
 # 필요라이브러리 로딩
 import warnings
@@ -27,9 +28,9 @@ def load_hotel_data():
     hotel = AWS_DATABASE_CONN(sql)
     hotel['road_addr'] = hotel['road_addr'].str.lstrip()
     hotel['addr'] = hotel['addr'].str.lstrip()
-    hotel_cpy = preprocess_hotel_data(hotel)
+    preprocessed_hotel = preprocess_hotel_data(hotel)
     
-    return hotel_cpy
+    return preprocessed_hotel
 
 def load_room_data():
 
@@ -40,9 +41,10 @@ def load_room_data():
     
     return room
 
+
 def preprocess_hotel_data(hotel):
     # hotel 데이터프레임 복사
-    lodging2 = hotel.copy()
+    hotel_copy = hotel.copy()
 
     # 지역 매핑 딕셔너리
     region_mapping = {
@@ -70,32 +72,52 @@ def preprocess_hotel_data(hotel):
         }
 
     # 'region' 열을 생성하기 위한 매핑 적용
-    lodging2['region'] = np.select(
-        [lodging2['addr'].str.contains(region) for region in region_mapping.keys()],
+    hotel_copy['region'] = np.select(
+        [hotel_copy['addr'].str.contains(region) for region in region_mapping.keys()],
         [region_mapping[region] for region in region_mapping.keys()],
         default='해외'
     )
-    
     # regino_sigugun 생성
-    lodging2['gugun_nm'] = lodging2 ['addr'].str.split(' ').str[1]
-    lodging2['emd_nm'] = lodging2 ['addr'].str.split(' ').str[2]
+    '''
+    hotel_copy['gugun_nm'] = hotel_copy['addr'].str.split(' ').str[1]
+    hotel_copy['emd_nm'] = hotel_copy['addr'].str.split(' ').str[2]
+    '''
+    hotel_copy = hotel_copy[hotel_copy['region']!='해외'].reset_index(drop=True)
     # 필요한 컬럼만 선택
-    lodging2 = lodging2[['hotel_id','hotel_name', 'road_addr', 'addr','gugun_nm','emd_nm', 'region', 'lat', 'lng']]
+    hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr', 'region', 'lat', 'lng']]
 
     # 추가 데이터 로드
-    lodging = pd.read_csv('/dataset_api/app/DataFile/202405_호텔목록_위경도최신화.csv')
-    lodging = lodging.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
-    lodging = lodging[['hotel_id', 'hotel_grade', '객실수', '호텔규모', '업태']]
-
-    # lodging2와 병합
-    lodging = pd.merge(lodging2, lodging, how='left', on='hotel_id')
+    hotel_rec = pd.read_excel('./dataset_api/app/DataFile/20240529_호텔테이블_최신화.xlsx')
+    #hotel_rec = hotel_rec.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     
-    lodging['market'] = lodging['region'].apply(lambda x: '해외' if x == '해외' else '국내')
+    hotel_rec = hotel_rec[['hotel_id','cty','gugun','emd','결정 등급', '객실수', '호텔규모', '업태구분명']]
+    # hotel_copy와 병합
+    hotel_rec = pd.merge(hotel_copy, hotel_rec, how='left', on='hotel_id')
+    #데모 계정 제외 
+    excluded_hotels = [11539, 11540, 11541, 11542, 11543, 11544, 11545, 11546, 11547,1729]
+    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels)]
+    # 중복 계정 제외
+    excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
+    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_2)]
+    # A호텔 B호텔, 테스트 계정 제거
+    excluded_hotels_3 = [10187,1760,220,213,226,1548,11708,10519,10520,11455]
+    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_3)].reset_index(drop=True)
+    
+    # 시도, 구군, 읍면동 없는 호텔 구하기 
+    for idx in hotel_rec[hotel_rec['cty'].isnull()].index:
+        lat = hotel_rec['lat'][idx]
+        lng = hotel_rec['lng'][idx]
+        cty, gugun, emd = kakao_local_api(lat,lng)
+        hotel_rec.loc[idx,'cty'] = cty
+        hotel_rec.loc[idx,'gugun'] = gugun
+        hotel_rec.loc[idx,'emd'] = emd
+        
+    hotel_rec['market'] = hotel_rec['region'].apply(lambda x: '해외' if x == '해외' else '국내')
     
     # 결측치 처리
-    lodging['hotel_grade'].fillna(value='미등급', inplace=True)
-    lodging.fillna(value='미분류', inplace=True)
-
+    hotel_rec['결정 등급'].fillna(value='미등급', inplace=True)
+    hotel_rec.fillna(value='미분류', inplace=True)
+    '''
     # 호텔 이름 매핑
     mapping = {
         'D호텔': '울산호텔',
@@ -105,23 +127,56 @@ def preprocess_hotel_data(hotel):
         'B호텔': '머큐어앰배서더 울산_2',
         'A호텔': '하이호텔펜션'}
     
-    lodging['hotel_name'] = lodging['hotel_name'].map(mapping).fillna(lodging['hotel_name'])
-
+    hotel_rec['hotel_name'] = hotel_rec['hotel_name'].map(mapping).fillna(hotel_rec['hotel_name'])
+    '''
     # 호텔 이름 정제
-    lodging['hotel_name'] = lodging['hotel_name'].apply(lambda x: re.sub(r'[^a-zA-Z0-9가-힣]', '', str(x)))
+    hotel_rec['hotel_name'] = hotel_rec['hotel_name'].apply(lambda x: re.sub(r'[^a-zA-Z0-9가-힣]', '', str(x)))
     
-    #데모 계정 제외 
-    excluded_hotels = [11539, 11540, 11541, 11542, 11543, 11544, 11545, 11546, 11547]
-    
-    lodging = lodging[~lodging['hotel_id'].isin(excluded_hotels)]
-    # 중복 계정 제외
-    excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
-    lodging = lodging[~lodging['hotel_id'].isin(excluded_hotels_2)]
-
     '''
     # 최신 lat, lng 업데이트 2024_04_22 버젼 
     lodging3 = pd.read_csv('C:/Users/user/Work/hero_master/lodging/updated_cor_hotel.csv', index_col=0)
     lodging = lodging.drop(['lat','lng'], axis=1)
     lodging = pd.merge(lodging,lodging3, how='left', on='hotel_id')
     '''
-    return lodging
+    return hotel_rec
+
+def kakao_local_api(lat,lng):
+    if lat == 0 or lng == 0:
+        sido = '-'
+        gugun = '-'
+        emd = '-'
+        return sido,gugun,emd
+    url = 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?'
+    params = {'x':str(lng), 'y':str(lat)}
+    headers = {"Authorization": "KakaoAK 31609d2bc92fe401a666a0ba00c50ebe"}
+    places = requests.get(url, params=params, headers=headers).json()
+    address_nm = places['documents'][0]['address_name']
+    result = addr_split(address_nm)
+    return result
+
+def addr_split(addr):
+    prv = ['경상남도','경상북도','전라남도','전라북도','강원특별자치도','충청북도','충청남도','경기도']
+    emd_list = ['읍','면','동','로']
+    gugun_list = ['구','군']
+    adr_list = addr.split(' ')
+    sido = ''
+    gugun = ''
+    emd = ''
+    if adr_list[0] in prv:
+        sido = adr_list[0]
+        adr_list = adr_list[1:]
+    
+    if adr_list[0][-1] not in gugun_list:
+        sido = adr_list[0]
+        
+    for adr in adr_list:
+        if adr == '':
+            continue
+        if adr[-1] in emd_list:
+            emd = adr
+        elif adr[-1] in '가':
+            emd = adr[:-2]
+        elif adr[-1] in gugun_list:
+            gugun = adr
+    #print(sido,gugun,emd)
+    return sido, gugun, emd

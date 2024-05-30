@@ -18,7 +18,6 @@ async def db_push_DataSet(DataSetNM,DataSet):
 
 
 async def db_select_DataSet(query):
-    print('쿼리파라미터확인', query)
     if query.data_nm.isupper():
         query.data_nm = query.data_nm.lower()
     else:
@@ -48,6 +47,7 @@ async def db_select_DataSet(query):
             'BASE_MT' : query.base_mt,
             'BASE_DAY' : query.base_day
         })
+        
     return data
 
 
