@@ -51,8 +51,8 @@ async def db_select_DataSet(query):
     return data
 
 
-def db_push_price_data(dataset):
+async def db_push_price_data(dataset):
     
-    created = prisma.hw_ldgs_dail_max_avrg_min_prc_info.create_many(dataset)
+    created = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.create_many(dataset)
     
     return f'Success MySQL Price Data Push {created} records'
