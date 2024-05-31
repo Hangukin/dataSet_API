@@ -65,7 +65,7 @@ def local_price_select(booked_date):
     
     sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
-           WHERE booking_date = {booked_date}"
+           WHERE booking_date = '{booked_date}'"
            
     price = LOCAL_DATABASE_CONN(sql)
     
