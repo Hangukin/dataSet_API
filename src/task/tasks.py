@@ -29,9 +29,11 @@ def preprocessing_price(self):
     
     price_data = local_price_select(yesterday) # 로컬 DB 가격데이터 불러오기
     
+    print('데이터 총 길이:', len(price_data))
     
     preprocessed_price_df = price_process_file(price_data, room_data, hotel_data)
     
+    print('가공된 데이터 총 길이:', len(price_data))
     hotel_data_cpy = hotel_data[['hotel_id','hotel_name','cty','gugun','emd','road_addr']]
     
     merged_price_df = pd.merge(preprocessed_price_df, hotel_data_cpy, how='inner', on='hotel_id')
@@ -43,6 +45,8 @@ def preprocessing_price(self):
     merged_price_df = merged_price_df.rename(columns={'hotel_id':'LDGS_ID', 'hotel_name':'LDGS_NM', 'ota_type':'OTA_NM', 'cty':'CTPRVN_NM', 'gugun':'GUGUN_NM',
                                                       'emd':'EMD_NM', 'road_addr':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 'booking_date':'LDGMNT_DE',
                                                       'weekday':'WKDAY_NM', 'min_price':'MIN_PRC', 'max_price':'MAX_PRC', 'avg_price':'AVRG_PRC'})
+    
+    print('결합데이터 확인', len(merged_price_df))
     
     result_dict = merged_price_df.to_dict(orient='records')
     
