@@ -25,7 +25,7 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'src.task.tasks.preprocessing_price',
-        'schedule': crontab(hour=01,minute=5),
+        'schedule': crontab(hour=1,minute=6),
         'args':()
     }
 }
