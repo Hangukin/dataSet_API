@@ -46,7 +46,9 @@ def preprocessing_price(self):
                                                       'emd':'EMD_NM', 'road_addr':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 'booking_date':'LDGMNT_DE',
                                                       'weekday':'WKDAY_NM', 'min_price':'MIN_PRC', 'max_price':'MAX_PRC', 'avg_price':'AVRG_PRC'})
     
-    print('결합데이터 확인', len(merged_price_df))
+    print('결합데이터 확인 \n', merged_price_df)
+    
+    print('컬럼 확인 : ',merged_price_df.columns)
     
     result_dict = merged_price_df.to_dict(orient='records')
     
