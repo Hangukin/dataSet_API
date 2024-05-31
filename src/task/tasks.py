@@ -20,10 +20,10 @@ def preprocessing_price(self):
     
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=1)
-    '''
+    
     hotel_data = load_hotel_data()
     room_data = load_room_data()
-    '''
+    print(hotel_data)
     yesterday = yesterday.strftime("%Y-%m-%d")
     # price_data = aws_price_select(yesterday) # AWS 가격 데이터 불러오기 
     print('날짜 확인', yesterday)
