@@ -25,6 +25,8 @@ def preprocessing_price(self):
     yesterday = yesterday.strftime("%Y-%m-%d")
     # price_data = aws_price_select(yesterday) # AWS 가격 데이터 불러오기 
     print('날짜 확인', yesterday)
+    print(os.getcwd())
+    '''
     price_data = local_price_select(yesterday) # 로컬 DB 가격데이터 불러오기
     
     
@@ -125,3 +127,4 @@ def price_process_file(price, room, hotel):
     
     return df
 
+'''
