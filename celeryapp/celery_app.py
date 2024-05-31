@@ -21,11 +21,19 @@ celery_app.conf.update(
     timezone='Asia/Seoul',
     enable_utc=False
 )
-
+'''
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'src.task.tasks.preprocessing_price',
         'schedule': crontab(hour=11,minute=20),
+        'args':()
+    }
+}
+'''
+celery_app.conf.beat_schedule = {
+    'price_processing': {
+        'task': 'src.task.tasks.preprocessing_price',
+        'schedule': timedelta(minutes=20),
         'args':()
     }
 }
