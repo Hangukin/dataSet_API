@@ -1,10 +1,12 @@
 import os
+import requests
 #from celery.utils.log import get_task_logger
 from celeryapp.celery_app import celery_app
 from celery.schedules import crontab
-import pymysql
+
 import pandas as pd
 import numpy as np
+import json
 
 from src.prisma import prisma
 from src.task.hotel import load_room_data, load_hotel_data
@@ -51,10 +53,32 @@ def preprocessing_price(self):
     print('컬럼 확인 : ',merged_price_df.columns)
     
     result_dict = merged_price_df.to_dict(orient='records')
+    datanm = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     
-    result_message = asyncio.run(db_push_price_data(result_dict))
+    result_message = call_api(datanm, result_dict)
 
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
+
+def call_api(datanm,dataset):
+    url = 'https://api.heroworksapi.info/api/admin/pushdb'
+    data = {
+    'dataSetNM': datanm,
+    'dataSet': dataset
+    }
+    json_data = json.dumps(data)
+
+    headers = {
+    'accept' : 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer '+ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiaGVyb3dvcmtzIiwicGFzc3dvcmQiOiJnbGRqZmghQDM0IiwiZXhwIjoxNzE5MzcxMDczfQ.iy50jBXeCRQlPqG8VxDiwJOWOUQ4Pt2K9bcZVgVlO30'
+    }
+    
+    response = requests.post(url, headers=headers, data=json_data)
+    result = response.json()
+    
+    return result
+
+    
 
 ## AWS 가격 데이터 불러오기 
 def aws_price_select(booked_date):
