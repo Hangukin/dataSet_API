@@ -25,6 +25,7 @@ def preprocessing_price(self):
     
     # price_data = aws_price_select(yesterday) # AWS 가격 데이터 불러오기 
     print('날짜 확인', yesterday)
+    print('타입 확인',type(yesterday))
     price_data = local_price_select(yesterday) # 로컬 DB 가격데이터 불러오기
     
     result_message = f'가격데이터 수집 확인 행 수 : {len(price_data)}'
