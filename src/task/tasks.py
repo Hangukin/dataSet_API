@@ -22,7 +22,7 @@ def preprocessing_price(self):
     yesterday = now - timedelta(days=0)
     #hotel_data = load_hotel_data()
     #room_data = load_room_data()
-    
+    yesterday = yesterday.strftime("%Y-%m-%d")
     # price_data = aws_price_select(yesterday) # AWS 가격 데이터 불러오기 
     print('날짜 확인', yesterday)
     print('타입 확인',type(yesterday))
