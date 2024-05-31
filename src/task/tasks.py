@@ -20,7 +20,7 @@ def preprocessing_price(self):
     
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=0)
-    yeaterday = yeaterday.split(' ')[0]
+    yesterday = yesterday.split(' ')[0]
     #hotel_data = load_hotel_data()
     #room_data = load_room_data()
     
