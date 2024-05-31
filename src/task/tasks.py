@@ -55,8 +55,7 @@ def preprocessing_price(self):
     result_dict = merged_price_df.to_dict(orient='records')
     datanm = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     
-    result_message = call_api(datanm, result_dict)
-
+    result_message = json.dumps(call_api(datanm, result_dict))
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
 def call_api(datanm,dataset):
