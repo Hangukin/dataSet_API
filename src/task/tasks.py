@@ -12,11 +12,11 @@ from src.db.dataDB import db_push_price_data
 from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
 from datetime import datetime, timedelta
 import pytz
-
+import asyncio
 from dotenv import load_dotenv
 
 @celery_app.task(bind=True)
-async def preprocessing_price(self):
+def preprocessing_price(self):
     
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=1)
@@ -52,7 +52,7 @@ async def preprocessing_price(self):
     
     result_dict = merged_price_df.to_dict(orient='records')
     
-    result_message = await db_push_price_data(result_dict)
+    result_message = asyncio.run(db_push_price_data(result_dict))
 
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
