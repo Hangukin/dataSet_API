@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from src.utils.config import APP_NAME, APP_SECRET_STRING
 
 
+
 async def db_push_DataSet(DataSetNM,DataSet):
     if DataSetNM.isupper():
         DataSetNM = DataSetNM.lower()
@@ -53,6 +54,13 @@ async def db_select_DataSet(query):
 
 async def db_push_price_data(dataset):
     
-    created = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.create_many(dataset)
+    await prisma.connect()
+    
+    try:
+        created = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.create_many(dataset)
+        
+    finally:
+        
+        await prisma.disconnect()
     
     return f'Success MySQL Price Data Push {created} records'
