@@ -49,31 +49,48 @@ def preprocess_hotel_data(hotel):
     # 지역 매핑 딕셔너리
     region_mapping = {
             '서울': '서울',
+            '서울특별시':'서울',
             '부산': '부산',
+            '부산광역시':'부산',
             '경기': '경기',
+            '경기도':'경기',
             '인천': '인천',
+            '인천광역시':'인천',
             '제주': '제주',
+            '제주특별자치도':'제주',
             '울산': '울산',
+            '울산광역시':'울산',
             '경북': '경상',
+            '경상북도':'경상',
+            '경상남도': '경상',
             '경남': '경상',
             '대구': '대구',
+            '대구광역시':'대구',
             '경상': '경상',
             '전라': '전라',
             '전북': '전라',
+            '전라북도': '전라',
+            '전북특별자치도':'전라',
             '전남': '전라',
+            '전라남도':'전라',
             '충북': '충청',
+            '충청북도':'충북',
             '충남': '충청',
+            '충청남도':'충청',
             '광주': '광주',
             '세종': '세종',
+            '세종시':'세종',
             '대전': '대전',
+            '대전광역시':'대전',
             '충청': '충청',
             '강원': '강원',
+            '강원특별자치도':'강원',
             '해외': '해외'
         }
 
     # 'region' 열을 생성하기 위한 매핑 적용
     hotel_copy['region'] = np.select(
-        [hotel_copy['addr'].str.contains(region) for region in region_mapping.keys()],
+        [hotel_copy['road_addr'].str.contains(region) for region in region_mapping.keys()],
         [region_mapping[region] for region in region_mapping.keys()],
         default='해외'
     )
@@ -82,9 +99,9 @@ def preprocess_hotel_data(hotel):
     hotel_copy['gugun_nm'] = hotel_copy['addr'].str.split(' ').str[1]
     hotel_copy['emd_nm'] = hotel_copy['addr'].str.split(' ').str[2]
     '''
-    hotel_copy = hotel_copy[hotel_copy['region']!='해외'].reset_index(drop=True)
+    hotel_copy = hotel_copy[hotel_copy['region']!='해외'].reset_index(drop=True) #해외 호텔 제거
     # 필요한 컬럼만 선택
-    hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr', 'region', 'lat', 'lng']]
+    hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr','region', 'lat', 'lng']]
 
     # 추가 데이터 로드
     hotel_rec = pd.read_csv('/home/heroworks/dataset_api/app/DataFile/20240531_신규갱신_호텔테이블.csv')
