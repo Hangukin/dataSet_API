@@ -25,6 +25,7 @@ def preprocessing_price(self):
     #room_data = load_room_data()
     
     # price_data = aws_price_select(yesterday) # AWS 가격 데이터 불러오기 
+    print(yesterday)
     price_data = local_price_select(yesterday) # 로컬 DB 가격데이터 불러오기
     
     result_message = f'가격데이터 수집 확인 행 수 : {len(price_data)}'
@@ -54,7 +55,7 @@ def aws_price_select(booked_date):
     
     sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
-           WHERE booking_date = {booked_date}"
+           WHERE booking_date = '{booked_date}'"
            
     price = AWS_DATABASE_CONN(sql)
     
