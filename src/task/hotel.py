@@ -25,7 +25,7 @@ def load_hotel_data():
     
     # SQL 쿼리 실행
     sql = "SELECT id as hotel_id, name as hotel_name, road_addr, addr, lat, lng, link FROM hotel"
-    hotel = AWS_DATABASE_CONN(sql)
+    hotel = LOCAL_DATABASE_CONN(sql)
     hotel['road_addr'] = hotel['road_addr'].str.lstrip()
     hotel['addr'] = hotel['addr'].str.lstrip()
     preprocessed_hotel = preprocess_hotel_data(hotel)
@@ -37,7 +37,7 @@ def load_room_data():
     # SQL 쿼리 실행
     sql = "SELECT hotel.name as hotel_name, room.hotel_id, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
     
-    room = AWS_DATABASE_CONN(sql)
+    room = LOCAL_DATABASE_CONN(sql)
     
     return room
 
