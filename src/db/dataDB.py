@@ -51,7 +51,7 @@ async def db_select_DataSet(query):
         
     return data
 
-
+'''
 async def db_push_price_data(dataset):
     
     await prisma.connect()
@@ -64,3 +64,4 @@ async def db_push_price_data(dataset):
         await prisma.disconnect()
     
     return f'Success MySQL Price Data Push {created} records'
+'''
