@@ -52,7 +52,7 @@ async def preprocessing_price(self):
     
     result_dict = merged_price_df.to_dict(orient='records')
     
-    result_message = db_push_price_data(result_dict)
+    result_message = await db_push_price_data(result_dict)
 
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
