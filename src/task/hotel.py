@@ -172,28 +172,32 @@ def kakao_local_api(lat,lng):
     return result
 
 def addr_split(addr):
-    prv = ['경상남도','경상북도','전라남도','전라북도','강원특별자치도','충청북도','충청남도','경기도']
+    met_mapping = {'서울':'서울특별시','전북특별자치도':'전라북도','전남':'전라남도','경기':'경기도','대전':'대전광역시','인천':'인천광역시',
+                   '부산':'부산광역시','울산':'울산광역시','충남':'충청남도','충북':'충청북도','대구':'대구광역시','광주':'광주광역시'}
+    adr_list = addr.split(' ')
+    addr = addr.replace(adr_list[0],met_mapping[adr_list[0]])
     emd_list = ['읍','면','동','로']
     gugun_list = ['구','군']
     adr_list = addr.split(' ')
     sido = ''
     gugun = ''
     emd = ''
-    if adr_list[0] in prv:
+    if adr_list[0].find('세종') != -1:
         sido = adr_list[0]
-        adr_list = adr_list[1:]
-    
-    if adr_list[0][-1] not in gugun_list:
+        gugun = '-'
+        emd = adr_list[1]
+    else:
         sido = adr_list[0]
-        
-    for adr in adr_list:
-        if adr == '':
-            continue
-        if adr[-1] in emd_list:
-            emd = adr
-        elif adr[-1] in '가':
-            emd = adr[:-2]
-        elif adr[-1] in gugun_list:
-            gugun = adr
+        if adr_list[1][-1] == '시':
+            if adr_list[2][-1] in gugun_list:
+                gugun = adr_list[1] + ' ' + adr_list[2]
+                emd = adr_list[3]
+            else:
+                gugun = adr_list[1]
+                emd = adr_list[2]
+        else:
+            gugun = adr_list[1]
+            emd = adr_list[2]
+            
     #print(sido,gugun,emd)
     return sido, gugun, emd
