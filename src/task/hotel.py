@@ -80,6 +80,7 @@ def preprocess_hotel_data(hotel):
             '광주': '광주',
             '세종': '세종',
             '세종시':'세종',
+            '세종특별자치시':'세종',
             '대전': '대전',
             '대전광역시':'대전',
             '충청': '충청',
@@ -104,10 +105,10 @@ def preprocess_hotel_data(hotel):
     hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr','region', 'lat', 'lng']]
 
     # 추가 데이터 로드
-    hotel_rec = pd.read_csv('/app/DataFile/240531_신규갱신_호텔테이블.csv')
+    hotel_rec = pd.read_csv('/app/DataFile/240604_신규갱신_호텔테이블_주소수정.csv')
     #hotel_rec = hotel_rec.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     
-    hotel_rec = hotel_rec[['hotel_id','cty','gugun','emd','결정 등급', '객실수', '호텔규모', '업태구분명']]
+    hotel_rec = hotel_rec[['hotel_id','sido','sigugun','umd','rating', 'num_rooms', 'hotel_size', 'business_type']]
     # hotel_copy와 병합
     hotel_rec = pd.merge(hotel_copy, hotel_rec, how='left', on='hotel_id')
     #데모 계정 제외 
@@ -117,22 +118,22 @@ def preprocess_hotel_data(hotel):
     excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
     hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_2)]
     # A호텔 B호텔, 테스트 계정 제거
-    excluded_hotels_3 = [10187,1760,220,213,226,1548,11708,10519,10520,11455]
+    excluded_hotels_3 = [10187,1760,220,213,226,1548,11708,10519,10520,11455,11572]
     hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_3)].reset_index(drop=True)
     
     # 시도, 구군, 읍면동 없는 호텔 구하기 
-    for idx in hotel_rec[hotel_rec['cty'].isnull()].index:
+    for idx in hotel_rec[hotel_rec['sido'].isnull()].index:
         lat = hotel_rec['lat'][idx]
         lng = hotel_rec['lng'][idx]
         cty, gugun, emd = kakao_local_api(lat,lng)
-        hotel_rec.loc[idx,'cty'] = cty
-        hotel_rec.loc[idx,'gugun'] = gugun
-        hotel_rec.loc[idx,'emd'] = emd
+        hotel_rec.loc[idx,'sido'] = cty
+        hotel_rec.loc[idx,'sigugun'] = gugun
+        hotel_rec.loc[idx,'umd'] = emd
         
     hotel_rec['market'] = hotel_rec['region'].apply(lambda x: '해외' if x == '해외' else '국내')
     
     # 결측치 처리
-    hotel_rec['결정 등급'].fillna(value='미등급', inplace=True)
+    hotel_rec['rating'].fillna(value='미등급', inplace=True)
     hotel_rec.fillna(value='미분류', inplace=True)
     '''
     # 호텔 이름 매핑
