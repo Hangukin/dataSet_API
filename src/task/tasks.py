@@ -148,10 +148,22 @@ def price_process_file(price, room, hotel):
     df = df.groupby(['hotel_id','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
                                                                                                     avg_price=('price','mean'),
                                                                                                     max_price=('price','max'))
+    
+    print('최소, 평균,중간값 최대값 만들기전 갯수:', df.shape[0])
+    df=df.groupby(['hotel_id','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
+                                                                         avg_price=('price','mean'),
+                                                                         median_price=('price','median'),
+                                                                         max_price=('price','max'))
+    print('최소, 평균, 중간값 최대값 만든이후 갯수:', df.shape[0])
+    df['avg_price'] = df['avg_price'].round(0).astype(int)
+    df['median_price'] = df['median_price'].round(0).astype(int)
+    
+    
     df['weekday'] = df['booking_date'].dt.day_name()
     df['booking_date'] = df['booking_date'].dt.strftime('%Y%m%d')
     df['scanned_date_date'] = pd.to_datetime(df['scanned_date_date'], format='%Y-%m-%d')  # 여기 현재 입렵되어있는 포맷이다. 다음에 주의하도록
     df['scanned_date_date'] = df['scanned_date_date'].dt.strftime('%Y%m%d')
     df['avg_price'] = df['avg_price'].round(3).astype(float)
+    
     
     return df
