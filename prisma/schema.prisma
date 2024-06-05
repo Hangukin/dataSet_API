@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
-  recursive_type_depth        = "2"
   enable_experimental_decimal = "True"
   interface                   = "asyncio"
+  recursive_type_depth        = "2"
 }
 
 datasource db {
@@ -108,22 +108,22 @@ model HW_LDGS_CSTMR_USE_INFO {
 }
 
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
-  id           Int     @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   LDGS_ID      Int
-  LDGS_NM      String  @db.VarChar(200)
-  LDGMNT_TY_NM String  @db.VarChar(200)
-  OTA_NM       String  @db.VarChar(200)
-  CTPRVN_NM    String  @db.VarChar(200)
-  GUGUN_NM     String  @db.VarChar(200)
-  EMD_NM       String  @db.VarChar(200)
-  LDGS_ADDR    String  @db.VarChar(500)
-  EXTRC_DE     String  @db.VarChar(8)
-  LDGMNT_DE    String  @db.VarChar(8)
-  WKDAY_NM     String  @db.VarChar(200)
-  MIN_PRC      Decimal @db.Decimal(28, 5)
-  MAX_PRC      Decimal @db.Decimal(28, 5)
-  AVRG_PRC     Decimal @db.Decimal(28, 5)
-  MEDIAN_PRC   Decimal @db.Decimal(28, 5)
+  LDGS_NM      String @db.VarChar(200)
+  LDGMNT_TY_NM String @db.VarChar(200)
+  OTA_NM       String @db.VarChar(200)
+  CTPRVN_NM    String @db.VarChar(200)
+  GUGUN_NM     String @db.VarChar(200)
+  EMD_NM       String @db.VarChar(200)
+  LDGS_ADDR    String @db.VarChar(500)
+  EXTRC_DE     String @db.VarChar(8)
+  LDGMNT_DE    String @db.VarChar(8)
+  WKDAY_NM     String @db.VarChar(200)
+  MIN_PRC      Int
+  MAX_PRC      Int
+  AVRG_PRC     Int
+  MEDIAN_PRC   Int
 }
 
 model HW_LDGS_FCLTY_INFO {
