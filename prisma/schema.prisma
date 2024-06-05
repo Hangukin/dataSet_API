@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
-  enable_experimental_decimal = "True"
   interface                   = "asyncio"
   recursive_type_depth        = "2"
+  enable_experimental_decimal = "True"
 }
 
 datasource db {
@@ -166,10 +166,10 @@ model HW_LDGS_LIST {
   MARKET         String @db.VarChar(10)
   RATING         String @db.VarChar(10)
   GSRM_CO        Int
-  GRTFC_INSTT_NM String @db.VarChar(200)
-  GRTFC_DATE     String @db.VarChar(10)
+  CRTFC_INSTT_NM String @db.VarChar(200)
+  CRTFC_DATE     String @db.VarChar(10)
   LDGMNT_TY_NM   String @db.VarChar(200)
-  GRTFC_AT       String @db.VarChar(1)
+  CRTFC_AT       String @db.VarChar(1)
 }
 
 model HW_LDGS_OCCU_RT_INFO {
