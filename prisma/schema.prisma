@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
   enable_experimental_decimal = "True"
-  recursive_type_depth        = "2"
   interface                   = "asyncio"
+  recursive_type_depth        = "2"
 }
 
 datasource db {
@@ -108,20 +108,21 @@ model HW_LDGS_CSTMR_USE_INFO {
 }
 
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
-  id        Int     @id @default(autoincrement())
-  LDGS_ID   Int
-  LDGS_NM   String  @db.VarChar(200)
-  OTA_NM    String  @db.VarChar(200)
-  CTPRVN_NM String  @db.VarChar(200)
-  GUGUN_NM  String  @db.VarChar(200)
-  EMD_NM    String  @db.VarChar(200)
-  LDGS_ADDR String  @db.VarChar(500)
-  EXTRC_DE  String  @db.VarChar(8)
-  LDGMNT_DE String  @db.VarChar(8)
-  WKDAY_NM  String  @db.VarChar(200)
-  MIN_PRC   Decimal @db.Decimal(28, 5)
-  MAX_PRC   Decimal @db.Decimal(28, 5)
-  AVRG_PRC  Decimal @db.Decimal(28, 5)
+  id           Int     @id @default(autoincrement())
+  LDGS_ID      Int
+  LDGS_NM      String  @db.VarChar(200)
+  LDGMNY_TY_NM String  @db.VarChar(200)
+  OTA_NM       String  @db.VarChar(200)
+  CTPRVN_NM    String  @db.VarChar(200)
+  GUGUN_NM     String  @db.VarChar(200)
+  EMD_NM       String  @db.VarChar(200)
+  LDGS_ADDR    String  @db.VarChar(500)
+  EXTRC_DE     String  @db.VarChar(8)
+  LDGMNT_DE    String  @db.VarChar(8)
+  WKDAY_NM     String  @db.VarChar(200)
+  MIN_PRC      Decimal @db.Decimal(28, 5)
+  MAX_PRC      Decimal @db.Decimal(28, 5)
+  AVRG_PRC     Decimal @db.Decimal(28, 5)
 }
 
 model HW_LDGS_FCLTY_INFO {
@@ -149,6 +150,26 @@ model HW_LDGS_FCLTY_INFO {
   BEACH_AT             String  @db.VarChar(1)
   DATA_BASE_DE         String  @db.VarChar(8)
   DATA_END_DE          String  @db.VarChar(8)
+}
+
+model HW_LDGS_LIST {
+  LDGS_ID        Int    @id
+  LDGS_NM        String @db.VarChar(200)
+  LDGS_ADDR      String @db.VarChar(200)
+  LDGS_ROAD_ADDR String @db.VarChar(200)
+  LDGS_LA        String @db.VarChar(200)
+  LDGS_LO        String @db.VarChar(200)
+  CTPRVN_NM      String @db.VarChar(200)
+  GUGUN_NM       String @db.VarChar(200)
+  EMD_NM         String @db.VarChar(200)
+  REGION         String @db.VarChar(200)
+  MARKET         String @db.VarChar(10)
+  RATING         String @db.VarChar(10)
+  GSRM_CO        Int
+  GRTFC_INSTT_NM String @db.VarChar(200)
+  GRTFC_DATE     String @db.VarChar(10)
+  LDGMNT_TY_NM   String @db.VarChar(200)
+  GRTFC_AT       String @db.VarChar(1)
 }
 
 model HW_LDGS_OCCU_RT_INFO {
@@ -191,6 +212,7 @@ model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
   id               Int     @id @default(autoincrement())
   LDGS_ID          Int
   LDGS_NM          String  @db.VarChar(200)
+  LDGMNT_TY_NM     String? @db.VarChar(200)
   CTPRVN_NM        String  @db.VarChar(200)
   GUGUN_NM         String  @db.VarChar(200)
   EMD_NM           String  @db.VarChar(200)
