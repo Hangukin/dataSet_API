@@ -24,10 +24,10 @@ from dotenv import load_dotenv
 def load_hotel_data():
     
     # SQL 쿼리 실행
-    sql = "SELECT id as hotel_id, name as hotel_name, road_addr, addr, lat, lng, link FROM hotel"
+    sql = "SELECT id as LDGS_ID, name as LDGS_NM, road_addr as LDGS_ROAD_ADDR, addr as LDGS_ADDR, lat as LDGS_LA, lng as LDGS_LO FROM hotel"
     hotel = LOCAL_DATABASE_CONN(sql)
-    hotel['road_addr'] = hotel['road_addr'].str.lstrip()
-    hotel['addr'] = hotel['addr'].str.lstrip()
+    hotel['LDGS_ROAD_ADDR'] = hotel['LDGS_ROAD_ADDR'].str.lstrip()
+    hotel['LDGS_ADDR'] = hotel['LDGS_ADDR'].str.lstrip()
     preprocessed_hotel = preprocess_hotel_data(hotel)
     
     return preprocessed_hotel
@@ -35,7 +35,7 @@ def load_hotel_data():
 def load_room_data():
 
     # SQL 쿼리 실행
-    sql = "SELECT hotel.name as hotel_name, room.hotel_id, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
+    sql = "SELECT hotel.name as LDGS_NM, room.hotel_id as LDGS_ID, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
     
     room = LOCAL_DATABASE_CONN(sql)
     
@@ -90,8 +90,8 @@ def preprocess_hotel_data(hotel):
         }
 
     # 'region' 열을 생성하기 위한 매핑 적용
-    hotel_copy['region'] = np.select(
-        [hotel_copy['road_addr'].str.contains(region) for region in region_mapping.keys()],
+    hotel_copy['REGION'] = np.select(
+        [hotel_copy['LDGS_ROAD_ADDR'].str.contains(region) for region in region_mapping.keys()],
         [region_mapping[region] for region in region_mapping.keys()],
         default='해외'
     )
@@ -100,40 +100,40 @@ def preprocess_hotel_data(hotel):
     hotel_copy['gugun_nm'] = hotel_copy['addr'].str.split(' ').str[1]
     hotel_copy['emd_nm'] = hotel_copy['addr'].str.split(' ').str[2]
     '''
-    hotel_copy = hotel_copy[hotel_copy['region']!='해외'].reset_index(drop=True) #해외 호텔 제거
+    hotel_copy = hotel_copy[hotel_copy['REGION']!='해외'].reset_index(drop=True) #해외 호텔 제거
     # 필요한 컬럼만 선택
-    hotel_copy = hotel_copy[['hotel_id','hotel_name', 'addr','road_addr','region', 'lat', 'lng']]
+    hotel_copy = hotel_copy[['LDGS_ID','LDGS_NM', 'LDGS_ADDR','LDGS_ROAD_ADDR','REGION', 'LDGS_LA', 'LDGS_LO']]
 
     # 추가 데이터 로드
-    hotel_rec = pd.read_csv('/app/DataFile/240604_신규갱신_호텔테이블_주소수정.csv')
+    hotel_rec = pd.read_csv('/app/DataFile/240605_신규갱신_호텔테이블_주소및등급추가.csv')
     #hotel_rec = hotel_rec.rename(columns={'결정 등급':'hotel_grade', '업태구분명':'업태'})
     
-    hotel_rec = hotel_rec[['hotel_id','sido','sigugun','umd','rating', 'num_rooms', 'hotel_size', 'business_type']]
+    hotel_rec = hotel_rec[['LDGS_ID','CTPRVN_NM','GUGUN_NM','EMD_NM','RATING', 'GSRM_CO', 'LDGMNT_TY_NM']]
     # hotel_copy와 병합
-    hotel_rec = pd.merge(hotel_copy, hotel_rec, how='left', on='hotel_id')
+    hotel_rec = pd.merge(hotel_copy, hotel_rec, how='left', on='LDGS_ID')
     #데모 계정 제외 
     excluded_hotels = [11539, 11540, 11541, 11542, 11543, 11544, 11545, 11546, 11547,1729]
-    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels)]
+    hotel_rec = hotel_rec[~hotel_rec['LDGS_ID'].isin(excluded_hotels)]
     # 중복 계정 제외
     excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
-    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_2)]
+    hotel_rec = hotel_rec[~hotel_rec['LDGS_ID'].isin(excluded_hotels_2)]
     # A호텔 B호텔, 테스트 계정 제거
     excluded_hotels_3 = [10187,1760,220,213,226,1548,11708,10519,10520,11455,11572]
-    hotel_rec = hotel_rec[~hotel_rec['hotel_id'].isin(excluded_hotels_3)].reset_index(drop=True)
+    hotel_rec = hotel_rec[~hotel_rec['LDGS_ID'].isin(excluded_hotels_3)].reset_index(drop=True)
     
     # 시도, 구군, 읍면동 없는 호텔 구하기 
-    for idx in hotel_rec[hotel_rec['sido'].isnull()].index:
-        lat = hotel_rec['lat'][idx]
-        lng = hotel_rec['lng'][idx]
+    for idx in hotel_rec[hotel_rec['CTPRVN_NM'].isnull()].index:
+        lat = hotel_rec['LDGS_LA'][idx]
+        lng = hotel_rec['LDGS_LO'][idx]
         cty, gugun, emd = kakao_local_api(lat,lng)
-        hotel_rec.loc[idx,'sido'] = cty
-        hotel_rec.loc[idx,'sigugun'] = gugun
-        hotel_rec.loc[idx,'umd'] = emd
+        hotel_rec.loc[idx,'CTPRVN_NM'] = cty
+        hotel_rec.loc[idx,'GUGUN_NM'] = gugun
+        hotel_rec.loc[idx,'EMD_NM'] = emd
         
-    hotel_rec['market'] = hotel_rec['region'].apply(lambda x: '해외' if x == '해외' else '국내')
+    hotel_rec['MARKET'] = hotel_rec['REGION'].apply(lambda x: '해외' if x == '해외' else '국내')
     
     # 결측치 처리
-    hotel_rec['rating'].fillna(value='미등급', inplace=True)
+    hotel_rec['RATING'].fillna(value='미등급', inplace=True)
     hotel_rec.fillna(value='미분류', inplace=True)
     '''
     # 호텔 이름 매핑
@@ -148,7 +148,7 @@ def preprocess_hotel_data(hotel):
     hotel_rec['hotel_name'] = hotel_rec['hotel_name'].map(mapping).fillna(hotel_rec['hotel_name'])
     '''
     # 호텔 이름 정제
-    hotel_rec['hotel_name'] = hotel_rec['hotel_name'].apply(lambda x: re.sub(r'[^a-zA-Z0-9가-힣]', '', str(x)))
+    hotel_rec['LDGS_NM'] = hotel_rec['LDGS_NM'].apply(lambda x: re.sub(r'[^a-zA-Z0-9가-힣]', '', str(x)))
     
     '''
     # 최신 lat, lng 업데이트 2024_04_22 버젼 

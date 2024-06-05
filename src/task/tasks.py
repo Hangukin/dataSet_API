@@ -36,17 +36,17 @@ def preprocessing_price(self):
     preprocessed_price_df = price_process_file(price_data, room_data, hotel_data)
     
     print('가공된 데이터 총 길이:', len(price_data))
-    hotel_data_cpy = hotel_data[['hotel_id','hotel_name','sido','sigugun','umd','road_addr']]
+    hotel_data_cpy = hotel_data[['LDGS_ID','LDGS_NM','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_ROAD_ADDR']]
     
-    merged_price_df = pd.merge(preprocessed_price_df, hotel_data_cpy, how='inner', on='hotel_id')
+    merged_price_df = pd.merge(preprocessed_price_df, hotel_data_cpy, how='inner', on='LDGS_ID')
     
-    merged_price_df = merged_price_df[['hotel_id','hotel_name','ota_type','sido','sigugun','umd','road_addr','scanned_date_date','booking_date','weekday',
+    merged_price_df = merged_price_df[['LDGS_ID','LDGS_NM','ota_type','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_ROAD_ADDR','scanned_date_date','booking_date','weekday',
             'min_price','max_price','avg_price']]
     
     # 컬럼명 변경
-    merged_price_df = merged_price_df.rename(columns={'hotel_id':'LDGS_ID', 'hotel_name':'LDGS_NM', 'ota_type':'OTA_NM', 'sido':'CTPRVN_NM', 'sigugun':'GUGUN_NM',
-                                                      'umd':'EMD_NM', 'road_addr':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 'booking_date':'LDGMNT_DE',
-                                                      'weekday':'WKDAY_NM', 'min_price':'MIN_PRC', 'max_price':'MAX_PRC', 'avg_price':'AVRG_PRC'})
+    merged_price_df = merged_price_df.rename(columns={'ota_type':'OTA_NM','umd':'EMD_NM', 'LDGS_ROAD_ADDR':'LDGS_ADDR', 'scanned_date_date':'EXTRC_DE', 
+                                                      'booking_date':'LDGMNT_DE','weekday':'WKDAY_NM', 'min_price':'MIN_PRC', 
+                                                      'max_price':'MAX_PRC', 'avg_price':'AVRG_PRC','median_price':'MEDIAN_PRC'})
     
     print('결합데이터 확인 \n', merged_price_df)
     
@@ -154,16 +154,14 @@ def price_process_file(price, room, hotel):
                                                                          avg_price=('price','mean'),
                                                                          median_price=('price','median'),
                                                                          max_price=('price','max'))
+    
     print('최소, 평균, 중간값 최대값 만든이후 갯수:', df.shape[0])
-    df['avg_price'] = df['avg_price'].round(0).astype(int)
+    
     df['median_price'] = df['median_price'].round(0).astype(int)
-    
-    
     df['weekday'] = df['booking_date'].dt.day_name()
     df['booking_date'] = df['booking_date'].dt.strftime('%Y%m%d')
     df['scanned_date_date'] = pd.to_datetime(df['scanned_date_date'], format='%Y-%m-%d')  # 여기 현재 입렵되어있는 포맷이다. 다음에 주의하도록
     df['scanned_date_date'] = df['scanned_date_date'].dt.strftime('%Y%m%d')
-    df['avg_price'] = df['avg_price'].round(3).astype(float)
-    
+    df['avg_price'] = df['avg_price'].round(0).astype(int)
     
     return df
