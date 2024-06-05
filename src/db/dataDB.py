@@ -51,17 +51,16 @@ async def db_select_DataSet(query):
         
     return data
 
-'''
-async def db_push_price_data(dataset):
+
+async def db_select_hotelTable(query):
     
     await prisma.connect()
     
     try:
-        created = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.create_many(dataset)
+        data = await prisma.hw_ldgs_list.create_many(where={'CTPRVN_NM': query.ctprvn_nm})
         
     finally:
         
         await prisma.disconnect()
     
-    return f'Success MySQL Price Data Push {created} records'
-'''
+    return data
