@@ -54,6 +54,6 @@ async def db_select_DataSet(query):
 
 async def db_select_hotelTable(query):
 
-    data = await prisma.hw_ldgs_list.create_many(where={'CTPRVN_NM': query.ctprvn_nm})
+    data = await prisma.hw_ldgs_list.find_many(where={'CTPRVN_NM': query.ctprvn_nm})
         
     return data
