@@ -60,7 +60,7 @@ class get_hotel_data(BaseModel):
     ctprvn_nm : str
     
 @router.get(
-    "/select-hoteldb",
+    "/select-hoteltb",
     tags=["SELECT"],
     status_code=200,
 )
