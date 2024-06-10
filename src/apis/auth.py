@@ -66,14 +66,14 @@ async def signup(user: SignUp):
     tags=["auth"],
     status_code=200,
 )
-async def find_token(user: SignIn):
+async def find_token(query: SignIn = Depends(SignIn)):
     # Prisma 사용하여 DB 사용자 정보를 가져오기
-    exist = await prisma.api_users.find_unique(where={"user_id": user.user_id})
+    exist = await prisma.api_users.find_unique(where={"user_id": query.user_id})
     print(exist)
     if not exist:
         raise HTTPException(status_code=404, detail="User not exists")
 
-    if not compare_password(user.password, exist.password):
+    if not compare_password(query.password, exist.password):
         raise HTTPException(status_code=401, detail="Password not match")
     
     if not exist.confirmed:
