@@ -1,7 +1,7 @@
 generator client {
   provider                    = "prisma-client-py"
-  enable_experimental_decimal = "True"
   interface                   = "asyncio"
+  enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
 }
 
@@ -23,6 +23,7 @@ model HW_CFR_SMR_LDGS_INFO {
   id                                    Int     @id @default(autoincrement())
   LDGS_ID                               Int
   LDGS_NM                               String  @db.VarChar(200)
+  LDGMNT_TY_NM                          String? @db.VarChar(200)
   LDGS_ADDR                             String  @db.VarChar(200)
   CTY_NM                                String  @db.VarChar(200)
   GUGUN_NM                              String  @db.VarChar(200)
@@ -59,6 +60,7 @@ model HW_LDGS_CFR_FCLTY_INFO {
   id             Int     @id @default(autoincrement())
   LDGS_ID        Int
   LDGS_NM        String  @db.VarChar(200)
+  LDGMNT_TY_NM   String? @db.VarChar(200)
   LDGS_ADDR      String  @db.VarChar(200)
   CTY_NM         String  @db.VarChar(200)
   GUGUN_NM       String  @db.VarChar(200)
@@ -77,6 +79,7 @@ model HW_LDGS_CFR_RSTRNT_INFO {
   id             Int     @id @default(autoincrement())
   LDGS_ID        Int
   LDGS_NM        String  @db.VarChar(200)
+  LDGMNT_TY_NM   String? @db.VarChar(200)
   LDGS_ADDR      String  @db.VarChar(200)
   CTY_NM         String  @db.VarChar(200)
   GUGUN_NM       String  @db.VarChar(200)
@@ -92,19 +95,20 @@ model HW_LDGS_CFR_RSTRNT_INFO {
 }
 
 model HW_LDGS_CSTMR_USE_INFO {
-  id                Int    @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   LDGS_ID           Int
-  LDGS_NM           String @db.VarChar(200)
-  CTPRVN_NM         String @db.VarChar(200)
-  GUGUN_NM          String @db.VarChar(200)
-  EMD_NM            String @db.VarChar(200)
-  LDGS_ADDR         String @db.VarChar(200)
-  GSRM_NM           String @db.VarChar(200)
-  LDGMNT_YM         String @db.VarChar(6)
-  INFLOW_COUNTRY_NM String @db.VarChar(200)
-  LDGMNT_DAYCNT_CN  String @db.VarChar(500)
-  LDGMNT_CSTMR_TY   String @db.VarChar(500)
-  BRFT_AT           String @db.VarChar(1)
+  LDGS_NM           String  @db.VarChar(200)
+  CTPRVN_NM         String  @db.VarChar(200)
+  GUGUN_NM          String  @db.VarChar(200)
+  EMD_NM            String  @db.VarChar(200)
+  LDGS_ADDR         String  @db.VarChar(200)
+  LDGMNT_TY_NM      String? @db.VarChar(200)
+  GSRM_NM           String  @db.VarChar(200)
+  LDGMNT_YM         String  @db.VarChar(6)
+  INFLOW_COUNTRY_NM String  @db.VarChar(200)
+  LDGMNT_DAYCNT_CN  String  @db.VarChar(500)
+  LDGMNT_CSTMR_TY   String  @db.VarChar(500)
+  BRFT_AT           String  @db.VarChar(1)
 }
 
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
@@ -134,6 +138,7 @@ model HW_LDGS_FCLTY_INFO {
   CTPRVN_NM            String  @db.VarChar(200)
   GUGUN_NM             String  @db.VarChar(200)
   EMD_NM               String  @db.VarChar(200)
+  LDGMNT_TY_NM         String? @db.VarChar(200)
   CFR_LDGS_LIST_CN     String  @db.VarChar(1000)
   ONE_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
   TWO_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
@@ -181,6 +186,7 @@ model HW_LDGS_OCCU_RT_INFO {
   GUGUN_NM                 String  @db.VarChar(200)
   EMD_NM                   String  @db.VarChar(200)
   LDGS_ADDR                String  @db.VarChar(500)
+  LDGMNT_TY_NM             String? @db.VarChar(200)
   BASE_YEAR                String  @db.VarChar(4)
   BASE_MT                  String  @db.VarChar(2)
   TOT_GSRM_GOODS_AVRG_PRC  Decimal @db.Decimal(28, 5)
@@ -190,23 +196,28 @@ model HW_LDGS_OCCU_RT_INFO {
 }
 
 model HW_LDGS_OTA_PROMTN_INFO {
-  id                      Int    @id @default(autoincrement())
+  id                      Int     @id @default(autoincrement())
   LDGS_ID                 Int
-  LDGS_NM                 String @db.VarChar(200)
-  BRFT_PROMTN_AT          String @db.VarChar(1)
-  PKG_PROMTN_AT           String @db.VarChar(1)
-  OTT_PROMTN_AT           String @db.VarChar(1)
-  SPECL_PRC_PROMTN_AT     String @db.VarChar(1)
-  EARLY_PROMTN_AT         String @db.VarChar(1)
-  LATE_PROMTN_AT          String @db.VarChar(1)
-  PLY_PROMTN_AT           String @db.VarChar(1)
-  FOOD_PROMTN_AT          String @db.VarChar(1)
-  LDGMNT_DAYCNT_PROMTN_AT String @db.VarChar(1)
-  UPG_PROMTN_AT           String @db.VarChar(1)
-  ADTION_FCLTY_PROMTN_AT  String @db.VarChar(1)
-  VIEW_PROMTN_AT          String @db.VarChar(1)
-  DATA_BASE_DE            String @db.VarChar(8)
-  DATA_END_DE             String @db.VarChar(8)
+  LDGS_NM                 String  @db.VarChar(200)
+  LDGS_ADDR               String? @db.VarChar(200)
+  CTY_NM                  String? @db.VarChar(200)
+  GUGUN_NM                String? @db.VarChar(200)
+  EMD_NM                  String? @db.VarChar(200)
+  LDGMNT_TY_NM            String? @db.VarChar(200)
+  BRFT_PROMTN_AT          String  @db.VarChar(1)
+  PKG_PROMTN_AT           String  @db.VarChar(1)
+  OTT_PROMTN_AT           String  @db.VarChar(1)
+  SPECL_PRC_PROMTN_AT     String  @db.VarChar(1)
+  EARLY_PROMTN_AT         String  @db.VarChar(1)
+  LATE_PROMTN_AT          String  @db.VarChar(1)
+  PLY_PROMTN_AT           String  @db.VarChar(1)
+  FOOD_PROMTN_AT          String  @db.VarChar(1)
+  LDGMNT_DAYCNT_PROMTN_AT String  @db.VarChar(1)
+  UPG_PROMTN_AT           String  @db.VarChar(1)
+  ADTION_FCLTY_PROMTN_AT  String  @db.VarChar(1)
+  VIEW_PROMTN_AT          String  @db.VarChar(1)
+  DATA_BASE_DE            String  @db.VarChar(8)
+  DATA_END_DE             String  @db.VarChar(8)
 }
 
 model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
@@ -214,6 +225,7 @@ model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
   LDGS_ID          Int
   LDGS_NM          String  @db.VarChar(200)
   LDGMNT_TY_NM     String? @db.VarChar(200)
+  LDGS_ADDR        String  @db.VarChar(200)
   CTPRVN_NM        String  @db.VarChar(200)
   GUGUN_NM         String  @db.VarChar(200)
   EMD_NM           String  @db.VarChar(200)
@@ -226,41 +238,48 @@ model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
 }
 
 model HW_LDGS_PARKING_INFO {
-  id             Int    @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   LDGS_ID        Int
-  LDGS_NM        String @db.VarChar(200)
-  CTPRVN_NM      String @db.VarChar(200)
-  GUGUN_NM       String @db.VarChar(200)
-  EMD_NM         String @db.VarChar(200)
-  LDGS_ADDR      String @db.VarChar(500)
-  PARKNG_INFO_CN String @db.VarChar(500)
-  DATA_BASE_DE   String @db.VarChar(8)
-  DATA_END_DE    String @db.VarChar(8)
+  LDGS_NM        String  @db.VarChar(200)
+  CTPRVN_NM      String  @db.VarChar(200)
+  GUGUN_NM       String  @db.VarChar(200)
+  EMD_NM         String  @db.VarChar(200)
+  LDGS_ADDR      String  @db.VarChar(500)
+  LDGMNT_TY_NM   String? @db.VarChar(200)
+  PARKNG_INFO_CN String  @db.VarChar(500)
+  DATA_BASE_DE   String  @db.VarChar(8)
+  DATA_END_DE    String  @db.VarChar(8)
 }
 
 model HW_LDGS_PET_INFO {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   LDGS_ID      Int
-  LDGS_NM      String @db.VarChar(200)
-  CTPRVN_NM    String @db.VarChar(200)
-  GUGUN_NM     String @db.VarChar(200)
-  EMD_NM       String @db.VarChar(200)
-  LDGS_ADDR    String @db.VarChar(500)
-  PET_INFO_CN  String @db.VarChar(500)
-  DATA_BASE_DE String @db.VarChar(8)
-  DATA_END_DE  String @db.VarChar(8)
+  LDGS_NM      String  @db.VarChar(200)
+  CTPRVN_NM    String  @db.VarChar(200)
+  GUGUN_NM     String  @db.VarChar(200)
+  EMD_NM       String  @db.VarChar(200)
+  LDGS_ADDR    String  @db.VarChar(500)
+  LDGMNT_TY_NM String? @db.VarChar(200)
+  PET_INFO_CN  String  @db.VarChar(500)
+  DATA_BASE_DE String  @db.VarChar(8)
+  DATA_END_DE  String  @db.VarChar(8)
 }
 
 model HW_LDGS_REVIEW_STANL_RESULT {
-  id                 Int    @id @default(autoincrement())
+  id                 Int     @id @default(autoincrement())
   LDGS_ID            Int
-  LDGS_NM            String @db.VarChar(200)
-  AFRM_KWRD_CN       String @db.VarChar(1000)
-  AFRM_WGHTVAL_SCORE String @db.VarChar(1000)
-  NEGA_KWRD_CN       String @db.VarChar(1000)
-  NEGA_WGHTVAL_SCORE String @db.VarChar(1000)
-  DATA_BASE_DE       String @db.VarChar(8)
-  DATA_END_DE        String @db.VarChar(8)
+  LDGS_NM            String  @db.VarChar(200)
+  LDGS_ADDR          String? @db.VarChar(200)
+  CTY_NM             String? @db.VarChar(200)
+  GUGUN_NM           String? @db.VarChar(200)
+  EMD_NM             String? @db.VarChar(200)
+  LDGMNT_TY_NM       String? @db.VarChar(200)
+  AFRM_KWRD_CN       String  @db.VarChar(1000)
+  AFRM_WGHTVAL_SCORE String  @db.VarChar(1000)
+  NEGA_KWRD_CN       String  @db.VarChar(1000)
+  NEGA_WGHTVAL_SCORE String  @db.VarChar(1000)
+  DATA_BASE_DE       String  @db.VarChar(8)
+  DATA_END_DE        String  @db.VarChar(8)
 }
 
 model api_users {

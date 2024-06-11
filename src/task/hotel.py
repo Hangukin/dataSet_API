@@ -168,7 +168,7 @@ def kakao_local_api(lat,lng):
     params = {'x':str(lng), 'y':str(lat)}
     headers = {"Authorization": "KakaoAK 31609d2bc92fe401a666a0ba00c50ebe"}
     places = requests.get(url, params=params, headers=headers).json()
-    address_nm = places['documents'][0]['address_name']
+    address_nm = places['documents'][1]['address_name']
     result = addr_split(address_nm)
     return result
 
