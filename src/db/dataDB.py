@@ -43,11 +43,17 @@ async def db_select_DataSet(query):
             'LDGMNT_DE' : query.ldgmnt_de
         })
     if query.base_year != None or query.base_mt != None or query.base_day != None:
-        data = await model.find_many(where = {
-            'BASE_YEAR' : query.base_year,
-            'BASE_MT' : query.base_mt,
-            'BASE_DAY' : query.base_day
-        })
+        query_dict = {}
+        if query.base_year is not None:
+            query_dict['BASE_YEAR'] = query.base_year
+
+        if query.base_mt is not None:
+            query_dict['BASE_MT'] = query.base_mt
+
+        if query.base_day is not None:
+            query_dict['BASE_DAY'] = query.base_day
+            
+        data = await model.find_many(where = query_dict)
         
     return data
 
