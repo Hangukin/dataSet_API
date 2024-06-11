@@ -30,18 +30,26 @@ async def db_select_DataSet(query):
         data = await model.find_many(where = {
             'DATA_BASE_DE' : query.data_base_de
         })
+        return data
+    
     if query.base_ym != None:
         data = await model.find_many(where = {
             'BASE_YM' : query.base_ym
         })
+        return data
+    
     if query.ldgmnt_ym != None:
         data = await model.find_many(where = {
             'LDGMNT_YM' : query.ldgmnt_ym
         })
+        return data
+    
     if query.ldgmnt_de != None:
         data = await model.find_many(where = {
             'LDGMNT_DE' : query.ldgmnt_de
         })
+        return data
+    
     if query.base_year != None or query.base_mt != None or query.base_day != None:
         query_dict = {}
         if query.base_year is not None:
@@ -55,7 +63,7 @@ async def db_select_DataSet(query):
             
         data = await model.find_many(where = query_dict)
         
-    return data
+        return data
 
 
 async def db_select_hotelTable(query):
