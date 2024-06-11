@@ -43,7 +43,7 @@ def generate_access_token(user_id: int, password: str) -> str:
     claims = {
         'user_id': user_id,
         'password': password,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=365),
     }
 
     encoded_jwt = jwt.encode(claims, APP_SECRET_STRING, algorithm="HS256")
@@ -52,7 +52,7 @@ def generate_access_token(user_id: int, password: str) -> str:
 async def generate_refresh_token(user_id: int) -> str:
     claims = {
         'user_id': user_id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=60),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=380),
     }
 
     encoded_jwt = jwt.encode(claims, APP_SECRET_STRING, algorithm="HS256") 
@@ -62,6 +62,6 @@ async def generate_refresh_token(user_id: int) -> str:
 async def refresh_access_token(exist, token):
     
     claims = jwt.decode(token, APP_SECRET_STRING, algorithms=["HS256"])
-    claims['exp'] = datetime.datetime.utcnow() + datetime.timedelta(days=30)
+    claims['exp'] = datetime.datetime.utcnow() + datetime.timedelta(days=365)
     result = await db_update_Users(claims,exist)
     return result

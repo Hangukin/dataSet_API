@@ -59,6 +59,10 @@ def preprocessing_price(self):
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
 def call_api(datanm,dataset):
+    load_dotenv()
+    
+    API_TOKEN = os.getenv("API_TOKEN")
+    
     url = 'https://api.heroworksapi.info/api/admin/pushdb'
     data = {
     'dataSetNM': datanm,
@@ -69,7 +73,7 @@ def call_api(datanm,dataset):
     headers = {
     'accept' : 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer '+ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiaGVyb3dvcmtzIiwicGFzc3dvcmQiOiJnbGRqZmghQDM0IiwiZXhwIjoxNzE5MzcxMDczfQ.iy50jBXeCRQlPqG8VxDiwJOWOUQ4Pt2K9bcZVgVlO30'
+    'Authorization': API_TOKEN
     }
     
     response = requests.post(url, headers=headers, data=json_data)

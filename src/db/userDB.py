@@ -20,7 +20,9 @@ async def db_push_Users(user_id, password ,name, access_token, refresh_token):
             'confirmed':True
         }
     )
-    return {'message': f'Users Register Success From {APP_NAME}'}
+    return {'message': f'Users Register Success From {APP_NAME}', 
+            'tokens':{'access_token':access_token, 'refresh_token':refresh_token}
+    }
 
 async def db_update_Users(claims, exist):
     
