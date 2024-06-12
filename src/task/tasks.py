@@ -11,7 +11,8 @@ import json
 from src.prisma import prisma
 from src.task.hotel import load_room_data, load_hotel_data
 #from src.db.dataDB import db_push_price_data
-from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, call_api,  local_price_select
+from src.task.cfr_task import preprocess_price, CountByWGS84
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, call_api,  local_price_select, local_price_cfr_select
 from datetime import datetime, timedelta
 import pytz
 import asyncio
@@ -124,3 +125,97 @@ def price_process_file(price, room, hotel):
     return df
 
 
+@celery_app.task(bind=True)
+def cfr_price(self):
+    now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
+    yesterday = now - timedelta(days=1)
+    week_ago = yesterday - timedelta(days=7)
+    
+    yesterday = yesterday.strftime("%Y-%m-%d")
+    week_ago = week_ago.strftime("%Y-%m-%d")    
+    
+    hotel_data = load_hotel_data()
+    room_data = load_room_data()
+    price_data = local_price_cfr_select(week_ago, yesterday)
+    preprocessed_data = preprocess_price(price_data, room_data, hotel_data)
+    
+    radius_hotel = {}
+    hotel_radius_df = pd.DataFrame()
+    
+    for ix in range(len(preprocessed_data)):
+        c_name = preprocessed_data['LDGS_NM'][ix]
+        lat = preprocessed_data['LDGS_LA'][ix]
+        lng = preprocessed_data['LDGS_LO'][ix]
+        dist = 2
+        cbw = CountByWGS84(preprocessed_data,lat,lng,dist)
+        result_radius = cbw.filter_by_radius() # 결과 데이터프레임
+        center = int(result_radius.loc[result_radius['LDGS_NM'] == c_name ]['price'])
+        max_result = round(abs(center*0.3+center),0)  # 범위 최고가
+        min_result = round(abs(center*0.3-center),0)  # 범위 최저가 
+        A = result_radius[result_radius['LDGS_NM'] ==c_name].index  # 중심 호텔 드랍
+        result_radius.drop(A,axis='index',inplace=True)
+        # 1km 내 호텔이 아예 없는 경우 
+        if len(result_radius) == 0 :
+            radius_hotel['LDGS_ID'] = preprocessed_data['LDGS_ID'][ix]
+            radius_hotel['LDGS_NM'] = preprocessed_data['LDGS_NM'][ix]
+            radius_hotel['LDGSMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
+            radius_hotel['LDGS_ADDR'] = preprocessed_data['LDGS_ROAD_ADDR'][ix]
+            radius_hotel['CTY_NM'] = preprocessed_data['CTPRVN_NM'][ix]
+            radius_hotel['GUGUN_NM'] = preprocessed_data['GUGUN_NM'][ix]
+            radius_hotel['EMD_NM'] = preprocessed_data['EMD_NM'][ix]
+            radius_hotel['LDGS_LA'] = lat
+            radius_hotel['LDGS_LO'] = lng
+            radius_hotel['AVRG_PRC'] = preprocessed_data['price'][ix]
+            radius_hotel['CFR_LDGS_LIST_CN'] = '없음'
+            radius_hotel['CFR_LDGS_CO'] = 0
+            radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN'] = '없음'
+            radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC'] = 0
+            radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_CO'] = 0
+            hotel_radius = pd.DataFrame.from_dict(radius_hotel,'index').T
+            hotel_radius_df = pd.concat([hotel_radius_df, hotel_radius])
+            
+        else :
+            radius_hotel['LDGS_ID'] = preprocessed_data['LDGS_ID'][ix]
+            radius_hotel['LDGS_NM'] = preprocessed_data['LDGS_NM'][ix]
+            radius_hotel['LDGSMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
+            radius_hotel['LDGS_ADDR'] = preprocessed_data['LDGS_ROAD_ADDR'][ix]
+            radius_hotel['CTY_NM'] = preprocessed_data['CTPRVN_NM'][ix]
+            radius_hotel['GUGUN_NM'] = preprocessed_data['GUGUN_NM'][ix]
+            radius_hotel['EMD_NM'] = preprocessed_data['EMD_NM'][ix]
+            radius_hotel['LDGS_LA'] = lat
+            radius_hotel['LDGS_LO'] = lng
+            radius_hotel['AVRG_PRC'] = preprocessed_data['price'][ix]
+            radius_hotel['CFR_LDGS_LIST_CN'] = result_radius['LDGS_NM'].tolist()
+            radius_hotel['CFR_LDGS_CO'] = len(result_radius)
+            # 비슷한 가격대의 호텔의 유무 
+            if len(result_radius.loc[(result_radius['price']<max_result)& (result_radius['price']>min_result)]) == 0: 
+            
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC'] = 0
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_CO'] = 0
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN'] = '없음'
+                hotel_radius = pd.DataFrame.from_dict(radius_hotel,'index').T
+                hotel_radius_df = pd.concat([hotel_radius_df, hotel_radius])
+                
+                
+            else:  
+                # 비슷한 가격들의 평균가격
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC'] = int(round(result_radius.loc[(result_radius['price']<max_result)&
+                                                                    (result_radius['price']>min_result)]['price'].mean()))
+                # 비슷한 가격의 호텔의 수 
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_CO'] =len(result_radius.loc[(result_radius['price']<max_result)&
+                                                                (result_radius['price']>min_result)])
+                # 주변 1km 내 비슷한 가격의 호텔이 있는 호텔 리스트
+                radius_hotel['CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN'] = str(result_radius.loc[(result_radius['price']<max_result)&
+                                                            (result_radius['price']>min_result)]['LDGS_NM'].tolist())
+            
+                hotel_radius = pd.DataFrame.from_dict(radius_hotel,'index').T
+                hotel_radius_df = pd.concat([hotel_radius_df, hotel_radius])
+    
+    hotel_radius_df['DATA_BASE_DE'] = week_ago.replace('-','')
+    hotel_radius_df['DATA_END_DE'] = yesterday.replace('-','')
+    
+    result_dict = hotel_radius_df.to_dict(orient='records')
+    datanm = 'HW_CFR_SMR_LDGS_INFO'
+    result_message = json.dumps(call_api(datanm, result_dict))
+                
+    return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
