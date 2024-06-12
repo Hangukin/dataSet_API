@@ -36,3 +36,4 @@ package-lock.json
 package.json
 datetime_test.py
 password_hash.py
+share

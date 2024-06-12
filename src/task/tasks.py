@@ -11,7 +11,7 @@ import json
 from src.prisma import prisma
 from src.task.hotel import load_room_data, load_hotel_data
 #from src.db.dataDB import db_push_price_data
-from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, call_api,  local_price_select
 from datetime import datetime, timedelta
 import pytz
 import asyncio
@@ -58,53 +58,6 @@ def preprocessing_price(self):
     result_message = json.dumps(call_api(datanm, result_dict))
     return f'Success {yesterday} Price Data Preprocessing' + '\n' + result_message
 
-def call_api(datanm,dataset):
-    load_dotenv()
-    
-    API_TOKEN = os.getenv("API_TOKEN")
-    
-    url = 'https://api.heroworksapi.info/api/admin/pushdb'
-    data = {
-    'dataSetNM': datanm,
-    'dataSet': dataset
-    }
-    json_data = json.dumps(data)
-
-    headers = {
-    'accept' : 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': API_TOKEN
-    }
-    
-    response = requests.post(url, headers=headers, data=json_data)
-    result = response.json()
-    
-    return result
-
-    
-
-## AWS 가격 데이터 불러오기 
-def aws_price_select(booked_date):
-    
-    sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
-           FROM room_price \
-           WHERE booking_date = '{booked_date}'"
-           
-    price = AWS_DATABASE_CONN(sql)
-    
-    return price
-
-## 로컬 DB 가격데이터 불러오기 
-def local_price_select(booked_date):
-    
-    sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
-           FROM room_price \
-           WHERE booking_date = '{booked_date}'"
-           
-    price = LOCAL_DATABASE_CONN(sql)
-    
-    return price
-
 # 지역별로 상하위 1% 버리기 
 def filter_quantiles(group):
     q_low = group['price'].quantile(0.01)
@@ -122,7 +75,7 @@ def price_process_file(price, room, hotel):
     price = price[price['date_diff'] < pd.Timedelta(days=31)]
     price['scanned_date_date'] = price['scanned_date'].dt.date
     # OTA정보를 위해 룸테이블 로드
-    room_ota=room[['room_id', 'hotel_id', 'ota_type']]
+    room_ota=room[['room_id', 'LDGS_ID', 'ota_type']]
     # OTA 정보 업데이트
     df = pd.merge(price, room_ota, how='inner',on=['room_id'])
     
@@ -140,21 +93,21 @@ def price_process_file(price, room, hotel):
         
     # 호텔테이블 로드
     # 지역변수 붙이기
-    df = pd.merge(df, hotel[['hotel_id', 'region',]], how='inner',on='hotel_id')
+    df = pd.merge(df, hotel[['LDGS_ID', 'REGION',]], how='inner',on='LDGS_ID')
     
     try:
         
-        df = df.groupby('region').apply(filter_quantiles).reset_index(drop=True)
+        df = df.groupby('REGION').apply(filter_quantiles).reset_index(drop=True)
         
     except Exception as e:
         print("An error occurred during quantile calculation and filtering:", str(e))
     # 최소 최대값 평균값 만들기
-    df = df.groupby(['hotel_id','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
+    df = df.groupby(['LDGS_ID','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
                                                                                                     avg_price=('price','mean'),
                                                                                                     max_price=('price','max'))
     
     print('최소, 평균,중간값 최대값 만들기전 갯수:', df.shape[0])
-    df=df.groupby(['hotel_id','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
+    df=df.groupby(['LDGS_ID','ota_type','scanned_date_date','booking_date'], as_index=False).agg(min_price=('price','min'),
                                                                          avg_price=('price','mean'),
                                                                          median_price=('price','median'),
                                                                          max_price=('price','max'))

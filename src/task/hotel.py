@@ -18,7 +18,7 @@ import numpy as np
 import re
 #plt.rcParams['font.family'] = 'Malgun Gothic'
 
-from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, API_DATABASE_CONN
 from dotenv import load_dotenv
 
 def load_hotel_data():
@@ -118,7 +118,7 @@ def preprocess_hotel_data(hotel):
     excluded_hotels_2 = [204,220,252,275,299,432,454,873,931,952,1015,1094,1233,1313,1480,1628]
     hotel_rec = hotel_rec[~hotel_rec['LDGS_ID'].isin(excluded_hotels_2)]
     # A호텔 B호텔, 테스트 계정 제거
-    excluded_hotels_3 = [10187,1760,220,213,226,1548,11708,10519,10520,11455,11572]
+    excluded_hotels_3 = [10187,10387,11326,1760,220,213,226,1548,11708,10519,10520,11455,11572]
     hotel_rec = hotel_rec[~hotel_rec['LDGS_ID'].isin(excluded_hotels_3)].reset_index(drop=True)
     
     # 시도, 구군, 읍면동 없는 호텔 구하기 
@@ -202,3 +202,10 @@ def addr_split(addr):
             
     #print(sido,gugun,emd)
     return sido, gugun, emd
+
+def ldgs_list_select():
+    sql = 'SELECT LDGS_ID, LDGS_LA, LDGS_LO, LDGMNT_TY_NM FROM HW_LDGS_LIST'
+    
+    ldgs_list = API_DATABASE_CONN(sql)
+
+    return ldgs_list

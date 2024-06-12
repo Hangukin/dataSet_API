@@ -29,12 +29,11 @@ celery_app.conf.beat_schedule = {
         'args':()
     }
 }
-'''
+
 celery_app.conf.beat_schedule = {
     'price_processing': {
-        'task': 'src.task.tasks.preprocessing_price',
-        'schedule': timedelta(minutes=20),
+        'task': 'src.task.cfr_task.cfr_price',
+        'schedule': crontab(hour=21,minute=0,day_of_week='monday'),
         'args':()
     }
 }
-'''
