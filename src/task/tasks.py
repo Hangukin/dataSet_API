@@ -122,3 +122,5 @@ def price_process_file(price, room, hotel):
     df['avg_price'] = df['avg_price'].round(0).astype(int)
     
     return df
+
+
