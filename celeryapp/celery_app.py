@@ -21,7 +21,7 @@ celery_app.conf.update(
     timezone='Asia/Seoul',
     enable_utc=False
 )
-
+'''
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'src.task.tasks.preprocessing_price',
@@ -29,7 +29,7 @@ celery_app.conf.beat_schedule = {
         'args':()
     }
 }
-
+'''
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'src.task.cfr_task.cfr_price',
