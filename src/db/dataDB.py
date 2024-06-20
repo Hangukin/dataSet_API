@@ -71,3 +71,9 @@ async def db_select_hotelTable(query):
     data = await prisma.hw_ldgs_list.find_many(where={'CTPRVN_NM': query.ctprvn_nm})
         
     return data
+
+async def db_select_hotelID(query):
+
+    data = await prisma.hotel_duplicates.find_many(where={})
+        
+    return data
