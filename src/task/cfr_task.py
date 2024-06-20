@@ -1,8 +1,5 @@
 import os
 import requests
-#from celery.utils.log import get_task_logger
-from celeryapp.celery_app import celery_app
-from celery.schedules import crontab
 
 import pandas as pd
 import numpy as np
