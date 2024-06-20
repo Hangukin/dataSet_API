@@ -310,11 +310,10 @@ model hotel {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model hotel_duplicates {
+  id            Int     @id @default(autoincrement())
   hotel_id      Int
   hotel_name    String @db.VarChar(200)
   main_hotel_id Int
-
-  @@ignore
 }
 
 model hotel_tb {
