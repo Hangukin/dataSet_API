@@ -7,7 +7,7 @@ import secrets
 from src.apis import apis
 from src.prisma import prisma
 from starlette import status
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi import Depends, FastAPI, HTTPException
 
@@ -25,6 +25,13 @@ app = FastAPI(
         },
 #    docs_url=None,  redoc_url = None, openapi_url = None
 )
+origins = ["https://api.heroworksapi.info"]
+
+app.add_middleware(CORSMiddleware,
+                   allow_origins = origins,
+                   allow_credentials = True,
+                   allow_methods = ['GET','POST'],
+                   allow_headers = ["*"])
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.include_router(apis, prefix="/api")
