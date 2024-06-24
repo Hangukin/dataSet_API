@@ -138,7 +138,6 @@ async def verify_access_token(
     token = authorization.credentials
     try:
         claims = jwt.decode(token, APP_SECRET_STRING, algorithms=["HS256"])
-        print(claims)
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=401,
