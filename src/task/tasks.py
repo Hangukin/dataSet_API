@@ -141,18 +141,20 @@ def cfr_price(self):
     
     radius_hotel = {}
     hotel_radius_df = pd.DataFrame()
-    
+    preprocessed_data['LDGS_LA'] = preprocessed_data['LDGS_LA'].astype(float)
+    preprocessed_data['LDGS_LO'] = preprocessed_data['LDGS_LO'].astype(float)
+
     for ix in range(len(preprocessed_data)):
-        c_name = preprocessed_data['LDGS_NM'][ix]
+        c_id = preprocessed_data['LDGS_ID'][ix]
         lat = preprocessed_data['LDGS_LA'][ix]
         lng = preprocessed_data['LDGS_LO'][ix]
         dist = 2
         cbw = CountByWGS84(preprocessed_data,lat,lng,dist)
         result_radius = cbw.filter_by_radius() # 결과 데이터프레임
-        center = int(result_radius.loc[result_radius['LDGS_NM'] == c_name ]['price'])
+        center = int(result_radius.loc[result_radius['LDGS_ID'] == c_id ]['price'])
         max_result = round(abs(center*0.3+center),0)  # 범위 최고가
         min_result = round(abs(center*0.3-center),0)  # 범위 최저가 
-        A = result_radius[result_radius['LDGS_NM'] ==c_name].index  # 중심 호텔 드랍
+        A = result_radius[result_radius['LDGS_ID'] == c_id].index  # 중심 호텔 드랍
         result_radius.drop(A,axis='index',inplace=True)
         # 1km 내 호텔이 아예 없는 경우 
         if len(result_radius) == 0 :
