@@ -129,7 +129,7 @@ def price_process_file(price, room, hotel):
 def cfr_price(self):
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=1)
-    week_ago = yesterday - timedelta(days=7)
+    week_ago = yesterday - timedelta(days=6)
     
     yesterday = yesterday.strftime("%Y-%m-%d")
     week_ago = week_ago.strftime("%Y-%m-%d")    
