@@ -119,7 +119,7 @@ def local_price_cfr_select(week_ago, yesterday):
     
     sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
-           WHERE booking_date BETWEEN {week_ago} AND {yesterday}; "
+           WHERE booking_date BETWEEN '{week_ago}' AND '{yesterday}'; "
            
     price = LOCAL_DATABASE_CONN(sql)
     
