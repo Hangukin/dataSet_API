@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
+  recursive_type_depth        = "2"
   enable_experimental_decimal = "True"
   interface                   = "asyncio"
-  recursive_type_depth        = "2"
 }
 
 datasource db {
@@ -31,7 +31,7 @@ model HW_CFR_SMR_LDGS_INFO {
   LDGS_LA                               String  @db.VarChar(200)
   LDGS_LO                               String  @db.VarChar(200)
   AVRG_PRC                              Decimal @db.Decimal(28, 5)
-  CFR_LDGS_LIST_CN                      String  @db.VarChar(2000)
+  CFR_LDGS_LIST_CN                      String  @db.VarChar(5000)
   CFR_LDGS_CO                           Decimal @db.Decimal(28, 5)
   CFR_LDGS_MIDDL_SMLT_PRC_LDGS_LIST_CN  String  @db.VarChar(3000)
   CFR_LDGS_MIDDL_SMLT_PRC_LDGS_AVRG_PRC Decimal @db.Decimal(28, 5)
@@ -92,6 +92,20 @@ model HW_LDGS_CFR_RSTRNT_INFO {
   SCCNT_SM_VALUE Decimal @db.Decimal(30, 0)
   DATA_BASE_DE   String  @db.VarChar(8)
   DATA_END_DE    String  @db.VarChar(8)
+}
+
+model HW_LDGS_COUNTRY_REVIEW_SENTIMENT {
+  ID                Int    @id
+  CTY_NM            String @db.VarChar(50)
+  GUGUN_NM          String @db.VarChar(50)
+  EMD_NM            String @db.VarChar(50)
+  LDGMNT_TY_NM      String @db.VarChar(10)
+  INFLOW_COUNTRY_NM String @db.VarChar(50)
+  COMP_TY_NM        String @db.VarChar(50)
+  STAY_YM           String @db.VarChar(50)
+  CRE_DE            String @db.VarChar(50)
+  AFRM_KWRD_CN      String @db.VarChar(2000)
+  NEGA_KWRD_CN      String @db.VarChar(2000)
 }
 
 model HW_LDGS_CSTMR_USE_INFO {
