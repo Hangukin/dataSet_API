@@ -30,6 +30,8 @@ class get_data(BaseModel):
     base_year : t.Optional[str] = None
     base_mt : t.Optional[str] = None
     base_day : t.Optional[str] = None
+    stay_ym : t.Optional[str] = None
+    cty_nm : t.Optional[str] = None
     
 @router.get(
     "/select-db",

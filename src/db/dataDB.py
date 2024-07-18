@@ -49,6 +49,11 @@ async def db_select_DataSet(query):
             'LDGMNT_DE' : query.ldgmnt_de
         })
         return data
+    if query.stay_ym != None:
+        data = await model.find_many(where={
+            'CTY_YM' : query.cty_ym,
+            'STAY_NM' : query.stay_nm
+        })
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
         query_dict = {}
