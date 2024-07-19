@@ -54,6 +54,7 @@ async def db_select_DataSet(query):
             'CTY_NM' : query.cty_nm,
             'STAY_YM' : query.stay_ym
         })
+        return data
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
         query_dict = {}
