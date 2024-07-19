@@ -51,7 +51,7 @@ async def db_select_DataSet(query):
         return data
     if query.stay_ym != None:
         data = await model.find_many(where={
-            'CTY_YM' : query.cty_ym,
+            'CTY_NM' : query.cty_nm,
             'STAY_NM' : query.stay_nm
         })
     
