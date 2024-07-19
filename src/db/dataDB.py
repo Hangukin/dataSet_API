@@ -52,7 +52,7 @@ async def db_select_DataSet(query):
     if query.stay_ym != None:
         data = await model.find_many(where={
             'CTY_NM' : query.cty_nm,
-            'STAY_NM' : query.stay_nm
+            'STAY_YM' : query.stay_ym
         })
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
