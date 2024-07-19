@@ -95,17 +95,17 @@ model HW_LDGS_CFR_RSTRNT_INFO {
 }
 
 model HW_LDGS_COUNTRY_REVIEW_SENTIMENT {
-  ID                Int    @id
-  CTY_NM            String @db.VarChar(50)
-  GUGUN_NM          String @db.VarChar(50)
-  EMD_NM            String @db.VarChar(50)
-  LDGMNT_TY_NM      String @db.VarChar(10)
-  INFLOW_COUNTRY_NM String @db.VarChar(50)
-  COMP_TY_NM        String @db.VarChar(50)
-  STAY_YM           String @db.VarChar(50)
-  CRE_DE            String @db.VarChar(50)
-  AFRM_KWRD_CN      String @db.VarChar(2000)
-  NEGA_KWRD_CN      String @db.VarChar(2000)
+  ID                Int     @id
+  CTY_NM            String  @db.VarChar(50)
+  GUGUN_NM          String  @db.VarChar(50)
+  EMD_NM            String  @db.VarChar(50)
+  LDGMNT_TY_NM      String  @db.VarChar(10)
+  INFLOW_COUNTRY_NM String  @db.VarChar(50)
+  COMP_TY_NM        String  @db.VarChar(50)
+  STAY_YM           String  @db.VarChar(50)
+  CRE_DE            String  @db.VarChar(50)
+  AFRM_KWRD_CN      String? @db.VarChar(2000)
+  NEGA_KWRD_CN      String? @db.VarChar(2000)
 }
 
 model HW_LDGS_CSTMR_USE_INFO {
