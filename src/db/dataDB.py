@@ -46,6 +46,7 @@ async def db_select_DataSet(query):
     
     if query.ldgmnt_de != None:
         data = await model.find_many(where = {
+            'LDGS_ID' : query.ldgs_id,
             'LDGMNT_DE' : query.ldgmnt_de
         })
         return data

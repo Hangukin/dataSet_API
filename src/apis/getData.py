@@ -22,7 +22,8 @@ from src.utils.auth import generate_access_token, generate_refresh_token, refres
 router = APIRouter()
 
 class get_data(BaseModel):
-    data_nm : str  
+    data_nm : str
+    ldgs_id : t.Optional[str] = None
     data_base_de : t.Optional[str] = None # 데이터 수집 기준 -> 기간없는 데이터 
     base_ym : t.Optional[str] = None # 기준년월
     ldgmnt_ym : t.Optional[str] = None # 숙박년월 -> 리뷰 데이터 
