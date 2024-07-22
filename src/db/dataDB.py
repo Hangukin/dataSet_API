@@ -49,11 +49,13 @@ async def db_select_DataSet(query):
             'LDGMNT_DE' : query.ldgmnt_de
         })
         return data
+    
     if query.stay_ym != None:
         data = await model.find_many(where={
             'CTY_NM' : query.cty_nm,
             'STAY_YM' : query.stay_ym
         })
+        
         return data
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
@@ -82,4 +84,14 @@ async def db_select_hotelID(query):
 
     data = await prisma.hotel_duplicates.find_many(where={})
         
+    return data
+
+async def db_select_hw_dail_price(query):
+    data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
+        take = query.page_size,
+        skip = query.skip,
+        cursor={
+            id: query.last_id
+                },
+        )
     return data
