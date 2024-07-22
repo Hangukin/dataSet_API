@@ -96,5 +96,6 @@ async def db_select_hw_dail_price(query):
         cursor={
             id: last_id
                 },
+        where={}
         )
     return data
