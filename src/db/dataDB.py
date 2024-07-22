@@ -94,7 +94,7 @@ async def db_select_hw_dail_price(query):
     data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
         take = query.page_size,
         cursor={
-            id: last_id
+            'id': last_id
                 },
         where={}
         )
