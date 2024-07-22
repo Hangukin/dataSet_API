@@ -87,11 +87,14 @@ async def db_select_hotelID(query):
     return data
 
 async def db_select_hw_dail_price(query):
+    if query.last_id == None:
+        last_id = 1
+    else:
+        last_id = query.last_id
     data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
         take = query.page_size,
-        skip = query.skip,
         cursor={
-            id: query.last_id
+            id: last_id
                 },
         )
     return data
