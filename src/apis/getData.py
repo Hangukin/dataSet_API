@@ -116,8 +116,7 @@ async def selectDB (
 
 class dail_price(BaseModel):
     page_size : int # take
-    skip_id : int 
-    last_id : int
+    last_id : t.Optional[int] = None
     
 @router.get(
     "/select-hw-dail-price",
