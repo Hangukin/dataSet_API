@@ -94,7 +94,7 @@ async def db_select_hw_dail_price(query):
         
     page_size = query.page_size
     page_num = query.page_num
-    last_id = page_size * query.page_num + 1
+    last_id = page_size * (query.page_num-1) + 1
     
     model = getattr(prisma, data_nm)
     
