@@ -115,11 +115,13 @@ async def selectDB (
     return data
 
 class dail_price(BaseModel):
-    page_size : int # take
-    last_id : t.Optional[int] = None
+    data_nm : str # 데이터 명 
+    page_num : int # 입력 페이지  기본 1
+    page_size : t.Optional[int] = 50000
+    
     
 @router.get(
-    "/select-hw-dail-price",
+    "/select-page-data",
     tags=["SELECT"],
     status_code=200,
 )

@@ -87,15 +87,30 @@ async def db_select_hotelID(query):
     return data
 
 async def db_select_hw_dail_price(query):
-    if query.last_id == None:
-        last_id = 1
+    if query.data_nm.isupper():
+        data_nm = query.data_nm.lower()
     else:
-        last_id = query.last_id
-    data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
-        take = query.page_size,
+        data_nm = query.data_nm
+        
+    page_size = query.page_size
+    page_num = query.page_num
+    last_id = page_size * query.page_num + 1
+    
+    model = getattr(prisma, data_nm)
+    
+    row_count = await model.count() # 전체 행 수
+    
+    data = await model.find_many(
+        take = page_size,
         cursor={
             'id': last_id
                 },
         where={}
         )
-    return data
+    
+    return {
+        'total_row_count':row_count,
+        'page_num':page_num,
+        'page_size':page_size,
+        'result': data
+    }
