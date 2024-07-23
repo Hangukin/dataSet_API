@@ -21,7 +21,7 @@ celery_app.conf.update(
     enable_utc=False
 )
 
-
+'''
 celery_app.conf.beat_schedule = {
     'price_processing': {
         'task': 'src.task.tasks.preprocessing_price',
@@ -29,7 +29,7 @@ celery_app.conf.beat_schedule = {
         'args':()
     }
 }
-
+'''
 celery_app.conf.beat_schedule = {
     'cfr_ldgs_processing': {
         'task': 'src.task.tasks.cfr_price',

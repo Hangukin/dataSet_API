@@ -107,7 +107,7 @@ async def db_select_hw_dail_price(query):
                 },
         where={}
         )
-    
+
     return {
         'total_row_count':row_count,
         'page_num':page_num,
