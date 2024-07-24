@@ -87,9 +87,14 @@ async def db_select_hotelID(query):
     return data
 
 async def db_select_hw_dail_price(query):
-    
     table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
-    
-    data = await prisma.query_raw(f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de}")
-
+    if query.last_id == None:
+        data = await prisma.query_raw(
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} ORDER BY id ASC LIMIT 2000;"
+            )
+    else:
+        data = await prisma.query_raw(
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT 2000;"
+            )
+        
     return data
