@@ -1,6 +1,6 @@
 import bcrypt as bcrypt
 from datetime import datetime
-import math
+
 from src.prisma import prisma
 from fastapi import HTTPException
 from src.utils.config import APP_NAME, APP_SECRET_STRING
@@ -87,27 +87,9 @@ async def db_select_hotelID(query):
     return data
 
 async def db_select_hw_dail_price(query):
-    page_size = 100000
-    row_count = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.count() # 전체 행 수
     
-    total_page = math.ceil(row_count/page_size)
+    table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     
-    result_lst = []
-    
-    for page in range(1, total_page+1):
-        last_id = page_size * (page-1) + 1
-        print(last_id, query.ldgmnt_de)
-        try:
-            data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
-                take = page_size,
-                cursor = {'id': last_id},
-                where = { 'LDGMNT_DE' : query.ldgmnt_de }
-                )
-            if len(data) == 0:
-                continue
-            
-            result_lst = result_lst + data
-        except Exception as e:
-            print(e)
+    data = await prisma.query_raw(f"SELECT * FROM {table} use index (primary) WHERE = {query.ldgmnt_de}")
 
-    return result_lst
+    return data

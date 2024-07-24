@@ -115,10 +115,10 @@ async def selectDB (
     return data
 
 class dail_price(BaseModel):
-    ldgmnt_de : str
+    ldgmnt_de : str # 데이터 명 
     
 @router.get(
-    "/select-daily-price",
+    "/select-page-data",
     tags=["SELECT"],
     status_code=200,
 )
@@ -131,14 +131,13 @@ async def selectDB (
             "user_id": payload['user_id']
         }
     )
-    print(exit)
     if not exist:
         raise HTTPException(status_code=404, detail="User not exists")
     
     if not exist.confirmed:
         print('미등록',exist.confirmed)
         raise HTTPException(status_code=401, detail="Not confirmed")
-    print('------------테스트-------------')
+    
     data = await db_select_hw_dail_price(query)
     
     return data
