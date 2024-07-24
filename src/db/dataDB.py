@@ -90,6 +90,6 @@ async def db_select_hw_dail_price(query):
     
     table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     
-    data = await prisma.query_raw(f"SELECT * FROM {table} use index (primary) WHERE = {query.ldgmnt_de}")
+    data = await prisma.query_raw(f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de}")
 
     return data
