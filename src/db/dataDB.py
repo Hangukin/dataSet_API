@@ -90,7 +90,9 @@ async def db_select_hw_dail_price(query):
     table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     
     if query.last_id == None:
-        total_count = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.count(select={'id'}, where={'LDGMNT_DE':query.ldgmnt_de})
+        total_count = await prisma.query_raw(
+            f"SELECT count(*) FROM {table} use index(primary) WHERE LDGMNT_DE = {query.ldgmnt_de}"
+        )
         data = await prisma.query_raw(
             f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} ORDER BY id ASC LIMIT 3000;"
             )
