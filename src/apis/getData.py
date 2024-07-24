@@ -131,13 +131,14 @@ async def selectDB (
             "user_id": payload['user_id']
         }
     )
+    print(exit)
     if not exist:
         raise HTTPException(status_code=404, detail="User not exists")
     
     if not exist.confirmed:
         print('미등록',exist.confirmed)
         raise HTTPException(status_code=401, detail="Not confirmed")
-    
+    print('------------테스트-------------')
     data = await db_select_hw_dail_price(query)
     
     return data
