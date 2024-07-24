@@ -1,6 +1,6 @@
 import bcrypt as bcrypt
 from datetime import datetime
-
+import math
 from src.prisma import prisma
 from fastapi import HTTPException
 from src.utils.config import APP_NAME, APP_SECRET_STRING
@@ -87,30 +87,23 @@ async def db_select_hotelID(query):
     return data
 
 async def db_select_hw_dail_price(query):
-    if query.data_nm.isupper():
-        data_nm = query.data_nm.lower()
-    else:
-        data_nm = query.data_nm
+    page_size = 100000
+    row_count = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.count() # 전체 행 수
+    
+    total_page = math.ceil(row_count/page_size)
+    
+    result_lst = []
+    
+    for page in range(1, total_page+1):
+        last_id = page_size * (query.page_num-1) + 1
+        data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
+            take = page_size,
+            cursor = {'id': last_id},
+            where = { 'LDGMNT_DE' : query.ldgmnt_de }
+            )
+        if len(data) == 0:
+            continue
         
-    page_size = query.page_size
-    page_num = query.page_num
-    last_id = page_size * (query.page_num-1) + 1
-    
-    model = getattr(prisma, data_nm)
-    
-    row_count = await model.count() # 전체 행 수
-    
-    data = await model.find_many(
-        take = page_size,
-        cursor={
-            'id': last_id
-                },
-        where={}
-        )
+        result_lst = result_lst + data
 
-    return {
-        'total_row_count':row_count,
-        'page_num':page_num,
-        'page_size':page_size,
-        'result': data
-    }
+    return result_lst
