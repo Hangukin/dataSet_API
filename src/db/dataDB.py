@@ -96,14 +96,18 @@ async def db_select_hw_dail_price(query):
     
     for page in range(1, total_page+1):
         last_id = page_size * (page-1) + 1
-        data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
-            take = page_size,
-            cursor = {'id': last_id},
-            where = { 'LDGMNT_DE' : query.ldgmnt_de }
-            )
-        if len(data) == 0:
-            continue
-        
-        result_lst = result_lst + data
+        print(last_id, query.ldgmnt_de)
+        try:
+            data = await prisma.hw_ldgs_dail_max_avrg_min_prc_info.find_many(
+                take = page_size,
+                cursor = {'id': last_id},
+                where = { 'LDGMNT_DE' : query.ldgmnt_de }
+                )
+            if len(data) == 0:
+                continue
+            
+            result_lst = result_lst + data
+        except Exception as e:
+            print(e)
 
     return result_lst
