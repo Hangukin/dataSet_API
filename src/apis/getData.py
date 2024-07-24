@@ -115,7 +115,7 @@ async def selectDB (
     return data
 
 class dail_price(BaseModel):
-    ldgmnt_de = str
+    ldgmnt_de : str
     
 @router.get(
     "/select-daily-price",
