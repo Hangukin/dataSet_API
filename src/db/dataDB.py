@@ -48,7 +48,8 @@ async def db_select_DataSet(query):
     
     if query.ldgmnt_de != None:
         table = query.data_nm
-        data = prisma.query_raw(f"SELECT * FROM {table} use index (LDGMNT_DE) WHERE {table}.LDGMNT_DE = {query.ldgmnt_de}")
+        
+        data = await prisma.query_raw(f"SELECT * FROM {table} use index (LDGMNT_DE) WHERE {table}.LDGMNT_DE = {query.ldgmnt_de}")
         
         return data
     
