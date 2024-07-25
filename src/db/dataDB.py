@@ -100,13 +100,13 @@ async def db_select_hw_dail_price(query):
             last_id = 1
         
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {last_id} ORDER BY id ASC LIMIT 5000;"
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {last_id} ORDER BY id ASC LIMIT {query.size};"
             )
         
         result = {'total_count':total_count[0]['total_rows'],'last_id':data[-1]['id'],'result':data}
     else:
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT 5000;"
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT {query.size};"
             )
         
         result = {'last_id':data[-1]['id'], 'result':data}

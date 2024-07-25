@@ -117,6 +117,7 @@ async def selectDB (
 class dail_price(BaseModel):
     ldgmnt_de : str # 데이터 명 
     last_id : t.Optional[int] = None
+    size : t.Optional[int] = 5000
     
 @router.get(
     "/select-page-data",
