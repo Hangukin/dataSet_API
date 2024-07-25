@@ -90,7 +90,7 @@ async def db_select_hotelID(query):
 
 async def db_select_hw_dail_price(query):
     table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
-    if query.last_id == None:
+    if query.last_id == None: # 첫 페이지 호출 시 
         total_count = await prisma.query_raw(
             f"SELECT count(*) as total_rows FROM {table} use index(LDGMNT_DE) WHERE LDGMNT_DE = {query.ldgmnt_de}"
         )
@@ -100,13 +100,13 @@ async def db_select_hw_dail_price(query):
             last_id = 1
         
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {last_id} ORDER BY id ASC LIMIT {query.size};"
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {last_id} ORDER BY id ASC LIMIT 5000;"
             )
         
         result = {'total_count':total_count[0]['total_rows'],'last_id':data[-1]['id'],'result':data}
     else:
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT {query.size};"
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT 5000;"
             )
         
         result = {'last_id':data[-1]['id'], 'result':data}
