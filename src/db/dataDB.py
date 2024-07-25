@@ -47,9 +47,9 @@ async def db_select_DataSet(query):
         return data
     
     if query.ldgmnt_de != None:
-        data = await model.find_many(where = {
-            'LDGMNT_DE' : query.ldgmnt_de
-        })
+        table = query.data_nm
+        data = prisma.query_raw(f"SELECT * FROM {table} use index (LDGMNT_DE) WHERE {table}.LDGMNT_DE = {query.ldgmnt_de}")
+        
         return data
     
     if query.stay_ym != None:
@@ -106,7 +106,7 @@ async def db_select_hw_dail_price(query):
         result = {'total_count':total_count[0]['total_rows'],'last_id':data[-1]['id'],'result':data}
     else:
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = {query.ldgmnt_de} AND id > {query.last_id} ORDER BY id ASC LIMIT 5000;"
+            f"SELECT * FROM {table} use index (primary) WHERE LDGMNT_DE = '{query.ldgmnt_de}' AND id > {query.last_id} ORDER BY id ASC LIMIT 5000;"
             )
         
         result = {'last_id':data[-1]['id'], 'result':data}
