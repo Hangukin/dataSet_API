@@ -94,11 +94,11 @@ async def db_select_hw_dail_price(query):
     
     if query.last_id == None: # 첫 페이지 호출 시 
         total_count = await prisma.query_raw(
-            f"SELECT count(*) as total_rows FROM HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO use index (EXTRC_DE) WHERE LDGMNT_DE = {query.ldgmnt_de};"
+            f"SELECT count(*) as total_rows FROM HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO use index (LDGMNT_DE) WHERE LDGMNT_DE = {query.ldgmnt_de};"
         )
       
         data = await prisma.query_raw(
-            f"SELECT * FROM HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO use index (EXTRC_DE) WHERE LDGMNT_DE = {query.ldgmnt_de} ORDER BY id ASC LIMIT 20000;"
+            f"SELECT * FROM HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO use index (LDGMNT_DE) WHERE LDGMNT_DE = {query.ldgmnt_de} ORDER BY id ASC LIMIT 20000;"
             )
         
         result = {'total_count':total_count[0]['total_rows'],'last_id':data[-1]['id'],'result':data}
