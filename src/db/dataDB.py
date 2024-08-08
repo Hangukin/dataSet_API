@@ -89,7 +89,7 @@ async def db_select_hotelID(query):
         
     return data
 
-# 커밋중 
+
 async def db_select_hw_dail_price(query):
     table = 'HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO'
     if query.last_id == None: # 첫 페이지 호출 시 

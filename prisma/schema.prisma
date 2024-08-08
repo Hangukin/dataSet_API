@@ -1,14 +1,13 @@
 generator client {
   provider                    = "prisma-client-py"
   recursive_type_depth        = "2"
-  enable_experimental_decimal = "True"
   interface                   = "asyncio"
+  enable_experimental_decimal = "True"
 }
 
 datasource db {
   provider = "mysql"
   url      = "mysql://heroworks:gldjfh!@34@211.118.245.195:53306/kto"
-
 }
 
 model HW_AREA_LDGS_KWRD_LIST {
@@ -41,62 +40,8 @@ model HW_CFR_SMR_LDGS_INFO {
   DATA_END_DE                           String  @db.VarChar(8)
 }
 
-model HW_LDGMNT_RATE_STAY_MNT_SPND_PRICE_INFO {
-  id                         Int     @id @default(autoincrement())
-  BASE_YM                    String  @db.VarChar(6)
-  CTY_NM                     String  @db.VarChar(200)
-  GUGUN_NM                   String  @db.VarChar(200)
-  GUGUN_VISITR_CO            Decimal @db.Decimal(28, 5)
-  GUGUN_LDGMNT_VISITR_CO     Decimal @db.Decimal(28, 5)
-  GUGUN_LDGMNT_UTILIIZA_RATE Decimal @db.Decimal(28, 5)
-  GUGUN_STAY_MNT_VALUE       Decimal @db.Decimal(30, 0)
-  GUGUN_TURSM_SPND_PRICE     Decimal @db.Decimal(28, 5)
-  GUGUN_LDGMNT_SPND_PRICE    Decimal @db.Decimal(28, 5)
-  LDGS_MIN_PRC               Decimal @db.Decimal(28, 5)
-  LDGS_CENTR_PRC             Decimal @db.Decimal(28, 5)
-  LDGS_AVRG_PRC              Decimal @db.Decimal(28, 5)
-}
-
-model HW_LDGS_CFR_FCLTY_INFO {
-  id             Int     @id @default(autoincrement())
-  LDGS_ID        Int
-  LDGS_NM        String  @db.VarChar(200)
-  LDGMNT_TY_NM   String? @db.VarChar(200)
-  LDGS_ADDR      String  @db.VarChar(200)
-  CTY_NM         String  @db.VarChar(200)
-  GUGUN_NM       String  @db.VarChar(200)
-  EMD_NM         String  @db.VarChar(200)
-  FCLTY_NM       String  @db.VarChar(200)
-  FCLTY_ADDR     String  @db.VarChar(200)
-  FCLTY_LA       String  @db.VarChar(200)
-  FCLTY_LO       String  @db.VarChar(200)
-  CL_CN          String  @db.VarChar(200)
-  SCCNT_SM_VALUE Decimal @db.Decimal(30, 0)
-  DATA_BASE_DE   String  @db.VarChar(8)
-  DATA_END_DE    String  @db.VarChar(8)
-}
-
-model HW_LDGS_CFR_RSTRNT_INFO {
-  id             Int     @id @default(autoincrement())
-  LDGS_ID        Int
-  LDGS_NM        String  @db.VarChar(200)
-  LDGMNT_TY_NM   String? @db.VarChar(200)
-  LDGS_ADDR      String  @db.VarChar(200)
-  CTY_NM         String  @db.VarChar(200)
-  GUGUN_NM       String  @db.VarChar(200)
-  EMD_NM         String  @db.VarChar(200)
-  RSTRNT_NM      String  @db.VarChar(200)
-  RSTRNT_ADDR    String  @db.VarChar(200)
-  RSTRNT_LA      String  @db.VarChar(200)
-  RSTRNT_LO      String  @db.VarChar(200)
-  CL_CN          String  @db.VarChar(200)
-  SCCNT_SM_VALUE Decimal @db.Decimal(30, 0)
-  DATA_BASE_DE   String  @db.VarChar(8)
-  DATA_END_DE    String  @db.VarChar(8)
-}
-
 model HW_LDGS_COUNTRY_REVIEW_SENTIMENT {
-  ID                Int     @id
+  ID                Int     @id @default(autoincrement())
   CTY_NM            String  @db.VarChar(50)
   GUGUN_NM          String  @db.VarChar(50)
   EMD_NM            String  @db.VarChar(50)
@@ -143,6 +88,9 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
   MAX_PRC      Int
   AVRG_PRC     Int
   MEDIAN_PRC   Int
+
+  @@index([EXTRC_DE], map: "EXTRC_DE")
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
 }
 
 model HW_LDGS_FCLTY_INFO {
@@ -302,6 +250,12 @@ model api_users {
   access_token  String? @unique
   refresh_token String? @unique
   confirmed     Boolean @default(false)
+}
+
+model deleted_rows_log {
+  id           Int       @id @default(autoincrement())
+  deleted_at   DateTime? @default(now()) @db.Timestamp(0)
+  deleted_rows Int?
 }
 
 model hotel {
