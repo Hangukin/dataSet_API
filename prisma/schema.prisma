@@ -1,7 +1,7 @@
 generator client {
   provider                    = "prisma-client-py"
-  recursive_type_depth        = "2"
   interface                   = "asyncio"
+  recursive_type_depth        = "2"
   enable_experimental_decimal = "True"
 }
 
@@ -94,31 +94,29 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
 }
 
 model HW_LDGS_FCLTY_INFO {
-  id                   Int     @id @default(autoincrement())
-  LDGS_ID              Int
-  LDGS_NM              String  @db.VarChar(200)
-  LDGS_ADDR            String  @db.VarChar(200)
-  CTPRVN_NM            String  @db.VarChar(200)
-  GUGUN_NM             String  @db.VarChar(200)
-  EMD_NM               String  @db.VarChar(200)
-  LDGMNT_TY_NM         String? @db.VarChar(200)
-  CFR_LDGS_LIST_CN     String  @db.VarChar(1000)
-  ONE_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
-  TWO_QUARTER_AVRG_PRC Decimal @db.Decimal(28, 5)
-  GSRM_CO              Decimal @db.Decimal(38, 0)
-  PRKPLCE_EXST_AT      String  @db.VarChar(1)
-  RSTRNT_EXST_AT       String  @db.VarChar(1)
-  BAR_AT               String  @db.VarChar(1)
-  CAFE_HOLD_AT         String  @db.VarChar(1)
-  FITNES_CNTER_AT      String  @db.VarChar(1)
-  OUTDOOR_POOL_AT      String  @db.VarChar(1)
-  SPA_AT               String  @db.VarChar(1)
-  SAUNA_AT             String  @db.VarChar(1)
-  BNQTHL_AT            String  @db.VarChar(1)
-  BSINES_CNTER_AT      String  @db.VarChar(1)
-  BEACH_AT             String  @db.VarChar(1)
-  DATA_BASE_DE         String  @db.VarChar(8)
-  DATA_END_DE          String  @db.VarChar(8)
+  id               Int     @id @default(autoincrement())
+  LDGS_ID          Int
+  LDGS_NM          String  @db.VarChar(200)
+  LDGS_ADDR        String  @db.VarChar(200)
+  CTPRVN_NM        String  @db.VarChar(200)
+  GUGUN_NM         String  @db.VarChar(200)
+  EMD_NM           String  @db.VarChar(200)
+  LDGMNT_TY_NM     String? @db.VarChar(200)
+  CFR_LDGS_LIST_CN String  @db.VarChar(1000)
+  GSRM_CO          Decimal @db.Decimal(38, 0)
+  PRKPLCE_EXST_AT  String  @db.VarChar(1)
+  RSTRNT_EXST_AT   String  @db.VarChar(1)
+  BAR_AT           String  @db.VarChar(1)
+  CAFE_HOLD_AT     String  @db.VarChar(1)
+  FITNES_CNTER_AT  String  @db.VarChar(1)
+  OUTDOOR_POOL_AT  String  @db.VarChar(1)
+  SPA_AT           String  @db.VarChar(1)
+  SAUNA_AT         String  @db.VarChar(1)
+  BNQTHL_AT        String  @db.VarChar(1)
+  BSINES_CNTER_AT  String  @db.VarChar(1)
+  BEACH_AT         String  @db.VarChar(1)
+  DATA_BASE_DE     String  @db.VarChar(8)
+  DATA_END_DE      String  @db.VarChar(8)
 }
 
 model HW_LDGS_LIST {
@@ -197,17 +195,18 @@ model HW_LDGS_OTA_USE_LIST_AVRG_SCORE_VARTION_INFO {
 }
 
 model HW_LDGS_PARKING_INFO {
-  id             Int     @id @default(autoincrement())
-  LDGS_ID        Int
-  LDGS_NM        String  @db.VarChar(200)
-  CTPRVN_NM      String  @db.VarChar(200)
-  GUGUN_NM       String  @db.VarChar(200)
-  EMD_NM         String  @db.VarChar(200)
-  LDGS_ADDR      String  @db.VarChar(500)
-  LDGMNT_TY_NM   String? @db.VarChar(200)
-  PARKNG_INFO_CN String  @db.VarChar(500)
-  DATA_BASE_DE   String  @db.VarChar(8)
-  DATA_END_DE    String  @db.VarChar(8)
+  id              Int     @id @default(autoincrement())
+  LDGS_ID         Int
+  LDGS_NM         String  @db.VarChar(200)
+  CTPRVN_NM       String  @db.VarChar(200)
+  GUGUN_NM        String  @db.VarChar(200)
+  EMD_NM          String  @db.VarChar(200)
+  LDGS_ADDR       String  @db.VarChar(500)
+  LDGMNT_TY_NM    String? @db.VarChar(200)
+  PARKNG_POSBL_AT String  @db.VarChar(1)
+  PARKNG_INFO_CN  String  @db.VarChar(500)
+  DATA_BASE_DE    String  @db.VarChar(8)
+  DATA_END_DE     String  @db.VarChar(8)
 }
 
 model HW_LDGS_PET_INFO {
@@ -219,6 +218,7 @@ model HW_LDGS_PET_INFO {
   EMD_NM       String  @db.VarChar(200)
   LDGS_ADDR    String  @db.VarChar(500)
   LDGMNT_TY_NM String? @db.VarChar(200)
+  PET_POSBL_AT String  @db.VarChar(1)
   PET_INFO_CN  String  @db.VarChar(500)
   DATA_BASE_DE String  @db.VarChar(8)
   DATA_END_DE  String  @db.VarChar(8)
