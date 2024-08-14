@@ -32,18 +32,25 @@ async def db_select_DataSet(query):
         data = await model.find_many(where = {
             'DATA_BASE_DE' : query.data_base_de
         })
+        
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        
         return data
     
     if query.base_ym != None:
         data = await model.find_many(where = {
             'BASE_YM' : query.base_ym
         })
+        
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        
         return data
     
     if query.ldgmnt_ym != None:
         data = await model.find_many(where = {
             'LDGMNT_YM' : query.ldgmnt_ym
         })
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
         return data
     
     if query.ldgmnt_de != None:
@@ -58,7 +65,7 @@ async def db_select_DataSet(query):
             'CTY_NM' : query.cty_nm,
             'STAY_YM' : query.stay_ym
         })
-        
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
         return data
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
@@ -74,19 +81,22 @@ async def db_select_DataSet(query):
             
         data = await model.find_many(where = query_dict)
         
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        
         return data
 
 
 async def db_select_hotelTable(query):
 
     data = await prisma.hw_ldgs_list.find_many(where={'CTPRVN_NM': query.ctprvn_nm})
-        
+    
     return data
 
 async def db_select_hotelID(query):
 
     data = await prisma.hotel_duplicates.find_many(where={})
-        
+    data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+    
     return data
 
 
@@ -100,15 +110,19 @@ async def db_select_hw_dail_price(query):
         data = await prisma.query_raw(
             f"SELECT * FROM {table} use index (LDGMNT_DE) WHERE {table}.LDGMNT_DE = '{query.ldgmnt_de}' ORDER BY id ASC LIMIT 20000;"
             )
+        last_id = data[-1]['id']
         
-        result = {'total_count':total_count[0]['total_rows'],'last_id':data[-1]['id'],'result':data}
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        
+        result = {'total_count':total_count[0]['total_rows'],'last_id':last_id,'result':data}
         
     else:
         data = await prisma.query_raw(
             f"SELECT * FROM {table} use index (primary) WHERE {table}.LDGMNT_DE ='{query.ldgmnt_de}' AND id > {query.last_id} ORDER BY id ASC LIMIT 20000;"
             )
-        
-        result = {'last_id':data[-1]['id'], 'result':data}
+        last_id = data[-1]['id']
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        result = {'last_id':last_id, 'result':data}
     
     return result
     
