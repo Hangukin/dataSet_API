@@ -1,7 +1,7 @@
 generator client {
   provider                    = "prisma-client-py"
-  recursive_type_depth        = "2"
   interface                   = "asyncio"
+  recursive_type_depth        = "2"
   enable_experimental_decimal = "True"
 }
 
@@ -72,7 +72,30 @@ model HW_LDGS_CSTMR_USE_INFO {
   BRFT_AT           String  @db.VarChar(1)
 }
 
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
+  id            Int    @id @default(autoincrement())
+  LDGS_ID       Int
+  LDGS_NM       String @db.VarChar(60)
+  CTPRVN_NM     String @db.VarChar(10)
+  GUGUN_NM      String @db.VarChar(10)
+  EMD_NM        String @db.VarChar(12)
+  LDGS_ADDR     String @db.VarChar(50)
+  LDGMNT_TY_NM  String @db.VarChar(10)
+  HOTEL_GRAD_NM String @db.VarChar(2)
+  EXTRC_DE      String @db.VarChar(8)
+  LDGMNT_DE     String @db.VarChar(8)
+  WKDAY_NM      String @db.VarChar(9)
+  MIN_PRC       Int
+  MAX_PRC       Int
+  AVRG_PRC      Int
+  MEDIAN_PRC    Int
+
+  @@index([EXTRC_DE], map: "EXTRC_DE")
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
+}
+
+model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_LEGACY {
   id           Int    @id @default(autoincrement())
   LDGS_ID      Int
   LDGS_NM      String @db.VarChar(200)
@@ -331,27 +354,6 @@ model price_procssed_test_new_1 {
   MAX_PRC       Int?
   AVRG_PRC      Int?
   MEDIAN_PRC    Int?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model price_test_1 {
-  LDGS_ID       BigInt?
-  LDGS_NM       String? @db.Text
-  CTPRVN_NM     String? @db.Text
-  GUGUN_NM      String? @db.Text
-  EMD_NM        String? @db.Text
-  LDGS_ADDR     String? @db.Text
-  LDGMNT_TY_NM  String? @db.Text
-  HOTEL_GRAD_NM String? @db.Text
-  EXTRC_DE      String? @db.Text
-  LDGMNT_DE     String? @db.Text
-  WKDAY_NM      String? @db.Text
-  MIN_PRC       BigInt?
-  MAX_PRC       BigInt?
-  AVRG_PRC      BigInt?
-  MEDIAN_PRC    BigInt?
 
   @@ignore
 }
