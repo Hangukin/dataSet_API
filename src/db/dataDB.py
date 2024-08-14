@@ -42,7 +42,7 @@ async def db_select_DataSet(query):
             'BASE_YM' : query.base_ym
         })
         
-        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
         
         return data
     
@@ -50,7 +50,7 @@ async def db_select_DataSet(query):
         data = await model.find_many(where = {
             'LDGMNT_YM' : query.ldgmnt_ym
         })
-        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
         return data
     
     if query.ldgmnt_de != None:
@@ -65,7 +65,7 @@ async def db_select_DataSet(query):
             'CTY_NM' : query.cty_nm,
             'STAY_YM' : query.stay_ym
         })
-        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
         return data
     
     if query.base_year != None or query.base_mt != None or query.base_day != None:
@@ -81,7 +81,7 @@ async def db_select_DataSet(query):
             
         data = await model.find_many(where = query_dict)
         
-        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
         
         return data
 
@@ -95,7 +95,7 @@ async def db_select_hotelTable(query):
 async def db_select_hotelID(query):
 
     data = await prisma.hotel_duplicates.find_many(where={})
-    data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+    data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
     
     return data
 
