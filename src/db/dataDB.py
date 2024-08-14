@@ -33,7 +33,7 @@ async def db_select_DataSet(query):
             'DATA_BASE_DE' : query.data_base_de
         })
         
-        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
         
         return data
     
