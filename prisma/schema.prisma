@@ -230,20 +230,22 @@ model HW_LDGS_PET_INFO {
 }
 
 model HW_LDGS_REVIEW_STANL_RESULT {
-  id                 Int     @id @default(autoincrement())
-  LDGS_ID            Int
-  LDGS_NM            String  @db.VarChar(200)
-  LDGS_ADDR          String? @db.VarChar(200)
-  CTY_NM             String? @db.VarChar(200)
-  GUGUN_NM           String? @db.VarChar(200)
-  EMD_NM             String? @db.VarChar(200)
-  LDGMNT_TY_NM       String? @db.VarChar(200)
-  AFRM_KWRD_CN       String  @db.VarChar(1000)
-  AFRM_WGHTVAL_SCORE String  @db.VarChar(1000)
-  NEGA_KWRD_CN       String  @db.VarChar(1000)
-  NEGA_WGHTVAL_SCORE String  @db.VarChar(1000)
-  DATA_BASE_DE       String  @db.VarChar(8)
-  DATA_END_DE        String  @db.VarChar(8)
+  id           Int     @id @default(autoincrement())
+  LDGS_ID      Int
+  LDGS_NM      String  @db.VarChar(200)
+  LDGS_ADDR    String? @db.VarChar(200)
+  CTY_NM       String? @db.VarChar(200)
+  GUGUN_NM     String? @db.VarChar(200)
+  EMD_NM       String? @db.VarChar(200)
+  LDGMNT_TY_NM String? @db.VarChar(200)
+  AFRM_KWRD_CN String  @db.VarChar(500)
+  AFRM_KWRD_CO String  @db.VarChar(500)
+  NEGA_KWRD_CN String  @db.VarChar(500)
+  NEGA_KWRD_CO String  @db.VarChar(500)
+  NEUT_KWRD_CN String  @db.VarChar(500)
+  NEUT_KWRD_CO String  @db.VarChar(500)
+  DATA_BASE_DE String  @db.VarChar(8)
+  DATA_END_DE  String  @db.VarChar(8)
 }
 
 model api_users {
@@ -327,27 +329,6 @@ model price_procssed_test_new_1 {
   LDGS_ADDR     String? @db.Text
   LDGMNT_TY_NM  String? @db.Text
   HOTEL_GRAD_NM String? @db.Text
-  EXTRC_DE      String? @db.Text
-  LDGMNT_DE     String? @db.Text
-  WKDAY_NM      String? @db.Text
-  MIN_PRC       Int?
-  MAX_PRC       Int?
-  AVRG_PRC      Int?
-  MEDIAN_PRC    Int?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model room_price_test {
-  LDGS_ID       BigInt?
-  LDGS_NM       String? @db.Text
-  LDGMNT_TY_NM  String? @db.Text
-  HOTEL_GRAD_NM String? @db.Text
-  CTPRVN_NM     String? @db.Text
-  GUGUN_NM      String? @db.Text
-  EMD_NM        String? @db.Text
-  LDGS_ADDR     String? @db.Text
   EXTRC_DE      String? @db.Text
   LDGMNT_DE     String? @db.Text
   WKDAY_NM      String? @db.Text
