@@ -160,7 +160,7 @@ def cfr_price(self):
         if len(result_radius) == 0 :
             radius_hotel['LDGS_ID'] = preprocessed_data['LDGS_ID'][ix]
             radius_hotel['LDGS_NM'] = preprocessed_data['LDGS_NM'][ix]
-            radius_hotel['LDGSMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
+            radius_hotel['LDGMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
             radius_hotel['LDGS_ADDR'] = preprocessed_data['LDGS_ROAD_ADDR'][ix]
             radius_hotel['CTY_NM'] = preprocessed_data['CTPRVN_NM'][ix]
             radius_hotel['GUGUN_NM'] = preprocessed_data['GUGUN_NM'][ix]
@@ -179,7 +179,7 @@ def cfr_price(self):
         else :
             radius_hotel['LDGS_ID'] = preprocessed_data['LDGS_ID'][ix]
             radius_hotel['LDGS_NM'] = preprocessed_data['LDGS_NM'][ix]
-            radius_hotel['LDGSMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
+            radius_hotel['LDGMNT_TY_NM'] = preprocessed_data['LDGMNT_TY_NM'][ix]
             radius_hotel['LDGS_ADDR'] = preprocessed_data['LDGS_ROAD_ADDR'][ix]
             radius_hotel['CTY_NM'] = preprocessed_data['CTPRVN_NM'][ix]
             radius_hotel['GUGUN_NM'] = preprocessed_data['GUGUN_NM'][ix]

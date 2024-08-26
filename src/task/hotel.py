@@ -24,24 +24,24 @@ from dotenv import load_dotenv
 def load_hotel_data():
     
     # SQL 쿼리 실행
-    sql = "SELECT id as LDGS_ID, name as LDGS_NM  FROM hotel"
-    hotel = LOCAL_DATABASE_CONN(sql)
+    sql = 'SELECT * FROM HW_LDGS_LIST'
+    hotels = API_DATABASE_CONN(sql)
     #hotel['LDGS_ROAD_ADDR'] = hotel['LDGS_ROAD_ADDR'].str.lstrip()
     #hotel['LDGS_ADDR'] = hotel['LDGS_ADDR'].str.lstrip()
-    preprocessed_hotel = preprocess_hotel_data(hotel)
+    preprocessed_hotel = hotels.iloc[:,[0,1,2,5,6,7,8,10,-2,-1]]
     
     return preprocessed_hotel
 
 def load_room_data():
 
     # SQL 쿼리 실행
-    sql = "SELECT hotel.name as LDGS_NM, room.hotel_id as LDGS_ID, room.id as room_id, room.name as room_name, room.ota_type, room.created_at, room.updated_at FROM room INNER JOIN hotel ON room.hotel_id = hotel.id"
+    sql = 'SELECT id as room_id, hotel_id as LDGS_ID FROM room;'
     
     room = LOCAL_DATABASE_CONN(sql)
     
     return room
 
-
+'''
 def preprocess_hotel_data(hotel):
     # hotel 데이터프레임 복사
     hotel_copy = hotel.copy()
@@ -113,10 +113,10 @@ def preprocess_hotel_data(hotel):
         default='해외'
     )
     # regino_sigugun 생성
-    '''
+    
     hotel_copy['gugun_nm'] = hotel_copy['addr'].str.split(' ').str[1]
     hotel_copy['emd_nm'] = hotel_copy['addr'].str.split(' ').str[2]
-    '''
+    
     hotel_rec = hotel_rec[hotel_rec['REGION']!='해외'].reset_index(drop=True) #해외 호텔 제거
     # 필요한 컬럼만 선택
     # hotel_rec = hotel_rec[['LDGS_ID','LDGS_NM', 'LDGS_ADDR','LDGS_ROAD_ADDR','REGION', 'LDGS_LA', 'LDGS_LO']]
@@ -136,7 +136,7 @@ def preprocess_hotel_data(hotel):
     # 결측치 처리
     hotel_rec['RATING'].fillna(value='미등급', inplace=True)
     hotel_rec.fillna(value='미분류', inplace=True)
-    '''
+    
     # 호텔 이름 매핑
     mapping = {
         'D호텔': '울산호텔',
@@ -147,17 +147,18 @@ def preprocess_hotel_data(hotel):
         'A호텔': '하이호텔펜션'}
     
     hotel_rec['hotel_name'] = hotel_rec['hotel_name'].map(mapping).fillna(hotel_rec['hotel_name'])
-    '''
+    
     # 호텔 이름 정제
     hotel_rec['LDGS_NM'] = hotel_rec['LDGS_NM'].apply(lambda x: re.sub(r'[^a-zA-Z0-9가-힣]', '', str(x)))
     
-    '''
+    
     # 최신 lat, lng 업데이트 2024_04_22 버젼 
     lodging3 = pd.read_csv('C:/Users/user/Work/hero_master/lodging/updated_cor_hotel.csv', index_col=0)
     lodging = lodging.drop(['lat','lng'], axis=1)
     lodging = pd.merge(lodging,lodging3, how='left', on='hotel_id')
-    '''
+    
     return hotel_rec
+'''
 
 def kakao_local_api(lat,lng):
     if lat == 0 or lng == 0:

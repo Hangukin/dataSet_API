@@ -34,20 +34,22 @@ def preprocess_price(price, room, hotel):
     rooms = room[['room_id', 'LDGS_ID']]
     # 호텔테이블 로드
     # 지역변수 붙이기
-    df = pd.merge(price, rooms, how='inner',on=['room_id'])
-    df = pd.merge(df, hotel[['LDGS_ID','LDGS_NM','LDGS_ROAD_ADDR','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_LA','LDGS_LO','REGION',]], how='inner',on='LDGS_ID')
+    df = pd.merge(price, rooms,on=['room_id'])
+    df = pd.merge(df, hotel, how='inner',on='LDGS_ID')
     try:
         df = df.groupby('REGION').apply(filter_quantiles).reset_index(drop=True)
     except Exception as e:
         print("An error occurred during quantile calculation and filtering:", str(e))
-        
-    total_df = df.groupby(['LDGS_ID','LDGS_NM','LDGS_ROAD_ADDR','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_LA','LDGS_LO']).mean('price').reset_index()
-    total_df = total_df[['LDGS_ID','LDGS_NM','LDGS_ROAD_ADDR','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_LA','LDGS_LO','price']]
+    
+    df = df.drop('REGION',axis=1)
+    
+    total_df = df.groupby(['LDGS_ID','LDGS_NM','LDGMNT_TY_NM','LDGS_ROAD_ADDR','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_LA','LDGS_LO']).mean('price').reset_index()
+    total_df = total_df[['LDGS_ID','LDGS_NM','LDGMNT_TY_NM','LDGS_ROAD_ADDR','CTPRVN_NM','GUGUN_NM','EMD_NM','LDGS_LA','LDGS_LO','price']]
     total_df['price'] = total_df['price'].round()
     
-    ldgs_list = ldgs_list_select()
-    ldgs_ty_df = ldgs_list[['LDGS_ID','LDGMNT_TY_NM']]
-    total_df = pd.merge(total_df,ldgs_ty_df,on='LDGS_ID',how='left')
+    #ldgs_list = ldgs_list_select()
+    #ldgs_ty_df = ldgs_list[['LDGS_ID','LDGMNT_TY_NM']]
+    #total_df = pd.merge(total_df,ldgs_ty_df,on='LDGS_ID',how='left')
     total_df.fillna('-',inplace=True)
     
     for idx in total_df[total_df['LDGS_LA']==0].index:
