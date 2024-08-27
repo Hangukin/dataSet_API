@@ -215,6 +215,11 @@ def cfr_price(self):
     
     hotel_radius_df['DATA_BASE_DE'] = week_ago.replace('-','')
     hotel_radius_df['DATA_END_DE'] = yesterday.replace('-','')
+    hotel_radius_df['DATA_BASE_DE'] = hotel_radius_df['DATA_BASE_DE'].astype(str)
+    hotel_radius_df['DATA_END_DE'] = hotel_radius_df['DATA_END_DE'].astype(str)
+    hotel_radius_df['LDGS_LA'] = hotel_radius_df['LDGS_LA'].astype(str)
+    hotel_radius_df['LDGS_LO'] = hotel_radius_df['LDGS_LO'].astype(str)
+    hotel_radius_df['CFR_LDGS_LIST_CN'] = hotel_radius_df['CFR_LDGS_LIST_CN'].astype(str)
     
     result_dict = hotel_radius_df.to_dict(orient='records')
     datanm = 'HW_CFR_SMR_LDGS_INFO'
