@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
+  enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
   interface                   = "asyncio"
-  enable_experimental_decimal = "True"
 }
 
 datasource db {
@@ -260,9 +260,9 @@ model HW_RV_DT_TABLE {
   GSRM_CO        Int?
   MARKET         String? @db.VarChar(10)
   REGION         String  @db.VarChar(15)
-  CTPRVN_NM      String  @db.VarChar(45)
-  GUGUN_NM       String  @db.VarChar(10)
-  EMD_NM         String  @db.VarChar(10)
+  CTPRVN_NM      String  @db.VarChar(50)
+  GUGUN_NM       String  @db.VarChar(30)
+  EMD_NM         String  @db.VarChar(30)
   LDGS_ADDR      String  @db.VarChar(200)
   LDGS_ROAD_ADDR String  @db.VarChar(200)
   LDGS_LA        String  @db.VarChar(20)
@@ -287,6 +287,7 @@ model deleted_rows_log {
   id           Int       @id @default(autoincrement())
   deleted_at   DateTime? @default(now()) @db.Timestamp(0)
   deleted_rows Int?
+  
   @@ignore
 }
 
