@@ -248,6 +248,30 @@ model HW_LDGS_REVIEW_STANL_RESULT {
   DATA_END_DE  String  @db.VarChar(8)
 }
 
+model HW_RV_DT_TABLE {
+  id             Int     @id
+  rv_id          Int
+  dt_id          Int
+  LDGS_ID        Int
+  LDGS_NM        String  @db.VarChar(50)
+  LDGMNT_TY_NM   String  @db.VarChar(10)
+  CATEGORY       String? @db.VarChar(30)
+  RATING         String? @db.VarChar(10)
+  GSRM_CO        Int?
+  MARKET         String? @db.VarChar(10)
+  REGION         String  @db.VarChar(15)
+  CTPRVN_NM      String  @db.VarChar(45)
+  GUGUN_NM       String  @db.VarChar(10)
+  EMD_NM         String  @db.VarChar(10)
+  LDGS_ADDR      String  @db.VarChar(200)
+  LDGS_ROAD_ADDR String  @db.VarChar(200)
+  LDGS_LA        String  @db.VarChar(20)
+  LDGS_LO        String  @db.VarChar(20)
+  CERT_INST      String? @db.VarChar(45)
+  CERT_DATE      String? @db.VarChar(45)
+  CERT_AT        String? @db.VarChar(1)
+}
+
 model api_users {
   id            Int     @id @default(autoincrement())
   user_id       String? @unique
@@ -263,7 +287,7 @@ model deleted_rows_log {
   id           Int       @id @default(autoincrement())
   deleted_at   DateTime? @default(now()) @db.Timestamp(0)
   deleted_rows Int?
-  @@ignore
+    @@ignore
 }
 
 model hotel {
