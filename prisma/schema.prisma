@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
+  interface                   = "asyncio"
   enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
-  interface                   = "asyncio"
 }
 
 datasource db {
@@ -230,22 +230,24 @@ model HW_LDGS_PET_INFO {
 }
 
 model HW_LDGS_REVIEW_STANL_RESULT {
-  id           Int     @id @default(autoincrement())
-  LDGS_ID      Int
-  LDGS_NM      String  @db.VarChar(200)
-  LDGS_ADDR    String? @db.VarChar(200)
-  CTY_NM       String? @db.VarChar(200)
-  GUGUN_NM     String? @db.VarChar(200)
-  EMD_NM       String? @db.VarChar(200)
-  LDGMNT_TY_NM String? @db.VarChar(200)
-  AFRM_KWRD_CN String  @db.VarChar(500)
-  AFRM_KWRD_CO String  @db.VarChar(500)
-  NEGA_KWRD_CN String  @db.VarChar(500)
-  NEGA_KWRD_CO String  @db.VarChar(500)
-  NEUT_KWRD_CN String  @db.VarChar(500)
-  NEUT_KWRD_CO String  @db.VarChar(500)
-  DATA_BASE_DE String  @db.VarChar(8)
-  DATA_END_DE  String  @db.VarChar(8)
+  id                Int     @id @default(autoincrement())
+  LDGS_ID           Int
+  LDGS_NM           String  @db.VarChar(200)
+  LDGS_ADDR         String? @db.VarChar(200)
+  CTY_NM            String? @db.VarChar(200)
+  GUGUN_NM          String? @db.VarChar(200)
+  EMD_NM            String? @db.VarChar(200)
+  LDGMNT_TY_NM      String? @db.VarChar(200)
+  INFLOW_COUNTRY_NM String  @db.VarChar(50)
+  COMP_TY_NM        String  @db.VarChar(20)
+  AFRM_KWRD_CN      String  @db.VarChar(500)
+  AFRM_KWRD_CO      String  @db.VarChar(500)
+  NEGA_KWRD_CN      String  @db.VarChar(500)
+  NEGA_KWRD_CO      String  @db.VarChar(500)
+  NEUT_KWRD_CN      String  @db.VarChar(500)
+  NEUT_KWRD_CO      String  @db.VarChar(500)
+  DATA_BASE_DE      String  @db.VarChar(8)
+  DATA_END_DE       String  @db.VarChar(8)
 }
 
 model HW_RV_DT_TABLE {
@@ -287,7 +289,6 @@ model deleted_rows_log {
   id           Int       @id @default(autoincrement())
   deleted_at   DateTime? @default(now()) @db.Timestamp(0)
   deleted_rows Int?
-  
   @@ignore
 }
 
