@@ -34,7 +34,7 @@ celery_app.conf.beat_schedule = {
 celery_app.conf.beat_schedule = {
     'cfr_ldgs_processing': {
         'task': 'src.task.tasks.cfr_price',
-        'schedule': crontab(hour=21,minute=0,day_of_week='monday'),
+        'schedule': crontab(hour=21,minute=0, day_of_week='monday'),
         'args':()
     }
 }
