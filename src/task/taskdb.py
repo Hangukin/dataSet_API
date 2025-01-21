@@ -117,7 +117,7 @@ def local_price_select(booked_date):
 ## 로컬 DB 가격데이터 불러오기 범위
 def local_price_cfr_select(week_ago, yesterday):
     
-    sql = f"SELECT room_id, booking_date, scanned_date, stay_price as price, stay_remain \
+    sql = f"SELECT room_id, hotel_id as LDGS_ID, booking_date, scanned_date, stay_price as price, stay_remain \
            FROM room_price \
            WHERE booking_date BETWEEN '{week_ago}' AND '{yesterday}'; "
            

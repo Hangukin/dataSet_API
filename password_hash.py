@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # details on rabbitMQ password hashing
+#!/usr/bin/env python
+# details on rabbitMQ password hashing 
 # https://www.rabbitmq.com/passwords.html#computing-password-hash
 
 from __future__ import print_function
@@ -33,5 +35,4 @@ salted_hash = salt + tmp1
 # 5. convert to base64 encoding:
 pass_hash = base64.b64encode(salted_hash)
 
-print(pass_hash.decode("utf-8"))
 print(pass_hash)

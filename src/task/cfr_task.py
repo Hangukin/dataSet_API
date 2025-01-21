@@ -25,17 +25,17 @@ def filter_quantiles(group):
     q_hi = group['price'].quantile(0.99)
     return group[(group['price'] > q_low) & (group['price'] < q_hi)]
 
-def preprocess_price(price, room, hotel):
+def preprocess_price(price, hotel):
     # remian 1 보다 크면 전부다 1로 바꾸기
     price.loc[price['stay_remain'] > 1, 'stay_remain'] = 1
     if (price['price'] == 0).any():
         price = price.query('price != 0')
         
-    rooms = room[['room_id', 'LDGS_ID']]
+    #rooms = room[['room_id', 'LDGS_ID']]
     # 호텔테이블 로드
     # 지역변수 붙이기
-    df = pd.merge(price, rooms,on=['room_id'])
-    df = pd.merge(df, hotel, how='inner',on='LDGS_ID')
+    #df = pd.merge(price, rooms,on=['room_id'])
+    df = pd.merge(price, hotel, how='inner',on='LDGS_ID')
     try:
         df = df.groupby('REGION').apply(filter_quantiles).reset_index(drop=True)
     except Exception as e:

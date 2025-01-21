@@ -135,9 +135,9 @@ def cfr_price(self):
     week_ago = week_ago.strftime("%Y-%m-%d")    
     
     hotel_data = load_hotel_data()
-    room_data = load_room_data()
+    #room_data = load_room_data()
     price_data = local_price_cfr_select(week_ago, yesterday)
-    preprocessed_data = preprocess_price(price_data, room_data, hotel_data)
+    preprocessed_data = preprocess_price(price_data, hotel_data)
     
     radius_hotel = {}
     hotel_radius_df = pd.DataFrame()

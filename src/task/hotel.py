@@ -32,6 +32,7 @@ def load_hotel_data():
     
     return preprocessed_hotel
 
+'''
 def load_room_data():
 
     # SQL 쿼리 실행
@@ -41,7 +42,7 @@ def load_room_data():
     
     return room
 
-'''
+
 def preprocess_hotel_data(hotel):
     # hotel 데이터프레임 복사
     hotel_copy = hotel.copy()
