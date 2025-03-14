@@ -118,7 +118,7 @@ async def db_select_hw_dail_price(query):
         
     else:
         data = await prisma.query_raw(
-            f"SELECT * FROM {table} use index (primary) WHERE {table}.LDGMNT_DE ='{query.ldgmnt_de}' AND id > {query.last_id} ORDER BY id ASC LIMIT 20000;"
+            f"SELECT * FROM {table} WHERE {table}.LDGMNT_DE ='{query.ldgmnt_de}' AND id > {query.last_id} ORDER BY id ASC LIMIT 20000;"
             )
         last_id = data[-1]['id']
         data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
