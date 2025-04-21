@@ -30,7 +30,7 @@ celery_app.conf.beat_schedule = {
     }
 }
 '''
-
+'''
 celery_app.conf.beat_schedule = {
     'cfr_ldgs_processing': {
         'task': 'src.task.tasks.cfr_price',
@@ -39,3 +39,4 @@ celery_app.conf.beat_schedule = {
     }
 }
 
+'''
