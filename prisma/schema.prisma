@@ -97,7 +97,7 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/*
+
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_20250316 {
   id            Int    @id @default(autoincrement())
   LDGS_ID       Int
@@ -119,9 +119,9 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_20250316 {
   @@index([EXTRC_DE], map: "EXTRC_DE")
   @@index([LDGMNT_DE], map: "LDGMNT_DE")
 }
-*/
+
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/*
+
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_old {
   id            Int    @id @default(autoincrement())
   LDGS_ID       Int
@@ -143,7 +143,7 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_old {
   @@index([EXTRC_DE], map: "EXTRC_DE")
   @@index([LDGMNT_DE], map: "LDGMNT_DE")
 }
-*/
+
 model HW_LDGS_FCLTY_INFO {
   id               Int     @id @default(autoincrement())
   LDGS_ID          Int
