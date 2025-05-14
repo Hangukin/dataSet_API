@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
-  interface                   = "asyncio"
   enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
+  interface                   = "asyncio"
 }
 
 datasource db {
@@ -96,6 +96,54 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
   @@index([LDGMNT_DE], map: "LDGMNT_DE")
 }
 
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/*
+model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_20250316 {
+  id            Int    @id @default(autoincrement())
+  LDGS_ID       Int
+  LDGS_NM       String @db.VarChar(60)
+  CTPRVN_NM     String @db.VarChar(10)
+  GUGUN_NM      String @db.VarChar(10)
+  EMD_NM        String @db.VarChar(12)
+  LDGS_ADDR     String @db.VarChar(50)
+  LDGMNT_TY_NM  String @db.VarChar(10)
+  HOTEL_GRAD_NM String @db.VarChar(2)
+  EXTRC_DE      String @db.VarChar(8)
+  LDGMNT_DE     String @db.VarChar(8)
+  WKDAY_NM      String @db.VarChar(9)
+  MIN_PRC       Int
+  MAX_PRC       Int
+  AVRG_PRC      Int
+  MEDIAN_PRC    Int
+
+  @@index([EXTRC_DE], map: "EXTRC_DE")
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
+}
+*/
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/*
+model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_old {
+  id            Int    @id @default(autoincrement())
+  LDGS_ID       Int
+  LDGS_NM       String @db.VarChar(60)
+  CTPRVN_NM     String @db.VarChar(10)
+  GUGUN_NM      String @db.VarChar(10)
+  EMD_NM        String @db.VarChar(12)
+  LDGS_ADDR     String @db.VarChar(50)
+  LDGMNT_TY_NM  String @db.VarChar(10)
+  HOTEL_GRAD_NM String @db.VarChar(2)
+  EXTRC_DE      String @db.VarChar(8)
+  LDGMNT_DE     String @db.VarChar(8)
+  WKDAY_NM      String @db.VarChar(9)
+  MIN_PRC       Int
+  MAX_PRC       Int
+  AVRG_PRC      Int
+  MEDIAN_PRC    Int
+
+  @@index([EXTRC_DE], map: "EXTRC_DE")
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
+}
+*/
 model HW_LDGS_FCLTY_INFO {
   id               Int     @id @default(autoincrement())
   LDGS_ID          Int
@@ -120,6 +168,19 @@ model HW_LDGS_FCLTY_INFO {
   BEACH_AT         String  @db.VarChar(1)
   DATA_BASE_DE     String  @db.VarChar(8)
   DATA_END_DE      String  @db.VarChar(8)
+}
+
+model HW_LDGS_LEAD_TIME_AVRG_PRC_INFO {
+  id              Int      @id @default(autoincrement())
+  CTPRVN_NM       String   @db.VarChar(50)
+  GUGUN_NM        String   @db.VarChar(50)
+  LDGS_GRAD       String   @db.VarChar(10)
+  LDGMNT_DE       String   @db.VarChar(8)
+  LEAD_TIME_RANGE String   @db.VarChar(5)
+  LDGS_CO         Int?
+  ROOM_CO         Int?
+  AVRG_PRC        Decimal? @db.Decimal(28, 5)
+  MEDIAN_PRC      Decimal? @db.Decimal(28, 5)
 }
 
 model HW_LDGS_LIST {
@@ -289,7 +350,6 @@ model deleted_rows_log {
   id           Int       @id @default(autoincrement())
   deleted_at   DateTime? @default(now()) @db.Timestamp(0)
   deleted_rows Int?
-  @@ignore
 }
 
 model hotel {
@@ -343,25 +403,4 @@ model hotel_tb {
   cert_at    String    @db.VarChar(1)
   created_at DateTime? @default(now()) @db.DateTime(0)
   updated_at DateTime? @default(now()) @db.DateTime(0)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model price_procssed_test_new_1 {
-  LDGS_ID       Int?
-  LDGS_NM       String? @db.Text
-  CTPRVN_NM     String? @db.Text
-  GUGUN_NM      String? @db.Text
-  EMD_NM        String? @db.Text
-  LDGS_ADDR     String? @db.Text
-  LDGMNT_TY_NM  String? @db.Text
-  HOTEL_GRAD_NM String? @db.Text
-  EXTRC_DE      String? @db.Text
-  LDGMNT_DE     String? @db.Text
-  WKDAY_NM      String? @db.Text
-  MIN_PRC       Int?
-  MAX_PRC       Int?
-  AVRG_PRC      Int?
-  MEDIAN_PRC    Int?
-
-  @@ignore
 }
