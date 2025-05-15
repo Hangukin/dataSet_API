@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
+  interface                   = "asyncio"
   enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
-  interface                   = "asyncio"
 }
 
 datasource db {
@@ -97,7 +97,6 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO {
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_20250316 {
   id            Int    @id @default(autoincrement())
   LDGS_ID       Int
@@ -121,7 +120,6 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_20250316 {
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-
 model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_old {
   id            Int    @id @default(autoincrement())
   LDGS_ID       Int
@@ -175,12 +173,14 @@ model HW_LDGS_LEAD_TIME_AVRG_PRC_INFO {
   CTPRVN_NM       String   @db.VarChar(50)
   GUGUN_NM        String   @db.VarChar(50)
   LDGS_GRAD       String   @db.VarChar(10)
-  LDGMNT_DE       String   @db.VarChar(8)
+  LDGMNT_DE       String   @db.VarChar(20)
   LEAD_TIME_RANGE String   @db.VarChar(5)
   LDGS_CO         Int?
   ROOM_CO         Int?
   AVRG_PRC        Decimal? @db.Decimal(28, 5)
   MEDIAN_PRC      Decimal? @db.Decimal(28, 5)
+
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
 }
 
 model HW_LDGS_LIST {
