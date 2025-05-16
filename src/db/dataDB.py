@@ -58,7 +58,7 @@ async def db_select_DataSet(query):
         
         data = await prisma.query_raw(f"SELECT * FROM {table} WHERE {table}.LDGMNT_DE = '{query.ldgmnt_de}'")
         
-        data = [{k: v for k, v in item.__dict__.items() if k != 'id'} for item in data]
+        data = [{k: v for k, v in item.items() if k != 'id'} for item in data]
         
         return data
     
