@@ -18,7 +18,7 @@ import numpy as np
 import re
 #plt.rcParams['font.family'] = 'Malgun Gothic'
 
-from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, API_DATABASE_CONN
+from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, API_DATABASE_CONN, PRC_DATABASE_CONN
 from dotenv import load_dotenv
 
 def load_hotel_data():
@@ -32,6 +32,16 @@ def load_hotel_data():
     
     return preprocessed_hotel
 
+def load_hotel_tb():
+    sql = 'SELECT hotel_id, hotel_name, b_type, rating, region,sd, sgg, emd, road_addr FROM hotel_tb'
+    hotels = PRC_DATABASE_CONN(sql)
+    # 1. b_type 필터
+    hotel_tb = hotel_tb[~hotel_tb['b_type'].isin(['Camp', 'GuestHouse'])]
+
+    # 2. hotel_name 필터 (제외할 키워드 목록)
+    exclude_keywords = ['게스트하우스', '민박', '캠프', '펜션', '유스', '사랑채', '독채', '풀빌라']
+    pattern = '|'.join(exclude_keywords)
+    hotel_tb = hotel_tb[~hotel_tb['hotel_name'].str.contains(pattern)].reset_index(drop=True)
 
 def load_room_data():
 

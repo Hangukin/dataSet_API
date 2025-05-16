@@ -9,15 +9,72 @@ import numpy as np
 import json
 
 from src.prisma import prisma
-from src.task.hotel import load_room_data, load_hotel_data
+from src.task.hotel import load_room_data, load_hotel_data, load_hotel_tb
 #from src.db.dataDB import db_push_price_data
 from src.task.cfr_task import preprocess_price, CountByWGS84
-from src.task.taskdb import AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, call_api,  local_price_select, local_price_cfr_select
+from src.task.taskdb import PRC_DATABASE_CONN, AWS_DATABASE_CONN, LOCAL_DATABASE_CONN, call_api,  local_price_select, local_price_cfr_select, yesterday_price_select
+from src.task.preprocessed import calculate_lead_time, preprocess_with_hotel, region_full_lead_time
 from datetime import datetime, timedelta
 import pytz
 import asyncio
 from dotenv import load_dotenv
 
+@celery_app.task(bind=True)
+def preprocessing_region_price(self):
+    now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
+    yesterday = now - timedelta(days=1)
+    hotel_tb = load_hotel_tb()
+    price_df = yesterday_price_select(yesterday)
+    if 'created_at' in price_df.columns:
+        price_df = price_df.drop('created_at',axis = 1)
+    price_df = price_df[price_df['stay_remain']>0]
+    price_df = price_df[price_df['stay_price']<=15000000]
+    
+    price_df = calculate_lead_time(price_df)
+    
+    price_df = pd.merge(hotel_tb.iloc[:,[0,2,3,4,5,6]], price_df, on='hotel_id').reset_index(drop=True)
+    
+    total_region = region_full_lead_time(hotel_tb, price_df)
+    
+    price_df = preprocess_with_hotel(price_df)
+    
+    price_df = price_df[price_df['lead_time'].isin([0, 7, 14, 21, 28])]
+    
+    grouped_df = price_df.groupby(['sd','sgg','rating','booking_date','lead_time']).agg(
+                            hotel_count=('hotel_id', 'nunique'),   # 호텔 수
+                            room_count=('room_id', 'nunique'),     # 객실 수 (행 수 기준)
+                            mean_price=('stay_price', 'mean'),          # 평균 가격
+                            median_price=('stay_price', 'median') 
+                        ).reset_index()
+    
+    grouped_df = pd.merge(grouped_df,total_region,on=['sd','sgg','rating','booking_date','lead_time'],how='right')
+    
+    grouped_df = grouped_df.sort_values(['sd','sgg','rating','booking_date'])
+    
+    lead_time_map = {
+                    0: 'Day',
+                    7: '1W',
+                    14: '2W',
+                    21: '3W',
+                    28: '4W'
+                }
+    grouped_df['lead_time'] = grouped_df['lead_time'].map(lead_time_map).fillna(grouped_df['lead_time'])
+    grouped_df['mean_price'] = grouped_df['mean_price'].round()
+    grouped_df['booking_date'] = grouped_df['booking_date'].dt.strftime('%Y-%m-%d')
+    grouped_df.rename(columns={'sd':'CTPRVN_NM','sgg':'GUGUN_NM','rating':'LDGS_GRAD','booking_date':'LDGMNT_DE',
+                       'hotel_count':'LDGS_CO','room_count':'ROOM_CO','mean_price':'AVRG_PRC','lead_time':'LEAD_TIME_RANGE',
+                       'median_price':'MEDIAN_PRC'},inplace=True)
+    grouped_df.fillna(0,inplace=True)
+    
+    datanm = 'HW_LDGS_LEAD_TIME_AVRG_PRC_INFO'
+    
+    for cty in grouped_df['CTPRVN_NM'].unique():
+        cty_df = grouped_df[grouped_df['CTPRVN_NM']==cty].reset_index(drop=True)
+        dataset = cty_df.to_dict(orient='records')
+        result_message = json.dumps(call_api(datanm, dataset))
+        
+    return f'Success {yesterday} Price Data Preprocessing'
+    
 @celery_app.task(bind=True)
 def preprocessing_price(self):
     

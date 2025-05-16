@@ -21,6 +21,14 @@ celery_app.conf.update(
     enable_utc=False
 )
 
+celery_app.conf.beat_schedule = {
+    'price_processing': {
+        'task': 'src.task.tasks.preprocessing_region_price',
+        'schedule': crontab(hour=6,minute=0),
+        'args':()
+    }
+}
+
 '''
 celery_app.conf.beat_schedule = {
     'price_processing': {

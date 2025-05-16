@@ -53,6 +53,31 @@ def AWS_DATABASE_CONN(sql):
 
     return df
 
+def PRC_DATABASE_CONN(sql):
+    
+    load_dotenv()
+    
+    PRC_USERNAME = os.getenv("PRC_USERNAME")
+    PRC_PASSWORD = os.getenv("PRC_PASSWORD")
+    PRC_DATABASE = os.getenv("PRC_DATABASE")
+    PRC_HOST = os.getenv("PRC_HOST")
+    PRC_SOCKET = os.getenv("PRC_SOCKET")
+    
+    Host = PRC_HOST
+    Port = int(PRC_SOCKET)
+    DB = PRC_DATABASE
+    ID = PRC_USERNAME
+    Password = PRC_PASSWORD
+    
+    conn = pymysql.connect(host=Host,port=Port,user=ID, password=Password, db=DB, charset='utf8')
+    cur = conn.cursor()
+    
+    df = pd.read_sql(sql,conn)
+    
+    conn.close()
+
+    return df
+
 def LOCAL_DATABASE_CONN(sql):
     
     load_dotenv()
@@ -122,5 +147,14 @@ def local_price_cfr_select(week_ago, yesterday):
            WHERE booking_date BETWEEN '{week_ago}' AND '{yesterday}'; "
            
     price = LOCAL_DATABASE_CONN(sql)
+    
+    return price
+
+## 25년 이후 로컬 DB 가격데이터 불러오기 범위
+def yesterday_price_select(yesterday):
+    
+    sql = f"SELECT * FROM room_price WHERE booking_date = {yesterday}"
+           
+    price = PRC_DATABASE_CONN(sql)
     
     return price
