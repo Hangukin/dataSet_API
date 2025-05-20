@@ -23,6 +23,8 @@ from dotenv import load_dotenv
 def preprocessing_region_price(self):
     now = datetime.now(pytz.timezone('Asia/Seoul')) # UTC에서 서울 시간대로 변경
     yesterday = now - timedelta(days=1)
+    yesterday = yesterday.strftime("%Y-%m-%d")
+    
     hotel_tb = load_hotel_tb()
     price_df = yesterday_price_select(yesterday)
     if 'created_at' in price_df.columns:

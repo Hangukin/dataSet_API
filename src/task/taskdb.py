@@ -153,7 +153,7 @@ def local_price_cfr_select(week_ago, yesterday):
 ## 25년 이후 로컬 DB 가격데이터 불러오기 범위
 def yesterday_price_select(yesterday):
     
-    sql = f"SELECT * FROM room_price WHERE booking_date = {yesterday}"
+    sql = f"SELECT * FROM room_price WHERE booking_date = '{yesterday}'"
            
     price = PRC_DATABASE_CONN(sql)
     

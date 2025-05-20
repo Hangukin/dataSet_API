@@ -34,7 +34,7 @@ def load_hotel_data():
 
 def load_hotel_tb():
     sql = 'SELECT hotel_id, hotel_name, b_type, rating, region,sd, sgg, emd, road_addr FROM hotel_tb'
-    hotels = PRC_DATABASE_CONN(sql)
+    hotel_tb = PRC_DATABASE_CONN(sql)
     # 1. b_type 필터
     hotel_tb = hotel_tb[~hotel_tb['b_type'].isin(['Camp', 'GuestHouse'])]
 
@@ -42,6 +42,8 @@ def load_hotel_tb():
     exclude_keywords = ['게스트하우스', '민박', '캠프', '펜션', '유스', '사랑채', '독채', '풀빌라']
     pattern = '|'.join(exclude_keywords)
     hotel_tb = hotel_tb[~hotel_tb['hotel_name'].str.contains(pattern)].reset_index(drop=True)
+    
+    return hotel_tb
 
 def load_room_data():
 
