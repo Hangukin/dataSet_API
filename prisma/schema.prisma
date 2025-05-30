@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
-  enable_experimental_decimal = "True"
-  recursive_type_depth        = "2"
   interface                   = "asyncio"
+  recursive_type_depth        = "2"
+  enable_experimental_decimal = "True"
 }
 
 datasource db {
@@ -167,7 +167,7 @@ model HW_LDGS_DAY_TYPE_PRC_INFO {
   LDGS_CO         Int
   ROOM_CO         Int
   AVRG_PRC        Int
-  MEDIAN_PRC      String @db.VarChar(45)
+  MEDIAN_PRC      Int
 }
 
 model HW_LDGS_FCLTY_INFO {
