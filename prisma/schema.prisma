@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
   enable_experimental_decimal = "True"
-  interface                   = "asyncio"
   recursive_type_depth        = "2"
+  interface                   = "asyncio"
 }
 
 datasource db {
@@ -160,8 +160,8 @@ model HW_LDGS_DAY_TYPE_PRC_INFO {
   id              Int    @id @default(autoincrement())
   CTPRVN_NM       String @db.VarChar(50)
   GUGUN_NM        String @db.VarChar(45)
-  LDGMNT_YEAR     String @db.VarChar(4)
-  LDGMNT_MT       String @db.VarChar(2)
+  BASE_YEAR       String @db.VarChar(4)
+  BASE_MT         String @db.VarChar(2)
   DAY_TYPE        String @db.VarChar(20)
   LEAD_TIME_RANGE String @db.VarChar(10)
   LDGS_CO         Int
