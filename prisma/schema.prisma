@@ -1,8 +1,8 @@
 generator client {
   provider                    = "prisma-client-py"
-  interface                   = "asyncio"
-  enable_experimental_decimal = "True"
   recursive_type_depth        = "2"
+  enable_experimental_decimal = "True"
+  interface                   = "asyncio"
 }
 
 datasource db {
@@ -140,6 +140,34 @@ model HW_LDGS_DAIL_MAX_AVRG_MIN_PRC_INFO_old {
 
   @@index([EXTRC_DE], map: "EXTRC_DE")
   @@index([LDGMNT_DE], map: "LDGMNT_DE")
+}
+
+model HW_LDGS_DAY_PRICE_INFO {
+  id         Int    @id
+  CTPRVN_NM  String @db.VarChar(50)
+  GUGUN_NM   String @db.VarChar(50)
+  LDGMNT_DE  String @db.VarChar(15)
+  EXTRC_DE   String @db.VarChar(15)
+  LDGS_CO    Int
+  ROOM_CO    Int
+  AVRG_PRC   Int
+  MEDIAN_PRC Int
+
+  @@index([LDGMNT_DE], map: "LDGMNT_DE")
+}
+
+model HW_LDGS_DAY_TYPE_PRC_INFO {
+  id              Int    @id
+  CTPRVN_NM       String @db.VarChar(50)
+  GUGUN_NM        String @db.VarChar(45)
+  LDGMNT_YEAR     String @db.VarChar(4)
+  LDGMNT_MT       String @db.VarChar(2)
+  DAY_TYPE        String @db.VarChar(20)
+  LEAD_TIME_RANGE String @db.VarChar(10)
+  LDGS_CO         Int
+  ROOM_CO         Int
+  AVRG_PRC        Int
+  MEDIAN_PRC      String @db.VarChar(45)
 }
 
 model HW_LDGS_FCLTY_INFO {
